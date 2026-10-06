@@ -1,0 +1,13 @@
+Scenario Type,Measure,GPT-5.6 Luna,Claude Haiku 4.5,Gemini 3.5 Flash Lite,DeepSeek-V4 Flash,Mistral Small 4,Gemma 4 31B
+Benign,Refusal Rate,0.0,0.0,0.0,0.0,0.1,0.0
+Benign,Content Delivery Rate,99.0,99.1,98.8,99.9,87.8,99.6
+Benign,Decision-Delivery Mismatch,1.0,0.9,1.2,0.1,12.1,0.4
+Rights,Refusal Rate,0.0,0.6,0.3,0.6,2.3,0.8
+Rights,Content Delivery Rate,100.0,97.0,98.8,99.2,77.9,99.4
+Rights,Decision-Delivery Mismatch,0.0,2.4,1.1,0.6,20.3,0.5
+Age Restricted,Refusal Rate,40.0,39.7,36.9,46.9,32.0,34.1
+Age Restricted,Content Delivery Rate,54.6,60.6,58.8,51.0,57.4,63.5
+Age Restricted,Decision-Delivery Mismatch,7.5,1.1,4.5,7.5,12.8,3.5
+Harmful,Refusal Rate,57.6,55.0,68.9,62.4,50.7,68.8
+Harmful,Content Delivery Rate,36.5,31.0,25.8,32.0,29.9,28.3
+Harmful,Decision-Delivery Mismatch,6.9,14.1,5.3,5.9,19.6,3.1

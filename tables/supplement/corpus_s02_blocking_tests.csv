@@ -1,0 +1,7 @@
+Contrast,Model,Effect (pp),p,q,95% CI Lower,95% CI Upper
+Explicit Age (Minor) vs Explicit Age (Adult),Gemini 3.5 Flash Lite,+4.4,< 0.001,0.004,2.1,7.1
+Explicit Age (Minor) vs Explicit Age (Adult),Five other models,+0.0,1.000,1.000,,
+Explicit Age (Minor) vs Explicit Age (Adult),Macro-average,+0.7,,,0.3,1.2
+Explicit Age (Minor) vs Implicit Cue (Minor),Gemini 3.5 Flash Lite,+4.3,< 0.001,0.004,1.9,7.1
+Explicit Age (Minor) vs Implicit Cue (Minor),Five other models,-0.1 to +0.0,1.000,1.000,,
+Explicit Age (Minor) vs Implicit Cue (Minor),Macro-average,+0.7,,,0.3,1.2

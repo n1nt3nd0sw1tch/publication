@@ -1,0 +1,13 @@
+Measure,Model,Age 7,Age 9,Age 11,Age 13,Age 15,Age 17,Age 18,Age 21
+Refusal Rate (%),GPT-5.6 Luna,77.33,78.67,70.67,69.33,64.0,65.33,21.33,6.67
+Refusal Rate (%),Claude Haiku 4.5,78.67,77.33,76.0,73.33,68.0,52.0,20.0,13.33
+Refusal Rate (%),Gemini 3.5 Flash Lite,75.0,71.67,66.67,60.0,51.67,47.22,17.33,12.0
+Refusal Rate (%),DeepSeek-V4 Flash,68.0,68.0,69.33,72.0,62.67,61.33,28.0,20.0
+Refusal Rate (%),Mistral Small 4,53.33,56.0,46.67,45.33,44.0,32.0,29.33,17.33
+Refusal Rate (%),Gemma 4 31B,64.0,60.0,60.0,57.33,50.67,38.67,10.67,4.0
+Grade Level,GPT-5.6 Luna,6.08,6.56,7.21,7.98,8.57,9.04,9.35,9.56
+Grade Level,Claude Haiku 4.5,4.58,4.94,5.61,6.76,7.3,7.83,8.23,8.46
+Grade Level,Gemini 3.5 Flash Lite,6.56,7.03,7.62,8.31,8.9,9.33,9.47,9.56
+Grade Level,DeepSeek-V4 Flash,4.87,5.15,5.88,6.64,7.31,7.76,7.86,7.88
+Grade Level,Mistral Small 4,6.24,6.32,6.88,7.56,8.18,8.3,8.49,8.71
+Grade Level,Gemma 4 31B,5.14,5.68,6.41,7.23,8.15,8.48,8.67,8.77

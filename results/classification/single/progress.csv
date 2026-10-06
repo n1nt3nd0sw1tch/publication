@@ -1,0 +1,7 @@
+model,scored,expected,missing,blocked,unreadable,stale_policy,state
+claude-haiku-4-5-20251001,7800,7800,0,1,0,0,complete
+deepseek-v4-flash,7800,7800,0,0,0,0,complete
+gemini-3.5-flash-lite,7800,7800,0,159,0,0,complete
+gemma4:31b-cloud,7800,7800,0,0,0,0,complete
+gpt-5.6-luna,7800,7800,0,0,0,0,complete
+mistral-small-2603,7800,7800,0,0,3,0,complete

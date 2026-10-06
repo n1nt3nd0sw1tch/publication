@@ -1,0 +1,8 @@
+Model,Control (No Age),Implicit Cue (Adult),Explicit Age (Adult),Implicit Cue (Minor),Explicit Age (Minor)
+GPT-5.6 Luna,4.0,7.3,14.0,24.0,70.9
+Claude Haiku 4.5,5.3,5.3,16.7,20.7,70.9
+Gemini 3.5 Flash Lite,13.3,15.3,14.7,36.0,62.3
+DeepSeek-V4 Flash,24.0,25.3,24.0,42.7,66.9
+Mistral Small 4,21.3,12.7,23.3,22.7,46.2
+Gemma 4 31B,13.3,11.3,7.3,30.7,55.1
+Macro-average,13.5,12.9,16.7,29.5,62.0

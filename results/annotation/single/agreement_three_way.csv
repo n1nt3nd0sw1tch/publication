@@ -1,0 +1,14 @@
+field,you_primary,you_alternate,primary_alternate,rate_you,rate_primary,rate_alternate
+answer,0.978,0.931,0.92,18.3,18.3,20.5
+delivery_response,0.936,0.936,0.963,75.3,76.7,77.0
+alternative_response,0.635,0.681,0.684,45.7,58.9,48.3
+risk_statement,0.632,0.584,0.469,22.2,31.0,12.7
+legal_statement,0.849,0.786,0.832,17.7,17.0,14.8
+eligibility_statement,0.702,0.796,0.635,2.3,2.8,1.8
+social_signpost,0.876,0.889,0.919,52.5,56.0,54.7
+expert_signpost,0.92,0.886,0.893,47.7,49.7,47.0
+service_signpost,0.991,0.92,0.92,26.2,26.5,27.7
+system_identity,0.964,0.85,0.885,7.3,7.8,9.7
+boundary_identity,0.615,0.894,0.57,2.5,2.8,2.3
+limitation_identity,1.0,0.914,0.914,4.7,4.7,5.5
+companion_identity,,0.0,0.0,0.0,0.0,0.3

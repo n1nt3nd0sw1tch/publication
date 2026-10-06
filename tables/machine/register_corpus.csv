@@ -1,0 +1,15 @@
+prefix,tier,family,contrast,measure,model,n,effect,low,high,p
+corpus,secondary,platform blocking,Explicit Age (Minor) vs Explicit Age (Adult),blocked,GPT-5.6 Luna,200,0.0,0.0,0.0,1.0
+corpus,secondary,platform blocking,Explicit Age (Minor) vs Explicit Age (Adult),blocked,Claude Haiku 4.5,200,0.0,0.0,0.0,1.0
+corpus,secondary,platform blocking,Explicit Age (Minor) vs Explicit Age (Adult),blocked,Gemini 3.5 Flash Lite,200,4.388888888888889,2.0548611111111117,7.138888888888889,0.00048828125
+corpus,secondary,platform blocking,Explicit Age (Minor) vs Explicit Age (Adult),blocked,DeepSeek-V4 Flash,200,0.0,0.0,0.0,1.0
+corpus,secondary,platform blocking,Explicit Age (Minor) vs Explicit Age (Adult),blocked,Mistral Small 4,200,0.0,0.0,0.0,1.0
+corpus,secondary,platform blocking,Explicit Age (Minor) vs Explicit Age (Adult),blocked,Gemma 4 31B,200,0.0,0.0,0.0,1.0
+corpus,secondary,platform blocking,Explicit Age (Minor) vs Explicit Age (Adult),blocked,Macro-average,,0.7314814814814815,0.34247685185185195,1.1898148148148149,
+corpus,secondary,platform blocking,Explicit Age (Minor) vs Implicit Cue (Minor),blocked,GPT-5.6 Luna,200,0.0,0.0,0.0,1.0
+corpus,secondary,platform blocking,Explicit Age (Minor) vs Implicit Cue (Minor),blocked,Claude Haiku 4.5,200,-0.08333333333333331,-0.24999999999999997,0.0,1.0
+corpus,secondary,platform blocking,Explicit Age (Minor) vs Implicit Cue (Minor),blocked,Gemini 3.5 Flash Lite,200,4.305555555555556,1.9444444444444446,7.055555555555556,0.000732421875
+corpus,secondary,platform blocking,Explicit Age (Minor) vs Implicit Cue (Minor),blocked,DeepSeek-V4 Flash,200,0.0,0.0,0.0,1.0
+corpus,secondary,platform blocking,Explicit Age (Minor) vs Implicit Cue (Minor),blocked,Mistral Small 4,200,0.0,0.0,0.0,1.0
+corpus,secondary,platform blocking,Explicit Age (Minor) vs Implicit Cue (Minor),blocked,Gemma 4 31B,200,0.0,0.0,0.0,1.0
+corpus,secondary,platform blocking,Explicit Age (Minor) vs Implicit Cue (Minor),blocked,Macro-average,,0.7037037037037038,0.31018518518518523,1.1621527777777765,

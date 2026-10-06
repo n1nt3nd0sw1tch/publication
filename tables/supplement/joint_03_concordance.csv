@@ -1,0 +1,31 @@
+Scenario Type,Model,n,rho,95% CI Lower,95% CI Upper,Reason
+Pooled,GPT-5.6 Luna,193,-0.126,-0.289,0.049,estimated
+Benign,GPT-5.6 Luna,49,,,,safety shift constant
+Rights,GPT-5.6 Luna,74,,,,safety shift constant
+Age Restricted,GPT-5.6 Luna,25,0.029,-0.419,0.508,estimated
+Harmful,GPT-5.6 Luna,45,0.526,0.257,0.733,estimated
+Pooled,Claude Haiku 4.5,170,-0.309,-0.444,-0.162,estimated
+Benign,Claude Haiku 4.5,50,,,,safety shift constant
+Rights,Claude Haiku 4.5,75,-0.318,-0.479,-0.095,estimated
+Age Restricted,Claude Haiku 4.5,14,-0.449,-0.813,0.125,"small stratum, interpret cautiously"
+Harmful,Claude Haiku 4.5,31,-0.054,-0.374,0.293,estimated
+Pooled,Gemini 3.5 Flash Lite,158,-0.306,-0.476,-0.117,estimated
+Benign,Gemini 3.5 Flash Lite,50,,,,safety shift constant
+Rights,Gemini 3.5 Flash Lite,72,-0.093,-0.37,0.216,estimated
+Age Restricted,Gemini 3.5 Flash Lite,12,-0.295,-0.855,0.362,"small stratum, interpret cautiously"
+Harmful,Gemini 3.5 Flash Lite,24,0.009,-0.435,0.453,estimated
+Pooled,DeepSeek-V4 Flash,197,-0.396,-0.541,-0.233,estimated
+Benign,DeepSeek-V4 Flash,50,,,,safety shift constant
+Rights,DeepSeek-V4 Flash,75,0.001,-0.279,0.279,estimated
+Age Restricted,DeepSeek-V4 Flash,24,-0.63,-0.811,-0.307,estimated
+Harmful,DeepSeek-V4 Flash,48,-0.219,-0.502,0.088,estimated
+Pooled,Mistral Small 4,170,-0.214,-0.366,-0.05,estimated
+Benign,Mistral Small 4,44,,,,safety shift constant
+Rights,Mistral Small 4,69,-0.162,-0.366,0.059,estimated
+Age Restricted,Mistral Small 4,21,-0.369,-0.776,0.113,estimated
+Harmful,Mistral Small 4,36,0.124,-0.208,0.43,estimated
+Pooled,Gemma 4 31B,167,-0.218,-0.39,-0.035,estimated
+Benign,Gemma 4 31B,50,,,,safety shift constant
+Rights,Gemma 4 31B,75,0.014,-0.324,0.335,estimated
+Age Restricted,Gemma 4 31B,17,-0.414,-0.865,0.126,"small stratum, interpret cautiously"
+Harmful,Gemma 4 31B,25,0.082,-0.365,0.481,estimated

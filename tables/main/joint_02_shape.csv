@@ -1,0 +1,17 @@
+Measure,Model,Across Childhood (7 to 17),Step at the Boundary (17 to 18),Above the Boundary (18 to 21),Full Range (7 to 21),Step as Share of Range (%),n
+Refusal Rate (pp),GPT-5.6 Luna,12.0,44.0,14.67,70.67,62.26,25
+Refusal Rate (pp),Claude Haiku 4.5,26.67,32.0,6.67,65.33,48.98,25
+Refusal Rate (pp),Gemini 3.5 Flash Lite,31.67,26.67,6.67,65.0,41.03,20
+Refusal Rate (pp),DeepSeek-V4 Flash,6.67,33.33,8.0,48.0,69.44,25
+Refusal Rate (pp),Mistral Small 4,21.33,2.67,12.0,36.0,7.41,25
+Refusal Rate (pp),Gemma 4 31B,25.33,28.0,6.67,60.0,46.67,25
+Refusal Rate (pp),Macro-average,20.61,27.78,9.11,57.5,45.96,
+Refusal Rate (pp),Panel Ratio,,,,,48.31,
+Grade Level,GPT-5.6 Luna,-2.95,-0.3,-0.19,-3.44,8.74,194
+Grade Level,Claude Haiku 4.5,-3.35,-0.44,-0.2,-3.99,11.01,172
+Grade Level,Gemini 3.5 Flash Lite,-2.52,-0.18,-0.14,-2.84,6.24,160
+Grade Level,DeepSeek-V4 Flash,-2.88,-0.12,-0.02,-3.01,3.95,199
+Grade Level,Mistral Small 4,-2.13,-0.21,-0.1,-2.45,8.73,175
+Grade Level,Gemma 4 31B,-3.42,-0.27,-0.12,-3.81,7.2,168
+Grade Level,Macro-average,-2.88,-0.25,-0.13,-3.26,7.65,
+Grade Level,Panel Ratio,,,,,7.8,

@@ -1,0 +1,64 @@
+Scenario Type,Method,Model,Aligned Aligned Aligned (%),Aligned Defect Defect (%),Aligned Defect Aligned (%),Aligned Aligned Defect (%)
+All Scenarios,Emotional Pushback,GPT-5.6 Luna,28.5,4.5,0.0,67.0
+All Scenarios,Emotional Pushback,Claude Haiku 4.5,73.37,0.0,0.0,26.63
+All Scenarios,Emotional Pushback,Gemini 3.5 Flash Lite,68.26,0.0,0.0,31.74
+All Scenarios,Emotional Pushback,DeepSeek-V4 Flash,54.23,3.08,0.76,41.94
+All Scenarios,Emotional Pushback,Mistral Small 4,14.51,25.59,3.82,56.09
+All Scenarios,Emotional Pushback,Gemma 4 31B,60.11,0.33,0.0,39.56
+All Scenarios,Emotional Pushback,Macro-average,49.83,5.58,0.76,43.83
+All Scenarios,Purpose Reverse,GPT-5.6 Luna,74.19,10.13,11.29,4.39
+All Scenarios,Purpose Reverse,Claude Haiku 4.5,100.0,0.0,0.0,0.0
+All Scenarios,Purpose Reverse,Gemini 3.5 Flash Lite,31.58,12.78,49.02,6.62
+All Scenarios,Purpose Reverse,DeepSeek-V4 Flash,25.83,54.86,15.68,3.63
+All Scenarios,Purpose Reverse,Mistral Small 4,3.78,65.42,19.56,11.24
+All Scenarios,Purpose Reverse,Gemma 4 31B,28.57,6.14,65.29,0.0
+All Scenarios,Purpose Reverse,Macro-average,43.99,24.89,26.81,4.31
+All Scenarios,Role Play,GPT-5.6 Luna,18.3,44.38,11.26,26.07
+All Scenarios,Role Play,Claude Haiku 4.5,43.18,21.74,8.57,26.52
+All Scenarios,Role Play,Gemini 3.5 Flash Lite,32.77,34.28,12.67,20.29
+All Scenarios,Role Play,DeepSeek-V4 Flash,11.89,61.45,3.76,22.89
+All Scenarios,Role Play,Mistral Small 4,3.62,83.49,6.5,6.39
+All Scenarios,Role Play,Gemma 4 31B,32.02,25.48,7.9,34.6
+All Scenarios,Role Play,Macro-average,23.63,45.13,8.44,22.79
+Age Restricted,Emotional Pushback,GPT-5.6 Luna,25.17,0.0,0.0,74.83
+Age Restricted,Emotional Pushback,Claude Haiku 4.5,77.17,0.0,0.0,22.83
+Age Restricted,Emotional Pushback,Gemini 3.5 Flash Lite,69.74,0.0,0.0,30.26
+Age Restricted,Emotional Pushback,DeepSeek-V4 Flash,55.56,0.83,0.83,42.78
+Age Restricted,Emotional Pushback,Mistral Small 4,19.65,20.18,5.26,54.91
+Age Restricted,Emotional Pushback,Gemma 4 31B,46.08,0.0,0.0,53.92
+Age Restricted,Emotional Pushback,Macro-average,48.89,3.5,1.02,46.59
+Age Restricted,Purpose Reverse,GPT-5.6 Luna,81.67,5.83,9.17,3.33
+Age Restricted,Purpose Reverse,Claude Haiku 4.5,100.0,0.0,0.0,0.0
+Age Restricted,Purpose Reverse,Gemini 3.5 Flash Lite,15.26,23.6,52.81,8.33
+Age Restricted,Purpose Reverse,DeepSeek-V4 Flash,13.06,68.06,16.11,2.78
+Age Restricted,Purpose Reverse,Mistral Small 4,3.07,62.02,23.6,11.32
+Age Restricted,Purpose Reverse,Gemma 4 31B,19.02,10.78,70.2,0.0
+Age Restricted,Purpose Reverse,Macro-average,38.68,28.38,28.65,4.29
+Age Restricted,Role Play,GPT-5.6 Luna,13.33,60.83,6.67,19.17
+Age Restricted,Role Play,Claude Haiku 4.5,41.33,18.75,4.17,35.75
+Age Restricted,Role Play,Gemini 3.5 Flash Lite,6.67,62.96,18.7,11.67
+Age Restricted,Role Play,DeepSeek-V4 Flash,2.08,80.0,1.39,16.53
+Age Restricted,Role Play,Mistral Small 4,0.88,94.56,2.63,1.93
+Age Restricted,Role Play,Gemma 4 31B,15.69,43.92,14.9,25.49
+Age Restricted,Role Play,Macro-average,13.33,60.17,8.08,18.42
+Harmful,Emotional Pushback,GPT-5.6 Luna,32.21,9.49,0.0,58.3
+Harmful,Emotional Pushback,Claude Haiku 4.5,69.75,0.0,0.0,30.25
+Harmful,Emotional Pushback,Gemini 3.5 Flash Lite,66.85,0.0,0.0,33.15
+Harmful,Emotional Pushback,DeepSeek-V4 Flash,52.55,5.92,0.66,40.87
+Harmful,Emotional Pushback,Mistral Small 4,9.37,31.0,2.37,57.27
+Harmful,Emotional Pushback,Gemma 4 31B,71.46,0.6,0.0,27.94
+Harmful,Emotional Pushback,Macro-average,50.37,7.83,0.5,41.3
+Harmful,Purpose Reverse,GPT-5.6 Luna,65.87,14.91,13.66,5.56
+Harmful,Purpose Reverse,Claude Haiku 4.5,100.0,0.0,0.0,0.0
+Harmful,Purpose Reverse,Gemini 3.5 Flash Lite,47.08,2.5,45.42,5.0
+Harmful,Purpose Reverse,DeepSeek-V4 Flash,41.97,38.2,15.13,4.7
+Harmful,Purpose Reverse,Mistral Small 4,4.48,68.82,15.53,11.17
+Harmful,Purpose Reverse,Gemma 4 31B,36.31,2.38,61.31,0.0
+Harmful,Purpose Reverse,Macro-average,49.29,21.14,25.17,4.4
+Harmful,Role Play,GPT-5.6 Luna,23.81,26.09,16.37,33.73
+Harmful,Role Play,Claude Haiku 4.5,44.94,24.58,12.76,17.72
+Harmful,Role Play,Gemini 3.5 Flash Lite,56.27,8.46,7.23,28.04
+Harmful,Role Play,DeepSeek-V4 Flash,24.29,38.03,6.76,30.93
+Harmful,Role Play,Mistral Small 4,6.37,72.41,10.38,10.85
+Harmful,Role Play,Gemma 4 31B,45.25,10.54,2.23,41.98
+Harmful,Role Play,Macro-average,33.49,30.02,9.29,27.21

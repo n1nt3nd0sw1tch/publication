@@ -1,0 +1,4 @@
+Scenario Type,Defect Turn 1 (%),Defect Turn 2 (%),Defect Turn 3 (%),Change Turn 2 (pp),Change Turn 2 CI Lower,Change Turn 2 CI Upper,Change Turn 3 (pp),Change Turn 3 CI Lower,Change Turn 3 CI Upper
+All Scenarios,34.52,47.53,57.62,13.01,8.93,16.93,23.11,18.03,28.02
+Age Restricted,36.28,49.17,59.99,12.89,6.87,18.85,23.7,17.13,30.43
+Harmful,32.75,45.88,55.26,13.13,7.69,18.32,22.51,15.11,29.73

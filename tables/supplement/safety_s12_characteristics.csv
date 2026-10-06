@@ -1,0 +1,67 @@
+Group,Characteristic,Model,Prevalence (%),Effect (pp),95% CI Lower,95% CI Upper,q
+Response,Alternative Response,GPT-5.6 Luna,88.65,,,,not tested
+Response,Alternative Response,Claude Haiku 4.5,66.37,,,,not tested
+Response,Alternative Response,Gemini 3.5 Flash Lite,42.08,,,,not tested
+Response,Alternative Response,DeepSeek-V4 Flash,84.6,,,,not tested
+Response,Alternative Response,Mistral Small 4,35.8,,,,not tested
+Response,Alternative Response,Gemma 4 31B,44.91,,,,not tested
+Statement,Risk Statement,GPT-5.6 Luna,50.79,,,,not tested
+Statement,Risk Statement,Claude Haiku 4.5,18.49,,,,not tested
+Statement,Risk Statement,Gemini 3.5 Flash Lite,19.9,,,,not tested
+Statement,Risk Statement,DeepSeek-V4 Flash,39.88,,,,not tested
+Statement,Risk Statement,Mistral Small 4,19.58,,,,not tested
+Statement,Risk Statement,Gemma 4 31B,25.86,,,,not tested
+Statement,Legal Statement,GPT-5.6 Luna,17.77,-6.5,-9.8,-3.4,< 0.001
+Statement,Legal Statement,Claude Haiku 4.5,12.01,-6.3,-9.7,-3.1,< 0.001
+Statement,Legal Statement,Gemini 3.5 Flash Lite,16.96,-13.4,-17.7,-9.3,< 0.001
+Statement,Legal Statement,DeepSeek-V4 Flash,22.71,-11.4,-15.1,-7.9,< 0.001
+Statement,Legal Statement,Mistral Small 4,10.03,-0.8,-2.7,1.2,0.507
+Statement,Legal Statement,Gemma 4 31B,15.91,-4.8,-8.6,-1.0,0.027
+Statement,Eligibility Statement,GPT-5.6 Luna,5.4,+7.9,5.2,10.9,< 0.001
+Statement,Eligibility Statement,Claude Haiku 4.5,2.33,+3.8,1.9,5.9,< 0.001
+Statement,Eligibility Statement,Gemini 3.5 Flash Lite,2.09,+3.8,2.1,5.7,< 0.001
+Statement,Eligibility Statement,DeepSeek-V4 Flash,4.55,+7.8,5.1,10.8,< 0.001
+Statement,Eligibility Statement,Mistral Small 4,1.28,+0.9,0.1,2.0,0.074
+Statement,Eligibility Statement,Gemma 4 31B,2.35,+4.3,2.3,6.5,< 0.001
+Signpost,Social Signpost,GPT-5.6 Luna,67.72,+42.5,36.9,48.0,< 0.001
+Signpost,Social Signpost,Claude Haiku 4.5,52.26,+45.8,41.1,50.6,< 0.001
+Signpost,Social Signpost,Gemini 3.5 Flash Lite,46.34,+38.5,33.7,43.4,< 0.001
+Signpost,Social Signpost,DeepSeek-V4 Flash,55.28,+47.9,43.4,52.5,< 0.001
+Signpost,Social Signpost,Mistral Small 4,39.56,+26.8,22.8,30.8,< 0.001
+Signpost,Social Signpost,Gemma 4 31B,47.36,+45.4,40.6,50.3,< 0.001
+Signpost,Expert Signpost,GPT-5.6 Luna,65.55,+8.7,5.2,12.5,< 0.001
+Signpost,Expert Signpost,Claude Haiku 4.5,50.63,+10.5,6.7,14.5,< 0.001
+Signpost,Expert Signpost,Gemini 3.5 Flash Lite,46.52,+4.1,0.9,7.3,0.027
+Signpost,Expert Signpost,DeepSeek-V4 Flash,50.77,+2.2,-1.1,5.7,0.256
+Signpost,Expert Signpost,Mistral Small 4,30.28,-1.6,-4.2,1.1,0.312
+Signpost,Expert Signpost,Gemma 4 31B,48.86,+0.3,-2.8,3.4,0.875
+Signpost,Service Signpost,GPT-5.6 Luna,30.95,+2.2,-0.8,5.3,0.208
+Signpost,Service Signpost,Claude Haiku 4.5,25.79,+0.3,-2.4,2.9,0.875
+Signpost,Service Signpost,Gemini 3.5 Flash Lite,29.19,-4.7,-7.4,-2.1,< 0.001
+Signpost,Service Signpost,DeepSeek-V4 Flash,28.92,-4.6,-6.8,-2.4,< 0.001
+Signpost,Service Signpost,Mistral Small 4,9.14,-0.6,-2.5,1.2,0.577
+Signpost,Service Signpost,Gemma 4 31B,30.19,-0.9,-2.9,1.2,0.491
+Identity,System Identity,GPT-5.6 Luna,0.46,+0.2,0.0,0.5,0.169
+Identity,System Identity,Claude Haiku 4.5,0.49,+0.5,0.1,1.0,0.049
+Identity,System Identity,Gemini 3.5 Flash Lite,4.8,-1.6,-3.0,-0.3,0.034
+Identity,System Identity,DeepSeek-V4 Flash,2.79,-1.1,-2.1,-0.1,0.054
+Identity,System Identity,Mistral Small 4,0.55,-0.4,-0.9,0.1,0.208
+Identity,System Identity,Gemma 4 31B,38.67,-18.0,-22.3,-13.6,< 0.001
+Identity,Boundary Identity,GPT-5.6 Luna,1.19,,,,not tested
+Identity,Boundary Identity,Claude Haiku 4.5,1.14,,,,not tested
+Identity,Boundary Identity,Gemini 3.5 Flash Lite,2.44,,,,not tested
+Identity,Boundary Identity,DeepSeek-V4 Flash,2.09,,,,not tested
+Identity,Boundary Identity,Mistral Small 4,0.24,,,,not tested
+Identity,Boundary Identity,Gemma 4 31B,7.59,,,,not tested
+Identity,Limitation Identity,GPT-5.6 Luna,0.21,-0.2,-0.8,0.1,0.553
+Identity,Limitation Identity,Claude Haiku 4.5,0.12,-0.1,-0.3,0.2,0.875
+Identity,Limitation Identity,Gemini 3.5 Flash Lite,1.05,-1.2,-2.2,-0.2,0.049
+Identity,Limitation Identity,DeepSeek-V4 Flash,1.6,-1.6,-2.6,-0.7,< 0.001
+Identity,Limitation Identity,Mistral Small 4,0.32,-0.5,-1.1,0.0,0.131
+Identity,Limitation Identity,Gemma 4 31B,25.08,-20.1,-24.1,-16.4,< 0.001
+Identity,Companion Identity,GPT-5.6 Luna,0.0,,,,not tested
+Identity,Companion Identity,Claude Haiku 4.5,0.0,,,,not tested
+Identity,Companion Identity,Gemini 3.5 Flash Lite,0.01,,,,not tested
+Identity,Companion Identity,DeepSeek-V4 Flash,0.1,,,,not tested
+Identity,Companion Identity,Mistral Small 4,0.64,,,,not tested
+Identity,Companion Identity,Gemma 4 31B,0.03,,,,not tested

@@ -1,0 +1,13 @@
+Restriction,Model,Effect (Grades),95% CI Lower,95% CI Upper,Complete Scenarios
+Benign only,GPT-5.6 Luna,-1.92,-2.24,-1.61,49
+Benign only,Claude Haiku 4.5,-2.14,-2.4,-1.89,50
+Benign only,Gemini 3.5 Flash Lite,-1.54,-1.77,-1.33,50
+Benign only,DeepSeek-V4 Flash,-1.55,-1.73,-1.37,50
+Benign only,Mistral Small 4,-1.53,-1.81,-1.24,44
+Benign only,Gemma 4 31B,-1.88,-2.1,-1.67,50
+Total Compliance only,GPT-5.6 Luna,-2.07,-2.24,-1.89,139
+Total Compliance only,Claude Haiku 4.5,-2.36,-2.51,-2.2,138
+Total Compliance only,Gemini 3.5 Flash Lite,-1.74,-1.91,-1.57,134
+Total Compliance only,DeepSeek-V4 Flash,-1.67,-1.8,-1.54,139
+Total Compliance only,Mistral Small 4,-1.48,-1.66,-1.31,122
+Total Compliance only,Gemma 4 31B,-2.06,-2.22,-1.9,144

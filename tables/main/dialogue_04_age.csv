@@ -1,0 +1,85 @@
+Scenario Type,Measure,Turn,Model,Minor (%),Age 18 (%),Gap (pp),Gap CI Lower,Gap CI Upper,Erosion (pp),Erosion CI Lower,Erosion CI Upper
+Age Restricted,Refusal,Turn 1,GPT-5.6 Luna,70.0,20.0,50.0,32.67,68.0,,,
+Age Restricted,Refusal,Turn 1,Claude Haiku 4.5,69.33,20.0,49.33,32.0,66.67,,,
+Age Restricted,Refusal,Turn 1,Gemini 3.5 Flash Lite,63.19,20.83,42.36,25.69,59.03,,,
+Age Restricted,Refusal,Turn 1,DeepSeek-V4 Flash,66.67,28.0,38.67,22.67,54.67,,,
+Age Restricted,Refusal,Turn 1,Mistral Small 4,46.0,24.0,22.0,7.33,36.67,,,
+Age Restricted,Refusal,Turn 1,Gemma 4 31B,53.33,8.0,45.33,28.0,62.67,,,
+Age Restricted,Refusal,Turn 1,Macro-average,61.42,20.14,41.28,30.0,52.67,,,
+Age Restricted,Refusal,Turn 2,GPT-5.6 Luna,65.33,29.33,36.0,24.44,47.78,-14.0,-31.11,1.56
+Age Restricted,Refusal,Turn 2,Claude Haiku 4.5,77.78,44.0,33.78,23.56,44.22,-15.56,-30.22,-1.33
+Age Restricted,Refusal,Turn 2,Gemini 3.5 Flash Lite,43.52,15.28,28.24,21.3,35.19,-14.12,-28.94,0.46
+Age Restricted,Refusal,Turn 2,DeepSeek-V4 Flash,40.89,16.0,24.89,15.33,34.44,-13.78,-24.89,-2.67
+Age Restricted,Refusal,Turn 2,Mistral Small 4,24.67,14.67,10.0,2.44,17.11,-12.0,-27.56,2.44
+Age Restricted,Refusal,Turn 2,Gemma 4 31B,40.44,10.67,29.78,20.22,40.0,-15.56,-30.0,-2.44
+Age Restricted,Refusal,Turn 2,Macro-average,48.77,21.66,27.11,21.18,33.44,-14.17,-23.46,-5.41
+Age Restricted,Refusal,Turn 3,GPT-5.6 Luna,48.0,21.33,26.67,14.22,38.89,-23.33,-38.0,-9.99
+Age Restricted,Refusal,Turn 3,Claude Haiku 4.5,66.44,46.67,19.78,9.56,30.44,-29.56,-45.11,-14.67
+Age Restricted,Refusal,Turn 3,Gemini 3.5 Flash Lite,45.72,25.0,20.72,4.4,36.0,-21.64,-34.26,-9.84
+Age Restricted,Refusal,Turn 3,DeepSeek-V4 Flash,33.11,18.67,14.44,5.11,23.56,-24.22,-36.0,-12.44
+Age Restricted,Refusal,Turn 3,Mistral Small 4,12.44,9.33,3.11,-2.67,8.44,-18.89,-35.56,-3.11
+Age Restricted,Refusal,Turn 3,Gemma 4 31B,42.0,16.0,26.0,14.44,38.0,-19.33,-32.22,-7.33
+Age Restricted,Refusal,Turn 3,Macro-average,41.29,22.83,18.45,11.93,25.06,-22.83,-31.87,-14.85
+Age Restricted,Strong Refusal,Turn 1,GPT-5.6 Luna,70.0,16.0,54.0,36.67,72.0,,,
+Age Restricted,Strong Refusal,Turn 1,Claude Haiku 4.5,69.33,20.0,49.33,32.0,66.67,,,
+Age Restricted,Strong Refusal,Turn 1,Gemini 3.5 Flash Lite,63.19,20.83,42.36,25.69,59.03,,,
+Age Restricted,Strong Refusal,Turn 1,DeepSeek-V4 Flash,66.0,24.0,42.0,26.0,58.67,,,
+Age Restricted,Strong Refusal,Turn 1,Mistral Small 4,46.0,24.0,22.0,7.33,36.67,,,
+Age Restricted,Strong Refusal,Turn 1,Gemma 4 31B,53.33,8.0,45.33,28.0,62.67,,,
+Age Restricted,Strong Refusal,Turn 1,Macro-average,61.31,18.81,42.5,31.22,53.78,,,
+Age Restricted,Strong Refusal,Turn 2,GPT-5.6 Luna,62.89,18.67,44.22,32.89,55.78,-9.78,-22.44,2.0
+Age Restricted,Strong Refusal,Turn 2,Claude Haiku 4.5,76.67,38.67,38.0,26.0,50.67,-11.33,-24.89,1.11
+Age Restricted,Strong Refusal,Turn 2,Gemini 3.5 Flash Lite,43.29,13.89,29.4,22.92,36.0,-12.96,-28.01,1.85
+Age Restricted,Strong Refusal,Turn 2,DeepSeek-V4 Flash,39.78,13.33,26.44,17.78,35.56,-15.56,-28.44,-2.67
+Age Restricted,Strong Refusal,Turn 2,Mistral Small 4,23.78,14.67,9.11,2.0,15.78,-12.89,-28.22,1.56
+Age Restricted,Strong Refusal,Turn 2,Gemma 4 31B,40.0,10.67,29.33,19.56,39.56,-16.0,-30.44,-2.67
+Age Restricted,Strong Refusal,Turn 2,Macro-average,47.73,18.31,29.42,23.06,35.99,-13.09,-21.27,-5.26
+Age Restricted,Strong Refusal,Turn 3,GPT-5.6 Luna,39.33,18.67,20.67,10.0,31.33,-33.33,-48.89,-18.44
+Age Restricted,Strong Refusal,Turn 3,Claude Haiku 4.5,64.0,45.33,18.67,8.89,28.67,-30.67,-46.22,-15.56
+Age Restricted,Strong Refusal,Turn 3,Gemini 3.5 Flash Lite,41.55,18.06,23.5,11.34,35.65,-18.87,-31.14,-7.52
+Age Restricted,Strong Refusal,Turn 3,DeepSeek-V4 Flash,26.67,14.67,12.0,3.78,20.22,-30.0,-43.33,-16.44
+Age Restricted,Strong Refusal,Turn 3,Mistral Small 4,11.33,6.67,4.67,-1.33,10.0,-17.33,-33.78,-1.56
+Age Restricted,Strong Refusal,Turn 3,Gemma 4 31B,37.11,14.67,22.44,11.78,33.33,-22.89,-36.0,-10.89
+Age Restricted,Strong Refusal,Turn 3,Macro-average,36.67,19.68,16.99,11.13,23.15,-25.51,-35.43,-16.68
+Harmful,Refusal,Turn 1,GPT-5.6 Luna,62.67,60.0,2.67,-4.67,12.67,,,
+Harmful,Refusal,Turn 1,Claude Haiku 4.5,68.67,60.0,8.67,-6.0,23.33,,,
+Harmful,Refusal,Turn 1,Gemini 3.5 Flash Lite,76.67,80.0,-3.33,-7.33,0.0,,,
+Harmful,Refusal,Turn 1,DeepSeek-V4 Flash,68.67,56.0,12.67,1.33,26.67,,,
+Harmful,Refusal,Turn 1,Mistral Small 4,60.0,60.0,0.0,-14.0,15.33,,,
+Harmful,Refusal,Turn 1,Gemma 4 31B,71.33,80.0,-8.67,-20.0,0.0,,,
+Harmful,Refusal,Turn 1,Macro-average,68.0,66.0,2.0,-1.78,6.11,,,
+Harmful,Refusal,Turn 2,GPT-5.6 Luna,60.22,50.67,9.56,1.33,18.22,6.89,-3.11,16.22
+Harmful,Refusal,Turn 2,Claude Haiku 4.5,78.67,74.67,4.0,-1.33,9.56,-4.67,-17.78,8.0
+Harmful,Refusal,Turn 2,Gemini 3.5 Flash Lite,66.67,61.33,5.33,-0.44,11.11,8.67,4.0,13.78
+Harmful,Refusal,Turn 2,DeepSeek-V4 Flash,50.22,58.67,-8.44,-15.11,-2.22,-21.11,-35.78,-8.67
+Harmful,Refusal,Turn 2,Mistral Small 4,23.11,25.33,-2.22,-8.67,4.0,-2.22,-18.0,12.67
+Harmful,Refusal,Turn 2,Gemma 4 31B,60.22,66.67,-6.44,-12.67,-0.67,2.22,-4.89,9.78
+Harmful,Refusal,Turn 2,Macro-average,56.52,56.22,0.3,-2.93,3.41,-1.7,-6.22,2.7
+Harmful,Refusal,Turn 3,GPT-5.6 Luna,48.44,41.33,7.11,-1.56,16.22,4.44,-6.67,15.33
+Harmful,Refusal,Turn 3,Claude Haiku 4.5,69.78,74.67,-4.89,-13.78,5.11,-13.56,-30.22,2.67
+Harmful,Refusal,Turn 3,Gemini 3.5 Flash Lite,63.11,68.0,-4.89,-12.67,2.89,-1.56,-9.78,6.44
+Harmful,Refusal,Turn 3,DeepSeek-V4 Flash,40.22,40.0,0.22,-8.67,10.0,-12.44,-27.56,2.0
+Harmful,Refusal,Turn 3,Mistral Small 4,11.56,13.33,-1.78,-8.89,4.67,-1.78,-16.67,13.11
+Harmful,Refusal,Turn 3,Gemma 4 31B,58.0,74.67,-16.67,-23.78,-9.78,-8.0,-16.0,1.33
+Harmful,Refusal,Turn 3,Macro-average,48.52,52.0,-3.48,-5.59,-1.44,-5.48,-10.07,-1.22
+Harmful,Strong Refusal,Turn 1,GPT-5.6 Luna,62.67,60.0,2.67,-4.67,12.67,,,
+Harmful,Strong Refusal,Turn 1,Claude Haiku 4.5,68.67,60.0,8.67,-6.0,23.33,,,
+Harmful,Strong Refusal,Turn 1,Gemini 3.5 Flash Lite,76.67,80.0,-3.33,-7.33,0.0,,,
+Harmful,Strong Refusal,Turn 1,DeepSeek-V4 Flash,68.67,56.0,12.67,1.33,26.67,,,
+Harmful,Strong Refusal,Turn 1,Mistral Small 4,60.0,60.0,0.0,-14.0,15.33,,,
+Harmful,Strong Refusal,Turn 1,Gemma 4 31B,71.33,76.0,-4.67,-18.0,8.0,,,
+Harmful,Strong Refusal,Turn 1,Macro-average,68.0,65.33,2.67,-1.67,7.56,,,
+Harmful,Strong Refusal,Turn 2,GPT-5.6 Luna,56.0,46.67,9.33,0.67,18.67,6.67,-2.0,15.78
+Harmful,Strong Refusal,Turn 2,Claude Haiku 4.5,78.44,74.67,3.78,-1.78,9.56,-4.89,-18.22,7.78
+Harmful,Strong Refusal,Turn 2,Gemini 3.5 Flash Lite,66.22,61.33,4.89,-0.67,10.44,8.22,3.56,13.33
+Harmful,Strong Refusal,Turn 2,DeepSeek-V4 Flash,47.33,54.67,-7.33,-15.11,-0.22,-20.0,-32.89,-9.11
+Harmful,Strong Refusal,Turn 2,Mistral Small 4,23.11,25.33,-2.22,-8.67,4.0,-2.22,-18.0,12.67
+Harmful,Strong Refusal,Turn 2,Gemma 4 31B,60.0,66.67,-6.67,-13.11,-0.89,-2.0,-12.89,7.78
+Harmful,Strong Refusal,Turn 2,Macro-average,55.19,54.89,0.3,-2.7,3.3,-2.37,-7.67,2.41
+Harmful,Strong Refusal,Turn 3,GPT-5.6 Luna,39.33,32.0,7.33,1.78,13.11,4.67,-6.23,13.78
+Harmful,Strong Refusal,Turn 3,Claude Haiku 4.5,66.44,70.67,-4.22,-12.0,4.67,-12.89,-29.11,3.56
+Harmful,Strong Refusal,Turn 3,Gemini 3.5 Flash Lite,59.33,61.33,-2.0,-11.33,7.11,1.33,-9.11,11.56
+Harmful,Strong Refusal,Turn 3,DeepSeek-V4 Flash,34.44,36.0,-1.56,-12.0,9.11,-14.22,-29.11,0.44
+Harmful,Strong Refusal,Turn 3,Mistral Small 4,11.33,13.33,-2.0,-9.11,4.44,-2.0,-17.11,12.89
+Harmful,Strong Refusal,Turn 3,Gemma 4 31B,53.78,70.67,-16.89,-25.33,-8.44,-12.22,-23.78,-0.67
+Harmful,Strong Refusal,Turn 3,Macro-average,44.11,47.33,-3.22,-5.89,-0.44,-5.89,-11.26,-1.0

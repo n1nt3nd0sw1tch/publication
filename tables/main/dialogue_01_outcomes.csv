@@ -1,0 +1,29 @@
+Model,Outcome,Turn 1,Turn 2,Turn 3
+GPT-5.6 Luna,Strong Refusal,58.25,51.67,35.33
+GPT-5.6 Luna,Weak Refusal,1.0,3.83,8.5
+GPT-5.6 Luna,Minimal Compliance,9.0,7.08,2.83
+GPT-5.6 Luna,Total Compliance,31.75,37.42,53.33
+Claude Haiku 4.5,Strong Refusal,60.5,70.08,61.42
+Claude Haiku 4.5,Weak Refusal,0.0,1.08,2.58
+Claude Haiku 4.5,Minimal Compliance,5.0,6.92,7.58
+Claude Haiku 4.5,Total Compliance,34.5,21.92,28.42
+Gemini 3.5 Flash Lite,Strong Refusal,61.74,48.21,45.93
+Gemini 3.5 Flash Lite,Weak Refusal,0.0,0.76,4.54
+Gemini 3.5 Flash Lite,Minimal Compliance,3.78,9.23,11.18
+Gemini 3.5 Flash Lite,Total Compliance,34.48,41.81,38.35
+DeepSeek-V4 Flash,Strong Refusal,60.75,40.75,29.17
+DeepSeek-V4 Flash,Weak Refusal,1.0,2.58,5.75
+DeepSeek-V4 Flash,Minimal Compliance,6.0,3.17,3.83
+DeepSeek-V4 Flash,Total Compliance,32.25,53.5,61.25
+Mistral Small 4,Strong Refusal,50.25,22.17,11.33
+Mistral Small 4,Weak Refusal,0.0,0.33,0.67
+Mistral Small 4,Minimal Compliance,14.25,23.75,22.08
+Mistral Small 4,Total Compliance,35.5,53.75,65.92
+Gemma 4 31B,Strong Refusal,57.0,46.08,44.17
+Gemma 4 31B,Weak Refusal,0.25,0.5,4.25
+Gemma 4 31B,Minimal Compliance,4.75,6.75,12.83
+Gemma 4 31B,Total Compliance,38.0,46.67,38.75
+Macro-average,Strong Refusal,58.08,46.49,37.89
+Macro-average,Weak Refusal,0.38,1.52,4.38
+Macro-average,Minimal Compliance,7.13,9.48,10.06
+Macro-average,Total Compliance,34.41,42.51,47.67

@@ -1,0 +1,7 @@
+Scenario Type,Method,Model,Evaluable Seeds,Defect Turn 1 (%),Defect Turn 2 (%),Defect Turn 3 (%),Defect Change Turn 2 (pp),Defect Change Turn 2 CI Lower,Defect Change Turn 2 CI Upper,Defect Change Turn 3 (pp),Defect Change Turn 3 CI Lower,Defect Change Turn 3 CI Upper
+Age Restricted,Emotional Pushback,Macro-average,,36.6,24.73,59.35,-11.87,-19.05,-5.02,22.75,15.06,30.67
+Age Restricted,Purpose Reverse,Macro-average,,36.6,57.25,46.46,20.65,14.13,27.32,9.86,5.06,14.52
+Age Restricted,Role Play,Macro-average,,36.6,66.29,74.71,29.68,23.19,36.24,38.11,29.11,47.14
+Harmful,Emotional Pushback,Macro-average,,32.75,27.42,59.75,-5.33,-9.42,-1.33,27.0,18.17,36.0
+Harmful,Purpose Reverse,Macro-average,,32.75,56.22,39.33,23.47,13.65,33.3,6.58,-0.33,13.42
+Harmful,Role Play,Macro-average,,32.75,54.18,66.53,21.43,15.83,27.17,33.78,22.67,45.2

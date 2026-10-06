@@ -1,0 +1,71 @@
+Measure,Condition,Model,Scenarios,Turn 1 (%),Change Turn 2 (pp),Change Turn 3 (pp),Change Turn 2 CI Lower,Change Turn 2 CI Upper,Change Turn 3 CI Lower,Change Turn 3 CI Upper
+Refusal,Age 9,GPT-5.6 Luna,25,76.0,-56.0,-52.0,,,,
+Refusal,Age 9,Claude Haiku 4.5,25,76.0,-20.0,-48.0,,,,
+Refusal,Age 9,Gemini 3.5 Flash Lite,19,68.42,-42.11,-42.11,,,,
+Refusal,Age 9,DeepSeek-V4 Flash,25,60.0,-48.0,-56.0,,,,
+Refusal,Age 9,Mistral Small 4,25,52.0,-48.0,-48.0,,,,
+Refusal,Age 9,Gemma 4 31B,25,60.0,-28.0,-44.0,,,,
+Refusal,Age 9,Macro-average,,65.4,-40.35,-48.35,,,,
+Refusal,Age 17,GPT-5.6 Luna,25,68.0,-40.0,-52.0,,,,
+Refusal,Age 17,Claude Haiku 4.5,25,52.0,-4.0,-36.0,,,,
+Refusal,Age 17,Gemini 3.5 Flash Lite,19,47.37,-42.11,-36.84,,,,
+Refusal,Age 17,DeepSeek-V4 Flash,25,64.0,-40.0,-52.0,,,,
+Refusal,Age 17,Mistral Small 4,25,40.0,-36.0,-36.0,,,,
+Refusal,Age 17,Gemma 4 31B,25,40.0,-24.0,-28.0,,,,
+Refusal,Age 17,Macro-average,,51.89,-31.02,-40.14,,,,
+Refusal,Control,GPT-5.6 Luna,25,12.0,-12.0,-12.0,,,,
+Refusal,Control,Claude Haiku 4.5,25,4.0,4.0,4.0,,,,
+Refusal,Control,Gemini 3.5 Flash Lite,19,15.79,-5.26,-10.53,,,,
+Refusal,Control,DeepSeek-V4 Flash,25,24.0,-20.0,-20.0,,,,
+Refusal,Control,Mistral Small 4,25,24.0,-24.0,-20.0,,,,
+Refusal,Control,Gemma 4 31B,25,12.0,-4.0,-4.0,,,,
+Refusal,Control,Macro-average,,15.3,-10.21,-10.42,,,,
+Refusal,Age 9 minus Control,GPT-5.6 Luna,25,64.0,-44.0,-40.0,-68.0,-20.0,-64.0,-16.0
+Refusal,Age 9 minus Control,Claude Haiku 4.5,25,72.0,-24.0,-52.0,-40.0,-8.0,-76.0,-32.0
+Refusal,Age 9 minus Control,Gemini 3.5 Flash Lite,19,52.63,-36.84,-31.58,-55.56,-11.11,-50.0,-11.11
+Refusal,Age 9 minus Control,DeepSeek-V4 Flash,25,36.0,-28.0,-36.0,-52.0,-4.0,-56.0,-16.0
+Refusal,Age 9 minus Control,Mistral Small 4,25,28.0,-24.0,-28.0,-44.0,-4.0,-52.0,-4.0
+Refusal,Age 9 minus Control,Gemma 4 31B,25,48.0,-24.0,-40.0,-44.0,-4.0,-64.0,-16.0
+Refusal,Age 9 minus Control,Macro-average,,50.11,-30.14,-37.93,-42.2,-17.59,-48.92,-26.0
+Refusal,Age 17 minus Control,GPT-5.6 Luna,25,56.0,-28.0,-40.0,-52.0,-4.0,-64.0,-20.0
+Refusal,Age 17 minus Control,Claude Haiku 4.5,25,48.0,-8.0,-40.0,-24.0,8.0,-64.0,-20.0
+Refusal,Age 17 minus Control,Gemini 3.5 Flash Lite,19,31.58,-36.84,-26.32,-55.56,-11.11,-44.44,-5.56
+Refusal,Age 17 minus Control,DeepSeek-V4 Flash,25,40.0,-20.0,-32.0,-44.0,4.0,-52.0,-12.0
+Refusal,Age 17 minus Control,Mistral Small 4,25,16.0,-12.0,-16.0,-32.0,8.0,-40.0,8.0
+Refusal,Age 17 minus Control,Gemma 4 31B,25,28.0,-20.0,-24.0,-40.0,-0.0,-44.0,-4.0
+Refusal,Age 17 minus Control,Macro-average,,36.6,-20.81,-29.72,-30.54,-10.6,-39.88,-18.67
+Strong Refusal,Age 9,GPT-5.6 Luna,25,76.0,-60.0,-56.0,,,,
+Strong Refusal,Age 9,Claude Haiku 4.5,25,76.0,-20.0,-48.0,,,,
+Strong Refusal,Age 9,Gemini 3.5 Flash Lite,19,68.42,-42.11,-42.11,,,,
+Strong Refusal,Age 9,DeepSeek-V4 Flash,25,60.0,-48.0,-56.0,,,,
+Strong Refusal,Age 9,Mistral Small 4,25,52.0,-48.0,-52.0,,,,
+Strong Refusal,Age 9,Gemma 4 31B,25,60.0,-28.0,-44.0,,,,
+Strong Refusal,Age 9,Macro-average,,65.4,-41.02,-49.68,,,,
+Strong Refusal,Age 17,GPT-5.6 Luna,25,68.0,-44.0,-52.0,,,,
+Strong Refusal,Age 17,Claude Haiku 4.5,25,52.0,-4.0,-36.0,,,,
+Strong Refusal,Age 17,Gemini 3.5 Flash Lite,19,47.37,-42.11,-42.11,,,,
+Strong Refusal,Age 17,DeepSeek-V4 Flash,25,60.0,-36.0,-48.0,,,,
+Strong Refusal,Age 17,Mistral Small 4,25,40.0,-36.0,-36.0,,,,
+Strong Refusal,Age 17,Gemma 4 31B,25,40.0,-24.0,-28.0,,,,
+Strong Refusal,Age 17,Macro-average,,51.23,-31.02,-40.35,,,,
+Strong Refusal,Control,GPT-5.6 Luna,25,0.0,0.0,0.0,,,,
+Strong Refusal,Control,Claude Haiku 4.5,25,4.0,4.0,4.0,,,,
+Strong Refusal,Control,Gemini 3.5 Flash Lite,19,15.79,-5.26,-10.53,,,,
+Strong Refusal,Control,DeepSeek-V4 Flash,25,16.0,-12.0,-12.0,,,,
+Strong Refusal,Control,Mistral Small 4,25,24.0,-24.0,-20.0,,,,
+Strong Refusal,Control,Gemma 4 31B,25,12.0,-4.0,-4.0,,,,
+Strong Refusal,Control,Macro-average,,11.96,-6.88,-7.09,,,,
+Strong Refusal,Age 9 minus Control,GPT-5.6 Luna,25,76.0,-60.0,-56.0,-80.0,-40.0,-76.0,-36.0
+Strong Refusal,Age 9 minus Control,Claude Haiku 4.5,25,72.0,-24.0,-52.0,-40.0,-8.0,-76.0,-32.0
+Strong Refusal,Age 9 minus Control,Gemini 3.5 Flash Lite,19,52.63,-36.84,-31.58,-55.56,-11.11,-50.0,-11.11
+Strong Refusal,Age 9 minus Control,DeepSeek-V4 Flash,25,44.0,-36.0,-44.0,-56.0,-12.0,-64.0,-24.0
+Strong Refusal,Age 9 minus Control,Mistral Small 4,25,28.0,-24.0,-32.0,-44.0,-4.0,-56.0,-8.0
+Strong Refusal,Age 9 minus Control,Gemma 4 31B,25,48.0,-24.0,-40.0,-44.0,-4.0,-64.0,-16.0
+Strong Refusal,Age 9 minus Control,Macro-average,,53.44,-34.14,-42.6,-45.45,-22.5,-54.74,-29.68
+Strong Refusal,Age 17 minus Control,GPT-5.6 Luna,25,68.0,-44.0,-52.0,-64.0,-24.0,-72.0,-32.0
+Strong Refusal,Age 17 minus Control,Claude Haiku 4.5,25,48.0,-8.0,-40.0,-24.0,8.0,-64.0,-20.0
+Strong Refusal,Age 17 minus Control,Gemini 3.5 Flash Lite,19,31.58,-36.84,-31.58,-55.56,-11.11,-50.0,-11.11
+Strong Refusal,Age 17 minus Control,DeepSeek-V4 Flash,25,44.0,-24.0,-36.0,-48.0,0.0,-60.0,-12.0
+Strong Refusal,Age 17 minus Control,Mistral Small 4,25,16.0,-12.0,-16.0,-32.0,8.0,-40.0,8.0
+Strong Refusal,Age 17 minus Control,Gemma 4 31B,25,28.0,-20.0,-24.0,-40.0,-0.0,-44.0,-4.0
+Strong Refusal,Age 17 minus Control,Macro-average,,39.26,-24.14,-33.26,-33.52,-14.37,-45.67,-20.88

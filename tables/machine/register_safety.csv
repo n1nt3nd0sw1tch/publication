@@ -1,0 +1,111 @@
+prefix,tier,family,contrast,measure,model,n,effect,low,high,p
+safety,primary,age conditioning,Explicit Age (Minor) vs Explicit Age (Adult),refusal,GPT-5.6 Luna,25,56.88888888888888,42.22222222222223,71.11111111111111,9.999000099990002e-05
+safety,primary,age conditioning,Explicit Age (Minor) vs Explicit Age (Adult),refusal,Claude Haiku 4.5,25,54.222222222222214,39.105555555555554,69.11111111111111,9.999000099990002e-05
+safety,primary,age conditioning,Explicit Age (Minor) vs Explicit Age (Adult),refusal,Gemini 3.5 Flash Lite,20,48.055555555555564,31.388888888888893,64.72222222222221,9.999000099990002e-05
+safety,primary,age conditioning,Explicit Age (Minor) vs Explicit Age (Adult),refusal,DeepSeek-V4 Flash,25,42.88888888888889,28.666666666666664,57.77777777777777,9.999000099990002e-05
+safety,primary,age conditioning,Explicit Age (Minor) vs Explicit Age (Adult),refusal,Mistral Small 4,25,22.888888888888886,14.444444444444443,31.555555555555557,9.999000099990002e-05
+safety,primary,age conditioning,Explicit Age (Minor) vs Explicit Age (Adult),refusal,Gemma 4 31B,25,47.777777777777786,31.77777777777778,63.555555555555564,9.999000099990002e-05
+safety,primary,age conditioning,Explicit Age (Minor) vs Explicit Age (Adult),refusal,Macro-average,,45.453703703703695,34.1656162464986,56.779884123889964,
+safety,primary,age conditioning,Explicit Age (17) vs Explicit Age (18),refusal,GPT-5.6 Luna,25,44.0,26.66666666666667,61.33333333333333,0.0001220703125
+safety,primary,age conditioning,Explicit Age (17) vs Explicit Age (18),refusal,Claude Haiku 4.5,25,32.0,16.0,52.0,0.0078125
+safety,primary,age conditioning,Explicit Age (17) vs Explicit Age (18),refusal,Gemini 3.5 Flash Lite,24,29.166666666666668,13.888888888888888,45.833333333333336,0.00390625
+safety,primary,age conditioning,Explicit Age (17) vs Explicit Age (18),refusal,DeepSeek-V4 Flash,25,33.33333333333333,17.333333333333332,50.66666666666666,0.0009765625
+safety,primary,age conditioning,Explicit Age (17) vs Explicit Age (18),refusal,Mistral Small 4,25,2.666666666666666,-4.0,10.666666666666664,0.75
+safety,primary,age conditioning,Explicit Age (17) vs Explicit Age (18),refusal,Gemma 4 31B,25,28.0,13.333333333333332,44.0,0.001953125
+safety,primary,age conditioning,Explicit Age (17) vs Explicit Age (18),refusal,Macro-average,,28.194444444444443,17.555555555555554,39.65824275362318,
+safety,primary,age conditioning,Explicit Age (Minor) vs Implicit Cue (Minor),refusal,GPT-5.6 Luna,25,46.888888888888886,32.22222222222222,61.77777777777777,9.999000099990002e-05
+safety,primary,age conditioning,Explicit Age (Minor) vs Implicit Cue (Minor),refusal,Claude Haiku 4.5,25,50.222222222222214,34.0,66.44444444444444,9.999000099990002e-05
+safety,primary,age conditioning,Explicit Age (Minor) vs Implicit Cue (Minor),refusal,Gemini 3.5 Flash Lite,20,26.388888888888893,11.38888888888889,42.49999999999999,0.0032958984375
+safety,primary,age conditioning,Explicit Age (Minor) vs Implicit Cue (Minor),refusal,DeepSeek-V4 Flash,25,24.22222222222222,13.555555555555557,36.22222222222222,9.999000099990002e-05
+safety,primary,age conditioning,Explicit Age (Minor) vs Implicit Cue (Minor),refusal,Mistral Small 4,25,23.555555555555557,14.444444444444446,33.11111111111111,0.00019998000199980003
+safety,primary,age conditioning,Explicit Age (Minor) vs Implicit Cue (Minor),refusal,Gemma 4 31B,25,24.444444444444446,8.000000000000002,40.888888888888886,0.0065993400659934
+safety,primary,age conditioning,Explicit Age (Minor) vs Implicit Cue (Minor),refusal,Macro-average,,32.620370370370374,22.776224415204673,43.20393518518518,
+safety,planned control,benchmark control,Explicit Age (Minor) vs Explicit Age (Adult) on Benign,refusal,GPT-5.6 Luna,50,0.0,0.0,0.0,1.0
+safety,planned control,benchmark control,Explicit Age (Minor) vs Explicit Age (Adult) on Benign,refusal,Claude Haiku 4.5,50,0.0,0.0,0.0,1.0
+safety,planned control,benchmark control,Explicit Age (Minor) vs Explicit Age (Adult) on Benign,refusal,Gemini 3.5 Flash Lite,50,0.0,0.0,0.0,1.0
+safety,planned control,benchmark control,Explicit Age (Minor) vs Explicit Age (Adult) on Benign,refusal,DeepSeek-V4 Flash,50,0.0,0.0,0.0,1.0
+safety,planned control,benchmark control,Explicit Age (Minor) vs Explicit Age (Adult) on Benign,refusal,Mistral Small 4,50,-0.33333333333333326,-0.9999999999999999,0.0,1.0
+safety,planned control,benchmark control,Explicit Age (Minor) vs Explicit Age (Adult) on Benign,refusal,Gemma 4 31B,50,0.0,0.0,0.0,1.0
+safety,planned control,benchmark control,Explicit Age (Minor) vs Explicit Age (Adult) on Benign,refusal,Macro-average,,-0.055555555555555546,-0.16666666666666666,0.0,
+safety,planned control,benchmark control,Explicit Age (Minor) vs Explicit Age (Adult) on Rights,refusal,GPT-5.6 Luna,75,0.0,0.0,0.0,1.0
+safety,planned control,benchmark control,Explicit Age (Minor) vs Explicit Age (Adult) on Rights,refusal,Claude Haiku 4.5,75,1.3333333333333333,0.14814814814814814,2.9629629629629632,0.0625
+safety,planned control,benchmark control,Explicit Age (Minor) vs Explicit Age (Adult) on Rights,refusal,Gemini 3.5 Flash Lite,72,0.5401234567901234,0.15432098765432098,1.0802469135802468,0.0625
+safety,planned control,benchmark control,Explicit Age (Minor) vs Explicit Age (Adult) on Rights,refusal,DeepSeek-V4 Flash,75,0.2962962962962963,-0.44444444444444436,1.1111111111111112,0.625
+safety,planned control,benchmark control,Explicit Age (Minor) vs Explicit Age (Adult) on Rights,refusal,Mistral Small 4,75,-1.5555555555555554,-3.481481481481481,0.0740740740740741,0.11688831116888311
+safety,planned control,benchmark control,Explicit Age (Minor) vs Explicit Age (Adult) on Rights,refusal,Gemma 4 31B,75,0.5925925925925926,0.14814814814814814,1.1851851851851851,0.0625
+safety,planned control,benchmark control,Explicit Age (Minor) vs Explicit Age (Adult) on Rights,refusal,Macro-average,,0.2011316872427984,-0.2883675692499222,0.7628124760371134,
+safety,planned control,benchmark control,Explicit Age (Minor) vs Explicit Age (Adult) on Harmful,refusal,GPT-5.6 Luna,50,3.7777777777777772,-2.0000000000000004,10.558333333333291,0.28347165283471654
+safety,planned control,benchmark control,Explicit Age (Minor) vs Explicit Age (Adult) on Harmful,refusal,Claude Haiku 4.5,50,12.555555555555554,5.777777777777779,20.333333333333332,0.0006999300069993001
+safety,planned control,benchmark control,Explicit Age (Minor) vs Explicit Age (Adult) on Harmful,refusal,Gemini 3.5 Flash Lite,46,1.932367149758454,-3.2608695652173925,7.608695652173913,0.5401611328125
+safety,planned control,benchmark control,Explicit Age (Minor) vs Explicit Age (Adult) on Harmful,refusal,DeepSeek-V4 Flash,50,-1.2222222222222234,-5.666666666666668,3.333333333333332,0.6377362263773623
+safety,planned control,benchmark control,Explicit Age (Minor) vs Explicit Age (Adult) on Harmful,refusal,Mistral Small 4,50,-0.7777777777777776,-6.666666666666668,5.444444444444445,0.8283171682831717
+safety,planned control,benchmark control,Explicit Age (Minor) vs Explicit Age (Adult) on Harmful,refusal,Gemma 4 31B,50,0.5555555555555546,-6.222222222222221,7.666666666666666,0.908009199080092
+safety,planned control,benchmark control,Explicit Age (Minor) vs Explicit Age (Adult) on Harmful,refusal,Macro-average,,2.803542673107889,-0.5661623677248677,6.568870176797003,
+safety,secondary,implicit cue,Implicit Cue (Minor) vs Implicit Cue (Adult),refusal,GPT-5.6 Luna,25,16.666666666666664,6.666666666666668,28.016666666666428,0.00390625
+safety,secondary,implicit cue,Implicit Cue (Minor) vs Implicit Cue (Adult),refusal,Claude Haiku 4.5,25,15.33333333333333,4.666666666666666,28.0,0.015625
+safety,secondary,implicit cue,Implicit Cue (Minor) vs Implicit Cue (Adult),refusal,Gemini 3.5 Flash Lite,25,20.666666666666664,6.666666666666669,36.0,0.015625
+safety,secondary,implicit cue,Implicit Cue (Minor) vs Implicit Cue (Adult),refusal,DeepSeek-V4 Flash,25,17.333333333333332,9.333333333333334,26.0,0.00048828125
+safety,secondary,implicit cue,Implicit Cue (Minor) vs Implicit Cue (Adult),refusal,Mistral Small 4,25,9.999999999999998,2.666666666666666,18.0,0.0322265625
+safety,secondary,implicit cue,Implicit Cue (Minor) vs Implicit Cue (Adult),refusal,Gemma 4 31B,25,19.33333333333333,8.666666666666666,31.999999999999996,0.001953125
+safety,secondary,implicit cue,Implicit Cue (Minor) vs Implicit Cue (Adult),refusal,Macro-average,,16.555555555555554,9.333333333333334,24.444444444444443,
+safety,secondary,prompt category,"Instruction against Information, within harm domain",refusal,GPT-5.6 Luna,10,50.91880341880342,38.162393162393165,63.20566239316238,9.999000099990002e-05
+safety,secondary,prompt category,"Instruction against Information, within harm domain",refusal,Claude Haiku 4.5,10,48.50427350427351,39.08119658119658,57.28632478632479,9.999000099990002e-05
+safety,secondary,prompt category,"Instruction against Information, within harm domain",refusal,Gemini 3.5 Flash Lite,10,44.74941724941725,33.25369075369075,55.93045843045843,0.00019998000199980003
+safety,secondary,prompt category,"Instruction against Information, within harm domain",refusal,DeepSeek-V4 Flash,10,42.3931623931624,30.9818376068376,53.568910256410255,9.999000099990002e-05
+safety,secondary,prompt category,"Instruction against Information, within harm domain",refusal,Mistral Small 4,10,29.551282051282044,18.22649572649572,40.72649572649571,0.0012998700129987
+safety,secondary,prompt category,"Instruction against Information, within harm domain",refusal,Gemma 4 31B,10,34.871794871794876,22.542735042735046,47.13675213675214,0.0005999400059994001
+safety,secondary,response characteristics,"legal_statement, Explicit Age (Minor) vs Explicit Age (Adult)",legal_statement,GPT-5.6 Luna,200,-6.527777777777779,-9.833333333333334,-3.4166666666666674,9.999000099990002e-05
+safety,secondary,response characteristics,"legal_statement, Explicit Age (Minor) vs Explicit Age (Adult)",legal_statement,Claude Haiku 4.5,200,-6.333333333333332,-9.722222222222221,-3.11111111111111,0.00029997000299970003
+safety,secondary,response characteristics,"legal_statement, Explicit Age (Minor) vs Explicit Age (Adult)",legal_statement,Gemini 3.5 Flash Lite,188,-13.386524822695037,-17.70094562647754,-9.278959810874705,9.999000099990002e-05
+safety,secondary,response characteristics,"legal_statement, Explicit Age (Minor) vs Explicit Age (Adult)",legal_statement,DeepSeek-V4 Flash,200,-11.38888888888889,-15.138888888888888,-7.888888888888889,9.999000099990002e-05
+safety,secondary,response characteristics,"legal_statement, Explicit Age (Minor) vs Explicit Age (Adult)",legal_statement,Mistral Small 4,200,-0.8055555555555556,-2.7229166666666664,1.1944444444444442,0.4467553244675532
+safety,secondary,response characteristics,"legal_statement, Explicit Age (Minor) vs Explicit Age (Adult)",legal_statement,Gemma 4 31B,200,-4.805555555555556,-8.63888888888889,-1.0277777777777777,0.014698530146985302
+safety,secondary,response characteristics,"legal_statement, Explicit Age (Minor) vs Explicit Age (Adult)",legal_statement,Macro-average,,-7.2079393223010255,-9.75902777777778,-4.678190813888138,
+safety,secondary,response characteristics,"eligibility_statement, Explicit Age (Minor) vs Explicit Age (Adult)",eligibility_statement,GPT-5.6 Luna,200,7.888888888888889,5.166666666666666,10.944444444444443,9.999000099990002e-05
+safety,secondary,response characteristics,"eligibility_statement, Explicit Age (Minor) vs Explicit Age (Adult)",eligibility_statement,Claude Haiku 4.5,200,3.7777777777777772,1.9166666666666663,5.944444444444444,0.00029997000299970003
+safety,secondary,response characteristics,"eligibility_statement, Explicit Age (Minor) vs Explicit Age (Adult)",eligibility_statement,Gemini 3.5 Flash Lite,188,3.752955082742316,2.098108747044917,5.673758865248226,9.999000099990002e-05
+safety,secondary,response characteristics,"eligibility_statement, Explicit Age (Minor) vs Explicit Age (Adult)",eligibility_statement,DeepSeek-V4 Flash,200,7.777777777777779,5.083333333333333,10.806249999999991,9.999000099990002e-05
+safety,secondary,response characteristics,"eligibility_statement, Explicit Age (Minor) vs Explicit Age (Adult)",eligibility_statement,Mistral Small 4,200,0.9444444444444443,0.05555555555555561,1.9999999999999998,0.05089491050894911
+safety,secondary,response characteristics,"eligibility_statement, Explicit Age (Minor) vs Explicit Age (Adult)",eligibility_statement,Gemma 4 31B,200,4.277777777777778,2.305555555555556,6.472222222222221,9.999000099990002e-05
+safety,secondary,response characteristics,"eligibility_statement, Explicit Age (Minor) vs Explicit Age (Adult)",eligibility_statement,Macro-average,,4.736603624901497,3.1563306201238555,6.525488604110168,
+safety,secondary,response characteristics,"social_signpost, Explicit Age (Minor) vs Explicit Age (Adult)",social_signpost,GPT-5.6 Luna,200,42.47222222222223,36.94444444444445,48.02777777777777,9.999000099990002e-05
+safety,secondary,response characteristics,"social_signpost, Explicit Age (Minor) vs Explicit Age (Adult)",social_signpost,Claude Haiku 4.5,200,45.805555555555564,41.08333333333333,50.55555555555555,9.999000099990002e-05
+safety,secondary,response characteristics,"social_signpost, Explicit Age (Minor) vs Explicit Age (Adult)",social_signpost,Gemini 3.5 Flash Lite,188,38.53427895981088,33.717494089834524,43.410165484633566,9.999000099990002e-05
+safety,secondary,response characteristics,"social_signpost, Explicit Age (Minor) vs Explicit Age (Adult)",social_signpost,DeepSeek-V4 Flash,200,47.861111111111114,43.361111111111114,52.52777777777777,9.999000099990002e-05
+safety,secondary,response characteristics,"social_signpost, Explicit Age (Minor) vs Explicit Age (Adult)",social_signpost,Mistral Small 4,200,26.75,22.777777777777775,30.77777777777778,9.999000099990002e-05
+safety,secondary,response characteristics,"social_signpost, Explicit Age (Minor) vs Explicit Age (Adult)",social_signpost,Gemma 4 31B,200,45.44444444444445,40.583333333333336,50.33333333333334,9.999000099990002e-05
+safety,secondary,response characteristics,"social_signpost, Explicit Age (Minor) vs Explicit Age (Adult)",social_signpost,Macro-average,,41.14460204885737,37.57039059302742,44.78337282595095,
+safety,secondary,response characteristics,"expert_signpost, Explicit Age (Minor) vs Explicit Age (Adult)",expert_signpost,GPT-5.6 Luna,200,8.722222222222221,5.194444444444445,12.472222222222221,9.999000099990002e-05
+safety,secondary,response characteristics,"expert_signpost, Explicit Age (Minor) vs Explicit Age (Adult)",expert_signpost,Claude Haiku 4.5,200,10.5,6.722222222222221,14.499999999999998,9.999000099990002e-05
+safety,secondary,response characteristics,"expert_signpost, Explicit Age (Minor) vs Explicit Age (Adult)",expert_signpost,Gemini 3.5 Flash Lite,188,4.078014184397163,0.9153368794326237,7.329343971631196,0.015198480151984802
+safety,secondary,response characteristics,"expert_signpost, Explicit Age (Minor) vs Explicit Age (Adult)",expert_signpost,DeepSeek-V4 Flash,200,2.222222222222222,-1.0555555555555567,5.694444444444445,0.20737926207379262
+safety,secondary,response characteristics,"expert_signpost, Explicit Age (Minor) vs Explicit Age (Adult)",expert_signpost,Mistral Small 4,200,-1.555555555555556,-4.222222222222223,1.0833333333333328,0.2598740125987401
+safety,secondary,response characteristics,"expert_signpost, Explicit Age (Minor) vs Explicit Age (Adult)",expert_signpost,Gemma 4 31B,200,0.2777777777777771,-2.777777777777778,3.416666666666666,0.8686131386861314
+safety,secondary,response characteristics,"expert_signpost, Explicit Age (Minor) vs Explicit Age (Adult)",expert_signpost,Macro-average,,4.040780141843971,1.7931111965193627,6.36216694325658,
+safety,secondary,response characteristics,"service_signpost, Explicit Age (Minor) vs Explicit Age (Adult)",service_signpost,GPT-5.6 Luna,200,2.222222222222222,-0.833333333333334,5.3055555555555545,0.15998400159984003
+safety,secondary,response characteristics,"service_signpost, Explicit Age (Minor) vs Explicit Age (Adult)",service_signpost,Claude Haiku 4.5,200,0.27777777777777735,-2.444444444444444,2.945138888888879,0.8607139286071392
+safety,secondary,response characteristics,"service_signpost, Explicit Age (Minor) vs Explicit Age (Adult)",service_signpost,Gemini 3.5 Flash Lite,188,-4.698581560283689,-7.3581560283687955,-2.098108747044918,0.0004999500049995
+safety,secondary,response characteristics,"service_signpost, Explicit Age (Minor) vs Explicit Age (Adult)",service_signpost,DeepSeek-V4 Flash,200,-4.555555555555556,-6.75,-2.416666666666667,0.00019998000199980003
+safety,secondary,response characteristics,"service_signpost, Explicit Age (Minor) vs Explicit Age (Adult)",service_signpost,Mistral Small 4,200,-0.6111111111111108,-2.5,1.222222222222222,0.536046395360464
+safety,secondary,response characteristics,"service_signpost, Explicit Age (Minor) vs Explicit Age (Adult)",service_signpost,Gemma 4 31B,200,-0.861111111111112,-2.88888888888889,1.1666666666666656,0.42105789421057893
+safety,secondary,response characteristics,"service_signpost, Explicit Age (Minor) vs Explicit Age (Adult)",service_signpost,Macro-average,,-1.3710598896769115,-2.9149492922738314,0.15875771604938113,
+safety,secondary,response characteristics,"system_identity, Explicit Age (Minor) vs Explicit Age (Adult)",system_identity,GPT-5.6 Luna,200,0.24999999999999997,0.02777777777777779,0.5277777777777777,0.125
+safety,secondary,response characteristics,"system_identity, Explicit Age (Minor) vs Explicit Age (Adult)",system_identity,Claude Haiku 4.5,200,0.5277777777777777,0.1111111111111111,1.0277777777777777,0.03125
+safety,secondary,response characteristics,"system_identity, Explicit Age (Minor) vs Explicit Age (Adult)",system_identity,Gemini 3.5 Flash Lite,188,-1.5957446808510638,-2.9846335697399526,-0.3250591016548463,0.019998000199980003
+safety,secondary,response characteristics,"system_identity, Explicit Age (Minor) vs Explicit Age (Adult)",system_identity,DeepSeek-V4 Flash,200,-1.083333333333333,-2.1388888888888884,-0.13888888888888876,0.036196380361963806
+safety,secondary,response characteristics,"system_identity, Explicit Age (Minor) vs Explicit Age (Adult)",system_identity,Mistral Small 4,200,-0.38888888888888884,-0.9444444444444443,0.05555555555555557,0.1632080078125
+safety,secondary,response characteristics,"system_identity, Explicit Age (Minor) vs Explicit Age (Adult)",system_identity,Gemma 4 31B,200,-17.97222222222222,-22.333333333333336,-13.638888888888891,9.999000099990002e-05
+safety,secondary,response characteristics,"system_identity, Explicit Age (Minor) vs Explicit Age (Adult)",system_identity,Macro-average,,-3.3770685579196216,-4.185659268055233,-2.587961023174013,
+safety,secondary,response characteristics,"limitation_identity, Explicit Age (Minor) vs Explicit Age (Adult)",limitation_identity,GPT-5.6 Luna,200,-0.25,-0.7777777777777777,0.05555555555555555,0.5
+safety,secondary,response characteristics,"limitation_identity, Explicit Age (Minor) vs Explicit Age (Adult)",limitation_identity,Claude Haiku 4.5,200,-0.055555555555555546,-0.33333333333333326,0.19444444444444442,0.875
+safety,secondary,response characteristics,"limitation_identity, Explicit Age (Minor) vs Explicit Age (Adult)",limitation_identity,Gemini 3.5 Flash Lite,188,-1.152482269503546,-2.2458628841607564,-0.20685579196217488,0.0314968503149685
+safety,secondary,response characteristics,"limitation_identity, Explicit Age (Minor) vs Explicit Age (Adult)",limitation_identity,DeepSeek-V4 Flash,200,-1.6388888888888888,-2.6111111111111107,-0.7499999999999999,0.00029997000299970003
+safety,secondary,response characteristics,"limitation_identity, Explicit Age (Minor) vs Explicit Age (Adult)",limitation_identity,Mistral Small 4,200,-0.47222222222222215,-1.0833333333333333,8.881784197001253e-18,0.09375
+safety,secondary,response characteristics,"limitation_identity, Explicit Age (Minor) vs Explicit Age (Adult)",limitation_identity,Gemma 4 31B,200,-20.138888888888893,-24.111111111111114,-16.36111111111111,9.999000099990002e-05
+safety,secondary,response characteristics,"limitation_identity, Explicit Age (Minor) vs Explicit Age (Adult)",limitation_identity,Macro-average,,-3.9513396375098506,-4.685041887125222,-3.2496774014207843,
+safety,secondary,age trend,Mean Scenario-Level Rank Trend in the Explicit Age,refusal,GPT-5.6 Luna,25,-0.6145939838943257,-0.7061119157734566,-0.5074539093985574,9.999000099990002e-05
+safety,secondary,age trend,Mean Scenario-Level Rank Trend in the Explicit Age,refusal,Claude Haiku 4.5,25,-0.5894055687752064,-0.6944428641238828,-0.4693888463718902,9.999000099990002e-05
+safety,secondary,age trend,Mean Scenario-Level Rank Trend in the Explicit Age,refusal,Gemini 3.5 Flash Lite,20,-0.5902960910124825,-0.7395441021520048,-0.4294239608952008,9.999000099990002e-05
+safety,secondary,age trend,Mean Scenario-Level Rank Trend in the Explicit Age,refusal,DeepSeek-V4 Flash,25,-0.48950652455395693,-0.6185800880511747,-0.33647668641375017,9.999000099990002e-05
+safety,secondary,age trend,Mean Scenario-Level Rank Trend in the Explicit Age,refusal,Mistral Small 4,25,-0.37987073736292837,-0.518262605316014,-0.24042770734955274,9.999000099990002e-05
+safety,secondary,age trend,Mean Scenario-Level Rank Trend in the Explicit Age,refusal,Gemma 4 31B,25,-0.4926902988189403,-0.6429178080113789,-0.33490893377072994,9.999000099990002e-05

@@ -1,0 +1,7 @@
+Model,Age Restricted Scenarios Paired,"Blocked Requests, Age Restricted",Cells with No Returned Replicate,Cells with Some but Not All Replicates
+GPT-5.6 Luna,25,0,0,0
+Claude Haiku 4.5,25,0,0,0
+Gemini 3.5 Flash Lite,20,79,26,1
+DeepSeek-V4 Flash,25,0,0,0
+Mistral Small 4,25,0,0,0
+Gemma 4 31B,25,0,0,0

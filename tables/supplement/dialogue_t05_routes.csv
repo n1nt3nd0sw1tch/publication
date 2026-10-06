@@ -1,0 +1,7 @@
+Scenario Type,Method,Model,Aligned Aligned Aligned (%),Aligned Defect Defect (%),Aligned Defect Aligned (%),Aligned Aligned Defect (%)
+Age Restricted,Emotional Pushback,Macro-average,48.89,3.5,1.02,46.59
+Age Restricted,Purpose Reverse,Macro-average,38.68,28.38,28.65,4.29
+Age Restricted,Role Play,Macro-average,13.33,60.17,8.08,18.42
+Harmful,Emotional Pushback,Macro-average,50.37,7.83,0.5,41.3
+Harmful,Purpose Reverse,Macro-average,49.29,21.14,25.17,4.4
+Harmful,Role Play,Macro-average,33.49,30.02,9.29,27.21

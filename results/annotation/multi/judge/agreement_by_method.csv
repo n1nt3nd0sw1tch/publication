@@ -1,0 +1,4 @@
+method,n,cells,error,median_kappa,kappa_answer,kappa_delivery_response,kappa_alternative_response,kappa_risk_statement,kappa_legal_statement,kappa_social_signpost,kappa_expert_signpost,kappa_service_signpost,kappa_system_identity,kappa_boundary_identity
+Emotional Pushback,40,31,0.0596,0.897,0.9,0.412,0.457,0.827,0.806,1.0,1.0,1.0,0.895,0.908
+Purpose Reverse,40,25,0.0481,0.796,0.95,0.752,0.841,0.839,0.658,0.796,0.725,,,
+Role Play,40,30,0.0577,0.751,1.0,0.751,0.382,0.9,0.894,,0.713,0.684,,

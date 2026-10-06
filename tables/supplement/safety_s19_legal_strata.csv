@@ -1,0 +1,7 @@
+Model,Benign,Rights,"Age Restricted, Explicit Age (Minor)","Age Restricted, Explicit Age (Adult)",Harmful,"Benign, Minor Minus Adult (pp)","Rights, Minor Minus Adult (pp)","Age Restricted, Minor Minus Adult (pp)","Harmful, Minor Minus Adult (pp)"
+GPT-5.6 Luna,3.2,15.1,86.4,80.0,6.5,-3.1,-17.8,6.4,0.4
+Claude Haiku 4.5,3.1,6.8,70.2,68.0,2.4,-2.2,-14.1,2.2,-3.0
+Gemini 3.5 Flash Lite,4.6,18.0,79.6,80.0,1.6,-4.6,-31.0,1.4,-1.8
+DeepSeek-V4 Flash,5.1,25.0,97.6,87.3,7.1,-6.9,-29.4,10.2,0.3
+Mistral Small 4,2.9,4.9,64.9,64.0,1.9,-1.0,-2.0,0.9,0.3
+Gemma 4 31B,3.2,16.3,88.9,73.3,1.0,-3.2,-15.2,15.6,-1.0

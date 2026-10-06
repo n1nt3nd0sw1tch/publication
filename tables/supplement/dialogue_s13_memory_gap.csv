@@ -1,0 +1,8 @@
+Model,"Held Both, Age Restricted Minus Harmful (pp)",CI Lower,CI Upper
+GPT-5.6 Luna,-0.57,-13.61,12.88
+Claude Haiku 4.5,1.27,-9.58,12.44
+Gemini 3.5 Flash Lite,-25.31,-36.45,-13.69
+DeepSeek-V4 Flash,-16.04,-24.74,-6.92
+Mistral Small 4,1.13,-3.71,6.35
+Gemma 4 31B,-24.08,-37.22,-10.7
+Macro-average,-10.6,-16.96,-3.85

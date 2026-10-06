@@ -1,0 +1,401 @@
+"""The design, and where everything lives.
+
+Reads config/settings.yml and config/scenarios.yml, and exposes what they state
+along with everything that follows from it: the age conditions in full, the
+expected answer of each scenario type, the columns each file carries. Nothing
+here does any work. The machinery that acts on these values is in utils.py,
+which imports this module rather than the other way round.
+"""
+
+from pathlib import Path
+
+import yaml
+
+# ----------------------------------------------------------------------------
+# Paths
+# ----------------------------------------------------------------------------
+
+ROOT = Path(__file__).resolve().parent.parent
+CONFIG_DIR = ROOT / 'config'
+SETTINGS_PATH = CONFIG_DIR / 'settings.yml'
+SCENARIOS_PATH = CONFIG_DIR / 'scenarios.yml'
+JUDGE_PATH = CONFIG_DIR / 'judge.yml'
+ENV_PATH = ROOT / '.env'
+
+# Data is kept in two directories that follow the order of the work. Sources
+# holds what was downloaded and is never edited. Benchmark holds what the
+# benchmark is made of, ending in the prompts put to a system. Both are fixed
+# once the benchmark is frozen.
+DATA_DIR = ROOT / 'data'
+
+# The two released files sit at the top of data/, because they are the benchmark
+# and everything else beside them is either fetched or regenerated. A reader
+# cloning this repository needs these two and nothing more.
+BENCHMARK_PATH = DATA_DIR / 'benchmark.csv'
+PROMPTS_PATH = DATA_DIR / 'prompts.csv'
+
+# Where the corpora are recorded, which is committed, as distinct from the
+# corpora themselves, which are not.
+SOURCES_PATH = DATA_DIR / 'sources.md'
+
+# Everything fetched or rebuilt, kept together and out of the repository. The
+# corpora are other people's, licensed by their authors, and download.py fetches
+# them so that each reader takes them from source rather than from a copy here.
+# drafts.csv is the candidate pool, rebuilt from them on every run, and it
+# reproduces 1,800 source prompts verbatim, which is nearer redistribution than
+# the handful of identifiers the benchmark carries as attribution.
+PROCESS_DIR = DATA_DIR / 'process'
+ORIGINAL_DIR = PROCESS_DIR / 'corpora'
+DRAFTS_PATH = PROCESS_DIR / 'drafts.csv'
+AOA_PATH = ORIGINAL_DIR / 'aoa.csv'
+
+# Batch jobs, one file of requests and one of replies per job, named by the job
+# identifier the provider gives back so that the two pair up and a set of
+# replies can be traced to the exact requests that produced it.
+BATCHES_DIR = DATA_DIR / 'batches'
+
+# Everything a run produces, kept apart from the data because it grows with
+# every run while the benchmark stays fixed. One subfolder per experiment, named
+# as Chapter 4 names them, and within each one file per model, so a run can be
+# repeated or discarded without touching the others.
+RESULTS_DIR = ROOT / 'results'
+ADAPTATION_DIR = RESULTS_DIR / 'adaptation'
+# DIALOGUE_DIR = RESULTS_DIR / 'dialogue'
+DIALOGUE_DIR = RESULTS_DIR / 'classification' / 'multi'
+JUDGEMENTS_DIR = RESULTS_DIR / 'judgements'
+
+# Where labels live, in the order they are made. Blank sheets are data, because
+# nothing has been observed yet; a labelled sheet is a result. The two label
+# sets sit side by side under one folder so that a comparison between them is
+# obviously a comparison and not a merge of two unrelated things.
+#
+#   data/label/<model>.csv                     blank, one row a reply
+#   results/annotation/manual/<model>_human_labels.csv
+#   results/annotation/judge/<model>_judge_labels.csv
+#   results/annotation/agreement.csv           per field
+#   results/annotation/comparison.csv          both sets, every row
+#   results/annotation/disagreements.csv       the rows that differ
+#
+# The full pass keeps its own folder, results/judgements/, because it covers
+# every reply rather than the calibration sample and is written by a script
+# rather than a notebook.
+# Where the classifier writes over the whole corpus, one file a model, appended
+# a row at a time so an interrupted run resumes rather than restarts.
+#
+# Experiment 1 and experiment 2 each produce sheets to label, a classification
+# pass over them and an agreement between the two, so the three folders holding
+# those are split into single/ and multi/. The unsuffixed names below keep
+# pointing at experiment 1, which is what every notebook written before the
+# split already asks for, so nothing downstream needs editing: analysis.py
+# reads ANNOTATION_DIR / 'agreement.csv' and now finds it in single/ where it
+# was moved. The MULTI_ names are the dialogue arm, and the _ROOT names are the
+# folder above both, which is what a notebook wants when it is splitting or
+# listing rather than reading one side.
+CLASSIFICATION_ROOT = RESULTS_DIR / 'classification'
+CLASSIFICATION_DIR = CLASSIFICATION_ROOT / 'single'
+MULTI_CLASSIFICATION_DIR = CLASSIFICATION_ROOT / 'multi'
+
+LABEL_ROOT = DATA_DIR / 'label'
+LABEL_DIR = LABEL_ROOT / 'single'
+MULTI_LABEL_DIR = LABEL_ROOT / 'multi'
+
+ANNOTATION_ROOT = RESULTS_DIR / 'annotation'
+ANNOTATION_DIR = ANNOTATION_ROOT / 'single'
+MULTI_ANNOTATION_DIR = ANNOTATION_ROOT / 'multi'
+MANUAL_DIR = ANNOTATION_DIR / 'manual'
+JUDGE_DIR = ANNOTATION_DIR / 'judge'
+LANGUAGE_DIR = RESULTS_DIR / 'language'
+
+JUDGEMENTS_PATH = RESULTS_DIR / 'judgements.csv'
+# plan.csv rather than dialogues.csv: dialogue/dialogues.csv reads badly and
+# DIALOGUE_DIR beside DIALOGUES_PATH is a pair that gets confused.
+PLAN_PATH = DIALOGUE_DIR / 'plan.csv'
+TURNS_PATH = DIALOGUE_DIR / 'turns.csv'
+WITHHELD_PATH = DIALOGUE_DIR / 'withheld.csv'
+
+DATA_DIRS = [DATA_DIR, PROCESS_DIR, ORIGINAL_DIR, BATCHES_DIR, RESULTS_DIR,
+             ADAPTATION_DIR, DIALOGUE_DIR, JUDGEMENTS_DIR, LANGUAGE_DIR,
+             LABEL_DIR, ANNOTATION_DIR, MANUAL_DIR, JUDGE_DIR,
+             CLASSIFICATION_DIR]
+
+# ----------------------------------------------------------------------------
+# Read from config/
+# ----------------------------------------------------------------------------
+
+
+# Define function to load a config file, refusing a key written twice. YAML
+# keeps the last of a duplicate and says nothing, so a measure defined three
+# times parses, builds, and produces a policy that quietly uses whichever came
+# last. Nothing downstream can detect that, which is why it is caught here.
+class _NoDuplicates(yaml.SafeLoader):
+    def construct_mapping(self, node, deep=False):
+        seen = set()
+        for key_node, _ in node.value:
+            key = self.construct_object(key_node, deep=deep)
+            if key in seen:
+                raise SystemExit(
+                    f'{key!r} appears more than once in the same block, at line '
+                    f'{key_node.start_mark.line + 1}. YAML would keep only the '
+                    f'last one.')
+            seen.add(key)
+        return super().construct_mapping(node, deep=deep)
+
+
+# Define function to read one config file through that loader
+def read_config(path):
+    with open(path, encoding='utf-8') as file:
+        return yaml.load(file, Loader=_NoDuplicates)
+
+
+SETTINGS = read_config(SETTINGS_PATH)
+
+# The scenarios are the one part of the design written by hand, so they are kept
+# in a file of their own.
+SCENARIO_SETTINGS = read_config(SCENARIOS_PATH)
+
+# The rubric the classifier is given, kept beside the rest of the config so that
+# revising it does not mean editing the code that sends it.
+POLICY = read_config(JUDGE_PATH)
+
+SEED = SETTINGS['seed']
+DOMAINS = SETTINGS['domains']
+TYPES = SETTINGS['types']
+CUES = SETTINGS['cues']
+ANSWERS = SETTINGS['answers']
+
+# How permissive each answer is. Stated here rather than taken from the order
+# ANSWERS happens to be written in, because that list is ordered for reading:
+# it puts Compliance first so the rubric in the thesis and the rubric in the
+# config agree. A deviation computed from list position would then report every
+# over-permissive reply as over-restrictive, and nothing would fail. Direction
+# belongs somewhere it can be asserted.
+PERMISSIVENESS = {'Refusal': 0, 'Compliance': 1}
+AGE_BAND_LIMITS = SETTINGS['age_bands']
+EXPLICIT_OPENER = SETTINGS['explicit_opener']
+SAFETY = SETTINGS['safety']
+LANGUAGE = SETTINGS['language']
+METHODS = SETTINGS['methods']
+DIALOGUE = SETTINGS['dialogue']
+
+DATASETS = SETTINGS['datasets']
+SOURCES = SETTINGS['sources']
+SAFECHILD_COMMIT = SETTINGS['safechild_commit']
+
+GENERATION = SETTINGS['generation']
+PROVIDER_KEYS = SETTINGS['keys']
+MODELS = SETTINGS['models']
+JUDGES = SETTINGS['judges']
+JUDGE = JUDGES['primary']
+
+SCENARIOS = SCENARIO_SETTINGS['scenarios']
+# The band a cue names is carried by the condition's opener in settings.yml, so
+# the scenarios file holds scenarios and nothing else.
+
+# ----------------------------------------------------------------------------
+# The age conditions
+# ----------------------------------------------------------------------------
+
+AGE_BANDS = list(AGE_BAND_LIMITS)
+
+# The implicit arm marks minority rather than a band, because no English
+# education stage, workplace or peer group sits wholly inside 13 to 17. Minor
+# spans Child and Adolescent, so it carries an expected answer only where those
+# two agree, which the scenario types are built to ensure.
+MINOR = 'Minor'
+MINOR_BANDS = [band for band in AGE_BANDS if band != AGE_BANDS[-1]]
+BANDS = AGE_BANDS + [MINOR]
+
+
+# Define function to place an age in its band
+def band_for_age(age):
+    if age == '' or age is None:
+        return ''
+    age = int(age)
+    for band, oldest in AGE_BAND_LIMITS.items():
+        if age <= oldest:
+            return band
+    raise ValueError(f'Age {age} falls outside every band')
+
+
+# Define function to name a column after a measure
+def measure_column(name):
+    return name.lower().replace(' ', '_')
+
+
+# Define function to fill in the one field a condition does not state. Every
+# other field is written out in config/settings.yml rather than inferred, so a
+# new kind of condition needs no change here.
+def expand_condition(condition):
+    age = condition.get('age', '')
+    opener = condition.get('opener')
+    if opener is None:
+        opener = EXPLICIT_OPENER.format(age=age) if age != '' else ''
+    return {'name': condition['name'],
+            'age': age,
+            'band': condition.get('band', ''),
+            'signal': condition['signal'],
+            'cue': condition['cue'],
+            'opener': opener}
+
+
+CONDITIONS = [expand_condition(condition) for condition in SETTINGS['conditions']]
+CONDITION_NAMES = [condition['name'] for condition in CONDITIONS]
+CONDITION_AGES = [condition['age'] for condition in CONDITIONS]
+SIGNALS = sorted({condition['signal'] for condition in CONDITIONS})
+
+# ----------------------------------------------------------------------------
+# Derived from the settings
+# ----------------------------------------------------------------------------
+
+DOMAIN_NAMES = {code: values['name'] for code, values in DOMAINS.items()}
+DOMAIN_CODES = {name: code for code, name in DOMAIN_NAMES.items()}
+TYPE_ANSWERS = {name: values['answers'] for name, values in TYPES.items()}
+TYPE_CODES = {name: values['code'] for name, values in TYPES.items()}
+CATEGORIES = SETTINGS['categories']
+PER_DOMAIN = sum(values['count'] for values in TYPES.values())
+TOTAL_SCENARIOS = PER_DOMAIN * len(DOMAINS)
+
+# Where a scenario has no source record, the author is named in its place.
+AUTHORED = 'Author'
+DATASET_NAMES = sorted({spec['name'] for spec in SOURCES.values()} | {AUTHORED})
+
+# ----------------------------------------------------------------------------
+# What each file carries
+# ----------------------------------------------------------------------------
+
+# Every cue is now an opening sentence, so a scenario carries one request and
+# no variants of it. The request is what a system is asked in every condition.
+# The candidate pool: one row per usable source record. Regenerated on every run
+# and not committed, since the benchmark carries everything downstream needs.
+DRAFTS_COLUMNS = ['source_id', 'dataset', 'domain', 'scenario_type', 'category',
+                  'order', 'source_prompt', 'request']
+
+# What is written to disk. The request is how the benchmark selects which
+# candidates became scenarios, so it is carried in memory, but it belongs to
+# benchmark.csv rather than here: in the file it would be blank on nine rows in
+# ten and would read as an adaptation that was mostly not attempted.
+DRAFTS_WRITTEN = [column for column in DRAFTS_COLUMNS if column != 'request']
+
+# The benchmark is self-contained, so that the released file needs nothing else
+# read alongside it. Provenance travels with the scenario rather than being
+# asserted in prose: source_id names the record a scenario was adapted from, and
+# dataset names where that record came from, or Author where the scenario was
+# written for this benchmark, which is nearly all of them. The wording of the
+# source record is not carried here, because it would be blank for all but a
+# handful and would imply an adaptation step that mostly did not happen. It
+# remains in drafts.csv for the records that have one.
+BENCHMARK_COLUMNS = ['scenario_id', 'source_id', 'dataset', 'domain',
+                     'scenario_type', 'category', 'request']
+
+# The request is stored beside the prompt so that byte identity across
+# conditions can be checked by reading the file rather than by rebuilding it.
+PROMPT_COLUMNS = ['prompt_id', 'scenario_id', 'condition', 'age', 'band',
+                  'signal', 'cue', 'opener', 'request', 'prompt',
+                  'expected_answer']
+
+# One record per reply. The identifying fields come first so that scanning the
+# file shows what each line is without reading the reply itself, and the reply
+# comes last because it is the only field of unpredictable length.
+# A reply, identified by the model that gave it, the prompt it answered, and
+# which of the repeated draws it was. How it was fetched and at what temperature
+# are properties of the pass rather than of the reply: they are the same on every
+# row, they are recorded in config/settings.yml, and repeating them here would
+# put a configuration into the data.
+RESPONSE_COLUMNS = ['model', 'prompt_id', 'replicate', 'error', 'blocked',
+                    'truncated', 'response']
+
+# One row per scored reply: what the model did with the request, the five safety
+# measures, and the language measures computed from the text.
+# What a judge said a reply did, and nothing derived from it. The expected
+# answer is a property of the prompt and lives in prompts.csv; the deviation is
+# the difference between the two and is computed when the two are joined. Storing
+# either here would go stale the moment a stratum is revised, and quietly: a
+# judgement written under an old expectation looks exactly like one written under
+# the current one.
+# A judgement is only comparable with another made under the same rubric, so the
+# policy that produced it is recorded on the row. Without it, a verdict written
+# under an earlier judge.yml is indistinguishable from a current one, and the
+# resume logic will treat it as done.
+# 'error' is not decoration. collect() records what a call raised so a rerun can
+# retry it, and outstanding() reads that column to decide what still needs doing.
+# Leaving it out silently drops failures and makes the second sitting of a
+# resumed pass fail on a missing column.
+JUDGEMENT_COLUMNS = (['model', 'prompt_id', 'replicate', 'judge', 'policy',
+                      'answer']
+                     + [measure_column(name) for name in SAFETY]
+                     + ['unreadable', 'error'])
+
+# A reply the provider withheld was never the model's to give, so it is neither
+# a refusal nor a compliance. It is recorded under its own label, assigned from
+# the raw record rather than by the classifier, and it is not sent to the
+# classifier at all: asking a model to describe an absent reply invites it to
+# invent one.
+BLOCKED = 'Blocked'
+
+# The language measures are computed from the reply text and need no model, so
+# they are written separately from what a classifier decided. Changing how
+# readability is measured, or which replies are too short to measure, then costs
+# a second of arithmetic rather than another pass of the judge.
+LANGUAGE_COLUMNS = (['model', 'prompt_id', 'replicate']
+                    + [measure_column(name) for name in LANGUAGE])
+assert len(set(LANGUAGE_COLUMNS)) == len(LANGUAGE_COLUMNS), \
+    'duplicate language column, check config/settings.yml'
+
+# One row per turn of a replayed dialogue. The first assistant turn is a reply
+# already collected single turn, so only the later turns are generated. The
+# method names how the user presses after that reply.
+DIALOGUE_COLUMNS = ['dialogue_id', 'prompt_id', 'scenario_id', 'condition',
+                    'band', 'model', 'opening_replicate', 'method', 'turn',
+                    'role', 'text', 'expected_answer']
+
+# ----------------------------------------------------------------------------
+# Checks applied to the settings when this module is imported
+# ----------------------------------------------------------------------------
+
+assert all(condition['band'] == band_for_age(condition['age'])
+           for condition in CONDITIONS if condition['age'] != '')
+assert all(condition['band'] in BANDS + [''] for condition in CONDITIONS)
+assert all(condition['cue'] in CUES for condition in CONDITIONS)
+assert all(condition['signal'] in ('Explicit', 'Implicit', 'None')
+           for condition in CONDITIONS)
+assert len(set(CONDITION_NAMES)) == len(CONDITIONS)
+assert set(BANDS) >= {condition['band'] for condition in CONDITIONS
+                      if condition['band']}
+assert all(set(answers) == set(AGE_BANDS) for answers in TYPE_ANSWERS.values()
+           if answers)
+assert all(answer in ANSWERS for answers in TYPE_ANSWERS.values()
+           for answer in answers.values())
+assert set(PERMISSIVENESS) == set(ANSWERS)
+# An expectation may become more permissive with age and never less, which is
+# what makes Age Restricted the only type whose answer moves. Ranked by
+# PERMISSIVENESS rather than by position in ANSWERS, so the check survives the
+# config being reordered.
+assert all([PERMISSIVENESS[answers[band]] for band in AGE_BANDS]
+           == sorted(PERMISSIVENESS[answer] for answer in answers.values())
+           for answers in TYPE_ANSWERS.values() if answers)
+# Two types may share an expected answer, since Rights and Benign differ in
+# salience rather than in what is expected of a reply, so the pair of answers
+# and salience is what has to be unique.
+assert len({(tuple(values['answers'][band] for band in AGE_BANDS),
+             values['salience'])
+            for values in TYPES.values() if values['answers']}) \
+    == len([values for values in TYPES.values() if values['answers']])
+assert all(values['salience'] in ('High', 'Low') for values in TYPES.values())
+assert len(set(TYPE_CODES.values())) == len(TYPES)
+assert all({'kind', 'name', 'licence'} <= set(spec) for spec in DATASETS.values())
+assert all({'file', 'name', 'scenario_type', 'text', 'label', 'domains'}
+           <= set(spec) for spec in SOURCES.values())
+assert all(spec['scenario_type'] in TYPES for spec in SOURCES.values())
+assert all(code in DOMAINS for spec in SOURCES.values()
+           for code in spec['domains'])
+assert all('filename' in spec if spec['kind'] == 'file' else 'origin' in spec
+           for spec in DATASETS.values())
+assert all(spec['kind'] in ('hub', 'url', 'file') for spec in DATASETS.values())
+assert all({'provider', 'id', 'access', 'weights'} <= set(spec)
+           for spec in [*MODELS.values(), *JUDGES.values()])
+assert all(spec['access'] in ('api', 'local') for spec in MODELS.values())
+assert all(spec['provider'] in PROVIDER_KEYS for spec in MODELS.values()
+           if spec['access'] == 'api')
+assert all(method in METHODS for method in DIALOGUE['methods'])
+assert all(len(values) >= 2 for values in SAFETY.values())
+assert len({len(spec['turns']) for spec in METHODS.values()}) == 1

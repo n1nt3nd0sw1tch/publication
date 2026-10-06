@@ -1,0 +1,85 @@
+Outcome Cell,Characteristic,Model,Effect (pp),95% CI Lower,95% CI Upper,Scenarios
+Strong Refusal,Legal Statement,GPT-5.6 Luna,4.4,-3.4,13.5,28
+Strong Refusal,Legal Statement,Claude Haiku 4.5,-0.4,-5.8,4.5,27
+Strong Refusal,Legal Statement,Gemini 3.5 Flash Lite,3.5,0.2,9.1,30
+Strong Refusal,Legal Statement,DeepSeek-V4 Flash,6.2,-1.4,14.1,34
+Strong Refusal,Legal Statement,Mistral Small 4,2.0,-2.1,6.4,32
+Strong Refusal,Legal Statement,Gemma 4 31B,0.4,-3.8,5.9,31
+Strong Refusal,Eligibility Statement,GPT-5.6 Luna,22.6,11.7,35.1,28
+Strong Refusal,Eligibility Statement,Claude Haiku 4.5,4.5,-1.2,11.3,27
+Strong Refusal,Eligibility Statement,Gemini 3.5 Flash Lite,6.1,0.9,12.6,30
+Strong Refusal,Eligibility Statement,DeepSeek-V4 Flash,17.9,9.2,27.4,34
+Strong Refusal,Eligibility Statement,Mistral Small 4,0.4,-1.8,2.7,32
+Strong Refusal,Eligibility Statement,Gemma 4 31B,3.2,0.4,7.0,31
+Strong Refusal,Social Signpost,GPT-5.6 Luna,33.3,18.7,49.4,28
+Strong Refusal,Social Signpost,Claude Haiku 4.5,46.2,32.3,60.0,27
+Strong Refusal,Social Signpost,Gemini 3.5 Flash Lite,29.0,18.7,40.2,30
+Strong Refusal,Social Signpost,DeepSeek-V4 Flash,47.9,37.2,58.6,34
+Strong Refusal,Social Signpost,Mistral Small 4,13.4,2.1,24.3,32
+Strong Refusal,Social Signpost,Gemma 4 31B,31.6,21.1,42.6,31
+Strong Refusal,Expert Signpost,GPT-5.6 Luna,11.4,0.7,22.7,28
+Strong Refusal,Expert Signpost,Claude Haiku 4.5,14.4,4.7,25.5,27
+Strong Refusal,Expert Signpost,Gemini 3.5 Flash Lite,3.3,-2.6,9.9,30
+Strong Refusal,Expert Signpost,DeepSeek-V4 Flash,-0.5,-11.2,10.5,34
+Strong Refusal,Expert Signpost,Mistral Small 4,-2.3,-9.4,4.4,32
+Strong Refusal,Expert Signpost,Gemma 4 31B,8.3,3.6,13.8,31
+Strong Refusal,Service Signpost,GPT-5.6 Luna,-3.4,-12.5,5.2,28
+Strong Refusal,Service Signpost,Claude Haiku 4.5,2.6,-9.1,15.4,27
+Strong Refusal,Service Signpost,Gemini 3.5 Flash Lite,-10.6,-17.2,-4.6,30
+Strong Refusal,Service Signpost,DeepSeek-V4 Flash,-7.4,-14.3,-1.2,34
+Strong Refusal,Service Signpost,Mistral Small 4,-3.3,-9.2,1.5,32
+Strong Refusal,Service Signpost,Gemma 4 31B,1.2,-2.5,5.2,31
+Strong Refusal,System Identity,GPT-5.6 Luna,0.0,0.0,0.0,28
+Strong Refusal,System Identity,Claude Haiku 4.5,0.0,0.0,0.0,27
+Strong Refusal,System Identity,Gemini 3.5 Flash Lite,-5.4,-10.4,-1.5,30
+Strong Refusal,System Identity,DeepSeek-V4 Flash,-1.0,-3.4,1.2,34
+Strong Refusal,System Identity,Mistral Small 4,-1.8,-4.2,0.1,32
+Strong Refusal,System Identity,Gemma 4 31B,-1.7,-10.0,6.7,31
+Strong Refusal,Limitation Identity,GPT-5.6 Luna,0.0,0.0,0.0,28
+Strong Refusal,Limitation Identity,Claude Haiku 4.5,0.0,0.0,0.0,27
+Strong Refusal,Limitation Identity,Gemini 3.5 Flash Lite,0.0,0.0,0.0,30
+Strong Refusal,Limitation Identity,DeepSeek-V4 Flash,0.0,0.0,0.0,34
+Strong Refusal,Limitation Identity,Mistral Small 4,-1.6,-3.9,0.0,32
+Strong Refusal,Limitation Identity,Gemma 4 31B,0.7,-2.9,5.6,31
+Total Compliance,Legal Statement,GPT-5.6 Luna,-10.1,-14.1,-6.3,144
+Total Compliance,Legal Statement,Claude Haiku 4.5,-7.1,-11.1,-3.2,138
+Total Compliance,Legal Statement,Gemini 3.5 Flash Lite,-17.9,-23.1,-12.8,135
+Total Compliance,Legal Statement,DeepSeek-V4 Flash,-18.1,-22.6,-13.7,139
+Total Compliance,Legal Statement,Mistral Small 4,-0.5,-3.2,2.2,130
+Total Compliance,Legal Statement,Gemma 4 31B,-7.1,-12.1,-2.3,144
+Total Compliance,Eligibility Statement,GPT-5.6 Luna,0.1,0.0,0.3,144
+Total Compliance,Eligibility Statement,Claude Haiku 4.5,0.1,0.0,0.4,138
+Total Compliance,Eligibility Statement,Gemini 3.5 Flash Lite,0.0,0.0,0.1,135
+Total Compliance,Eligibility Statement,DeepSeek-V4 Flash,0.2,-0.2,0.6,139
+Total Compliance,Eligibility Statement,Mistral Small 4,-0.1,-0.4,0.0,130
+Total Compliance,Eligibility Statement,Gemma 4 31B,0.0,0.0,0.1,144
+Total Compliance,Social Signpost,GPT-5.6 Luna,36.8,30.7,42.9,144
+Total Compliance,Social Signpost,Claude Haiku 4.5,42.4,36.7,47.9,138
+Total Compliance,Social Signpost,Gemini 3.5 Flash Lite,40.7,34.7,46.6,135
+Total Compliance,Social Signpost,DeepSeek-V4 Flash,44.2,38.6,49.6,139
+Total Compliance,Social Signpost,Mistral Small 4,28.4,23.4,33.3,130
+Total Compliance,Social Signpost,Gemma 4 31B,48.9,43.2,54.5,144
+Total Compliance,Expert Signpost,GPT-5.6 Luna,3.7,0.4,7.2,144
+Total Compliance,Expert Signpost,Claude Haiku 4.5,7.5,3.4,11.8,138
+Total Compliance,Expert Signpost,Gemini 3.5 Flash Lite,4.3,0.2,8.6,135
+Total Compliance,Expert Signpost,DeepSeek-V4 Flash,1.1,-2.4,4.7,139
+Total Compliance,Expert Signpost,Mistral Small 4,-4.6,-7.9,-1.4,130
+Total Compliance,Expert Signpost,Gemma 4 31B,-1.9,-5.7,2.1,144
+Total Compliance,Service Signpost,GPT-5.6 Luna,1.2,-2.1,4.7,144
+Total Compliance,Service Signpost,Claude Haiku 4.5,-1.3,-4.1,1.3,138
+Total Compliance,Service Signpost,Gemini 3.5 Flash Lite,-3.9,-7.2,-0.5,135
+Total Compliance,Service Signpost,DeepSeek-V4 Flash,-4.8,-7.2,-2.4,139
+Total Compliance,Service Signpost,Mistral Small 4,-1.4,-4.1,1.2,130
+Total Compliance,Service Signpost,Gemma 4 31B,-1.5,-4.1,1.2,144
+Total Compliance,System Identity,GPT-5.6 Luna,0.4,0.0,0.8,144
+Total Compliance,System Identity,Claude Haiku 4.5,0.8,0.2,1.5,138
+Total Compliance,System Identity,Gemini 3.5 Flash Lite,-1.0,-2.6,0.3,135
+Total Compliance,System Identity,DeepSeek-V4 Flash,-1.3,-2.6,-0.2,139
+Total Compliance,System Identity,Mistral Small 4,-0.2,-0.9,0.3,130
+Total Compliance,System Identity,Gemma 4 31B,-23.6,-28.0,-19.3,144
+Total Compliance,Limitation Identity,GPT-5.6 Luna,-0.3,-1.0,0.1,144
+Total Compliance,Limitation Identity,Claude Haiku 4.5,-0.1,-0.7,0.3,138
+Total Compliance,Limitation Identity,Gemini 3.5 Flash Lite,-1.5,-3.0,-0.2,135
+Total Compliance,Limitation Identity,DeepSeek-V4 Flash,-1.7,-2.9,-0.6,139
+Total Compliance,Limitation Identity,Mistral Small 4,-0.1,-0.4,0.1,130
+Total Compliance,Limitation Identity,Gemma 4 31B,-24.8,-29.3,-20.2,144

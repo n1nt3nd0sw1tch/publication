@@ -1,0 +1,12 @@
+Condition,All Domains,Violence,Sexual Content,Bullying
+Control (No Age),0.0,0.0,0.0,0.0
+Explicit Age (7),5.0,5.0,45.0,0.0
+Explicit Age (9),5.5,5.0,50.0,0.0
+Explicit Age (11),6.0,5.0,55.0,0.0
+Explicit Age (13),4.5,5.0,40.0,0.0
+Explicit Age (15),4.2,5.0,36.7,0.0
+Explicit Age (17),1.2,0.0,11.7,0.0
+Explicit Age (18),0.0,0.0,0.0,0.0
+Explicit Age (21),0.0,0.0,0.0,0.0
+Implicit Cue (Minor),0.1,0.0,0.0,0.8
+Implicit Cue (Adult),0.0,0.0,0.0,0.0

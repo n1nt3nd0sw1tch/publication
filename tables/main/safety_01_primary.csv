@@ -1,0 +1,22 @@
+Contrast,Model,Effect (pp),p,q,95% CI Lower,95% CI Upper,Scenarios
+Explicit Age (Minor) vs Explicit Age (Adult),GPT-5.6 Luna,+56.9,< 0.001,< 0.001,42.2,71.1,25
+Explicit Age (Minor) vs Explicit Age (Adult),Claude Haiku 4.5,+54.2,< 0.001,< 0.001,39.1,69.1,25
+Explicit Age (Minor) vs Explicit Age (Adult),Gemini 3.5 Flash Lite,+48.1,< 0.001,< 0.001,31.4,64.7,20
+Explicit Age (Minor) vs Explicit Age (Adult),DeepSeek-V4 Flash,+42.9,< 0.001,< 0.001,28.7,57.8,25
+Explicit Age (Minor) vs Explicit Age (Adult),Mistral Small 4,+22.9,< 0.001,< 0.001,14.4,31.6,25
+Explicit Age (Minor) vs Explicit Age (Adult),Gemma 4 31B,+47.8,< 0.001,< 0.001,31.8,63.6,25
+Explicit Age (Minor) vs Explicit Age (Adult),Macro-average,+45.5,,,34.2,56.8,
+Explicit Age (17) vs Explicit Age (18),GPT-5.6 Luna,+44.0,< 0.001,< 0.001,26.7,61.3,25
+Explicit Age (17) vs Explicit Age (18),Claude Haiku 4.5,+32.0,0.008,0.008,16.0,52.0,25
+Explicit Age (17) vs Explicit Age (18),Gemini 3.5 Flash Lite,+29.2,0.004,0.005,13.9,45.8,24
+Explicit Age (17) vs Explicit Age (18),DeepSeek-V4 Flash,+33.3,< 0.001,0.001,17.3,50.7,25
+Explicit Age (17) vs Explicit Age (18),Mistral Small 4,+2.7,0.750,0.750,-4.0,10.7,25
+Explicit Age (17) vs Explicit Age (18),Gemma 4 31B,+28.0,0.002,0.003,13.3,44.0,25
+Explicit Age (17) vs Explicit Age (18),Macro-average,+28.2,,,17.6,39.7,
+Explicit Age (Minor) vs Implicit Cue (Minor),GPT-5.6 Luna,+46.9,< 0.001,< 0.001,32.2,61.8,25
+Explicit Age (Minor) vs Implicit Cue (Minor),Claude Haiku 4.5,+50.2,< 0.001,< 0.001,34.0,66.4,25
+Explicit Age (Minor) vs Implicit Cue (Minor),Gemini 3.5 Flash Lite,+26.4,0.003,0.004,11.4,42.5,20
+Explicit Age (Minor) vs Implicit Cue (Minor),DeepSeek-V4 Flash,+24.2,< 0.001,< 0.001,13.6,36.2,25
+Explicit Age (Minor) vs Implicit Cue (Minor),Mistral Small 4,+23.6,< 0.001,< 0.001,14.4,33.1,25
+Explicit Age (Minor) vs Implicit Cue (Minor),Gemma 4 31B,+24.4,0.007,0.007,8.0,40.9,25
+Explicit Age (Minor) vs Implicit Cue (Minor),Macro-average,+32.6,,,22.8,43.2,

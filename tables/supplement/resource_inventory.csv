@@ -1,0 +1,55 @@
+Resource,Entity ID,Type,Jurisdiction,Observed Numbers / Shortcodes,Observed Websites,Observed Emails,Contact Channels Observed,E1 Replies,E2 Dialogues,E2 Assistant Turns,Models,Total Mentions
+988 Suicide and Crisis Lifeline,lifeline-988,Helpline,US,988,988lifeline.org,,Name | Shortcode | Website,5179,1068,1859,6,11160
+911,emergency-911,Emergency,US|CA,911,,,Emergency number,4730,530,743,6,6548
+Crisis Text Line,crisis-text-line,Service,US|CA|GB|IE,741741,crisistextline.org,,Name | Shortcode | Website,4717,961,1485,6,12133
+Childhelp National Child Abuse Hotline,childhelp,Helpline,US,1-800-422-4453,childhelp.org | childhelphotline.org,,Name | Phone | Website,1761,362,430,6,6259
+Find A Helpline,findahelpline,Service,INT,,findahelpline.com,,Name | Website,1382,373,656,6,2961
+National Eating Disorders Association,neda,Organisation,US,1-800-931-2237,nationaleatingdisorders.org | www5.nationaleatingdisorders.org,,Name | Phone | Website,1295,97,183,6,4752
+The Trevor Project,trevor-project,Organisation,US,1-866-488-7386 | 678-678,thetrevorproject.org,,Name | Phone | Shortcode | Website,1071,119,129,6,3401
+999,emergency-999,Emergency,GB|IE,999,,,Emergency number,912,98,115,6,1055
+Samaritans,samaritans,Helpline,GB|IE,116 123,samaritans.org,,Name | Shortcode | Website,847,231,360,6,2813
+Shout,shout,Service,GB,85258,,,Name | Shortcode,832,144,161,6,1059
+NHS 111,nhs-111,Service,GB,111,,,Name | Shortcode,802,215,281,6,1107
+Childline,childline,Helpline,GB,0800 1111,childline.org.uk,,Name | Phone | Website,792,159,194,6,1946
+NCMEC CyberTipline,ncmec,Organisation,US,1-800-843-5678,cybertipline.org | missingkids.org | report.cybertipline.org | takeitdown.ncmec.org,,Name | Phone | Website,724,64,99,6,1829
+SAMHSA National Helpline,samhsa,Helpline,US,1-800-662-4357,findtreatment.gov | findtreatment.samhsa.gov | samhsa.gov,,Name | Phone | Website,648,84,112,6,1648
+NHS,nhs,Organisation,GB,,,,Name,532,170,213,6,753
+Poison Control,poison-control-us,Helpline,US,1-800-222-1222,poison.org,,Name | Phone | Website,516,162,298,6,1551
+National Domestic Violence Hotline,ndvh,Helpline,US,1-800-799-SAFE | 88788,thehotline.org,,Name | Phone | Shortcode | Website,488,24,31,6,1432
+112,emergency-112,Emergency,EU|GB|IE,112,,,Emergency number,479,52,58,6,544
+IASP Crisis Centres,iasp,Organisation,INT,,iasp.info,,Name | Website,334,104,107,5,832
+RAINN,rainn,Organisation,US,1-800-656-4673,online.rainn.org | rainn.org,,Name | Phone | Website,326,24,27,6,925
+Kids Help Phone,kids-help-phone,Helpline,CA,1-800-668-6868 | 686868,kidshelpphone.ca,,Name | Phone | Shortcode | Website,277,65,71,6,799
+Kids Helpline,kids-helpline-au,Helpline,AU,1800 55 1800,kidshelpline.com.au,,Name | Phone | Website,255,40,44,6,611
+National Suicide Prevention Lifeline,lifeline-legacy,Helpline,US,1-800-273-8255,,,Name | Phone,240,100,104,5,353
+Befrienders Worldwide,befrienders,Organisation,INT,,befrienders.org,,Name | Website,236,74,78,4,606
+Beat,beat,Organisation,GB,0808 801 0677 | 0808 801 0711,beateatingdisorders.org.uk,,Name | Phone | Website,218,24,32,6,434
+Lifeline Australia,lifeline-au,Helpline,AU,13 11 14,lifeline.org.au,,Name | Shortcode | Website,157,49,74,5,244
+000,emergency-000,Emergency,AU,000,,,Emergency number,147,17,23,5,171
+National Alliance for Eating Disorders,alliance-eating-disorders,Helpline,US,1-866-662-1235,allianceforeatingdisorders.com,,Name | Phone | Website,123,4,8,3,273
+NAMI HelpLine,nami,Helpline,US,1-800-950-NAMI | 62640,nami.org,,Name | Phone | Shortcode | Website,102,13,17,5,256
+World Health Organization,who,Organisation,INT,,who.int,,Name | Website,91,51,69,6,204
+Trans Lifeline,trans-lifeline,Helpline,US|CA,877-565-8860,translifeline.org,,Name | Phone | Website,75,0,0,6,162
+StopBullying.gov,stopbullying,Organisation,US,,stopbullying.gov,,Website,68,7,8,6,88
+CEOP,ceop,Organisation,GB,,ceop.police.uk,,Name | Website,66,2,3,5,134
+National Domestic Abuse Helpline,refuge,Helpline,GB,0808 2000 247,nationaldahelpline.org.uk,,Name | Phone | Website,58,2,2,6,116
+The Mix,the-mix,Organisation,GB,0808 808 4994,themix.org.uk,,Name | Phone | Website,45,3,3,6,67
+Boys Town National Hotline,boys-town,Helpline,US,1-800-448-3000,boystown.org,,Name | Phone | Website,37,6,6,3,83
+Talk Suicide Canada,talk-suicide-canada,Helpline,CA,1-833-456-4566 | 45645,talksuicide.ca,,Name | Phone | Shortcode | Website,37,6,7,6,83
+NSPCC,nspcc,Organisation,GB,0808 800 5000,nspcc.org.uk,help@nspcc.org.uk,Email | Name | Phone | Website,36,4,4,4,73
+Internet Watch Foundation,iwf,Organisation,GB,,iwf.org.uk | report.iwf.org.uk,,Name | Website,36,3,3,5,72
+eSafety Commissioner,esafety,Organisation,AU,,esafety.gov.au,,Name | Website,24,0,0,3,44
+love is respect,love-is-respect,Helpline,US,1-866-331-9474 | 22522,loveisrespect.org,,Name | Phone | Shortcode | Website,21,2,2,4,61
+FRANK,talk-to-frank,Service,GB,0300 123 6600,talktofrank.com,,Name | Phone | Website,14,1,1,5,25
+Veterans Crisis Line,veterans-crisis-line,Helpline,US,838255,,,Name | Shortcode,11,0,0,3,18
+Youthline,youthline-nz,Helpline,NZ,0800 376 633,youthline.co.nz,,Name | Phone | Website,10,0,0,2,12
+Beyond Blue,beyond-blue,Organisation,AU,1300 22 4636,,,Name | Phone,9,0,0,2,17
+Childline India,childline-india,Helpline,IN,1098,,,Shortcode,8,0,0,1,8
+Stop It Now,stop-it-now,Helpline,GB,,,,Name,5,8,13,1,18
+YoungMinds,youngminds,Organisation,GB,,,,Name,4,1,1,4,5
+Mind,mind,Organisation,GB,0300 123 3393,mind.org.uk,,Phone | Website,3,2,2,3,5
+Papyrus HOPELINE247,papyrus,Helpline,GB,0800 068 41 41,,,Name | Phone,3,0,0,2,4
+CALM,calm,Helpline,GB,,,,Name,2,0,0,1,2
+ISPCC Childline,ispcc-childline,Helpline,IE,1800 66 66 66,,,Phone,2,0,0,1,2
+headspace,headspace-au,Organisation,AU,,headspace.org.au,,Website,2,0,0,1,4
+1737 Need to Talk,need-to-talk-nz,Helpline,NZ,1737,,,Shortcode,1,0,0,1,1

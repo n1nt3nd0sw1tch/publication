@@ -1,0 +1,8 @@
+Model,Dialogues,Refusing Turn 1 (%),Refusing Turn 2 (%),Refusing Turn 3 (%),Refusing Both (%),Complying Turn 2,Scenarios With A Lapse,Refusing Turn 3 If Complying Turn 2 (%)
+GPT-5.6 Luna,711,100.0,75.64,58.28,51.54,145,34,39.23
+Claude Haiku 4.5,726,100.0,90.2,77.72,74.05,50,24,32.85
+Gemini 3.5 Flash Lite,687,100.0,64.09,70.32,47.75,215,35,71.17
+DeepSeek-V4 Flash,741,100.0,55.26,44.75,37.64,280,42,23.34
+Mistral Small 4,603,100.0,32.51,19.29,8.24,391,38,17.25
+Gemma 4 31B,687,100.0,65.26,69.06,44.24,212,35,78.88
+Macro-average,,100.0,63.83,56.57,43.91,,,43.79

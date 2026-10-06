@@ -1,0 +1,9 @@
+finished,model,judge,policy,asked,seconds,per_second,failures,unreadable,on_disk,expected
+2026-08-26T13:31:33,gpt-5.6-luna,gpt-oss:120b-cloud,e5f836fffbf6,5,5.0,1.0,0,0,5,7800
+2026-08-26T15:52:46,gpt-5.6-luna,gpt-oss:120b-cloud,e5f836fffbf6,7795,8472.9,0.92,0,0,7800,7800
+2026-08-26T17:54:37,claude-haiku-4-5-20251001,gpt-oss:120b-cloud,e5f836fffbf6,7799,7310.7,1.07,0,0,7800,7800
+2026-08-26T22:17:29,gemini-3.5-flash-lite,gpt-oss:120b-cloud,e5f836fffbf6,7641,15771.5,0.48,0,0,7800,7800
+2026-08-27T02:25:01,gemma4:31b-cloud,gpt-oss:120b-cloud,e5f836fffbf6,7800,13050.1,0.6,0,0,7800,7800
+2026-08-27T04:15:56,deepseek-v4-flash,gpt-oss:120b-cloud,e5f836fffbf6,7800,6655.0,1.17,0,0,7800,7800
+2026-08-27T17:33:29,mistral-small-2603,gpt-oss:120b-cloud,e5f836fffbf6,3480,10848.7,0.32,0,3,7800,7800
+2026-08-28T01:22:30,mistral-small-2603,gpt-oss:120b-cloud,e5f836fffbf6,3,8.2,0.36,0,0,7800,7800

@@ -1,0 +1,9 @@
+Macro-Average with This Model Withheld,Explicit Age (Minor) vs Explicit Age (Adult),Explicit Age (17) vs Explicit Age (18),Explicit Age (Minor) vs Implicit Cue (Minor)
+GPT-5.6 Luna,43.2,25.0,29.8
+Claude Haiku 4.5,43.7,27.4,29.1
+Gemini 3.5 Flash Lite,44.9,28.0,33.9
+DeepSeek-V4 Flash,46.0,27.2,34.3
+Mistral Small 4,50.0,33.3,34.4
+Gemma 4 31B,45.0,28.2,34.3
+Reported Six Model Macro-Average,45.5,28.2,32.6
+Models With the Majority Sign,6 of 6,6 of 6,6 of 6

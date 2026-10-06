@@ -1,0 +1,7 @@
+Model,Mean AoA,P90 AoA,Max AoA,Difficult Share,AoA Coverage
+GPT-5.6 Luna,5.126,7.566,11.658,0.02,0.972
+Claude Haiku 4.5,5.207,7.778,11.413,0.023,0.975
+Gemini 3.5 Flash Lite,5.181,7.644,12.157,0.026,0.975
+DeepSeek-V4 Flash,4.966,7.166,12.445,0.017,0.98
+Mistral Small 4,5.041,7.25,11.006,0.018,0.971
+Gemma 4 31B,5.163,7.596,12.773,0.027,0.975

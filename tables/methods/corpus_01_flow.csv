@@ -1,0 +1,8 @@
+Model,Submitted,Blocked,Block Rate (%)
+GPT-5.6 Luna,7800,0,0.0
+Claude Haiku 4.5,7800,1,0.01
+Gemini 3.5 Flash Lite,7800,159,2.04
+DeepSeek-V4 Flash,7800,0,0.0
+Mistral Small 4,7800,0,0.0
+Gemma 4 31B,7800,0,0.0
+Total,46800,160,0.34

@@ -1,0 +1,8 @@
+Model,Effect (Grades),p,q,95% CI Lower,95% CI Upper,Complete Scenarios
+GPT-5.6 Luna,-1.87,< 0.001,< 0.001,-2.05,-1.7,193
+Claude Haiku 4.5,-2.23,< 0.001,< 0.001,-2.39,-2.09,170
+Gemini 3.5 Flash Lite,-1.55,< 0.001,< 0.001,-1.74,-1.33,158
+DeepSeek-V4 Flash,-1.62,< 0.001,< 0.001,-1.77,-1.46,197
+Mistral Small 4,-1.32,< 0.001,< 0.001,-1.48,-1.15,170
+Gemma 4 31B,-2.01,< 0.001,< 0.001,-2.16,-1.85,167
+Macro-average,-1.77,,,-1.89,-1.64,

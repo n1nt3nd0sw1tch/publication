@@ -1,0 +1,8 @@
+Rate,Eligible Subset,Eligible Submitted,Analysis Denominator,Available (%)
+Provider Block Rate,All Submitted Requests,46800,46800,100.0
+"Refusal Rate, Content Delivery Rate",All Returned Replies,46800,46640,99.66
+Benchmark Action Alignment,Replies With an Expected Answer,46350,46190,99.65
+Harmful Content Delivered,Harmful Scenarios,11700,11658,99.64
+Age Restricted Content Delivered,"Age Restricted, Explicit Age (Minor)",2700,2621,97.07
+Age Restricted Request Refused,"Age Restricted, Explicit Age (Adult)",900,900,100.0
+Rights and Benign Over-Refusal,Rights or Benign Scenarios,29250,29211,99.87

@@ -1,0 +1,7 @@
+Tier,Family,Tests,Tested,Significant,Smallest q
+primary,age conditioning,21,18,17,0.0002
+planned control,benchmark control,21,18,1,0.0126
+secondary,age trend,6,6,6,0.0001
+secondary,implicit cue,7,6,6,0.0029
+secondary,prompt category,6,6,6,0.0002
+secondary,response characteristics,49,42,27,0.0002

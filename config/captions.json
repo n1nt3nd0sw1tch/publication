@@ -1,0 +1,116 @@
+[
+  {
+    "figure": "dialogue_outcomes",
+    "tier": "main",
+    "source": "dialogue_01_outcomes",
+    "caption": "Four outcomes at each turn on the same complete cohort. Each model-turn distribution sums to 100%; scenarios and models are equally weighted at their respective averaging stages."
+  },
+  {
+    "figure": "dialogue_defects",
+    "tier": "main",
+    "source": "dialogue_02_defects",
+    "caption": "Action Defect by turn and stratum. Undefined age-neutral expectations are excluded; lines describe turn-specific rates, not cumulative breaks."
+  },
+  {
+    "figure": "dialogue_memory",
+    "tier": "main",
+    "source": "dialogue_03_memory",
+    "caption": "Strong Refusal retained at both later turns, conditional on expected refusal and Strong Refusal at Turn 1. Bars: 95% scenario-bootstrap intervals. Strata and models have different eligible opening cohorts."
+  },
+  {
+    "figure": "dialogue_first_break",
+    "tier": "main",
+    "source": "dialogue_03_memory",
+    "caption": "First loss of Strong Refusal among established protective boundaries. Turn 2, Turn 3 and no break partition the cohort; a later return does not erase an earlier break."
+  },
+  {
+    "figure": "dialogue_methods_age_restricted",
+    "tier": "main",
+    "source": "dialogue_05_methods",
+    "caption": "Age Restricted: change in Action Defect from Turn 1, matched across all three methods on shared opening seeds. Positive values mean more defects. Purpose Reverse endpoint improvements do not establish recovery."
+  },
+  {
+    "figure": "dialogue_methods_harmful",
+    "tier": "main",
+    "source": "dialogue_05_methods",
+    "caption": "Harmful: change in Action Defect from Turn 1, matched across all three methods on shared opening seeds. Positive values mean more defects. Purpose Reverse endpoint improvements do not establish recovery."
+  },
+  {
+    "figure": "dialogue_age_age_restricted",
+    "tier": "main",
+    "source": "dialogue_04_age",
+    "caption": "Age Restricted: change from Turn 1 in the minor-minus-age-18 Strong-Refusal gap. Negative values indicate gap erosion. Whiskers are paired scenario-bootstrap 95% intervals; each model retains its available scenario cohort."
+  },
+  {
+    "figure": "dialogue_roleplay",
+    "tier": "main",
+    "source": "dialogue_06_roleplay",
+    "caption": "Role Play: Turn-3 minus Turn-1 change in the age-minus-neutral Strong-Refusal gap on common scenarios. 95% paired scenario-bootstrap intervals. This is descriptive gap erosion, not proof of a displaced internal age state."
+  },
+  {
+    "figure": "dialogue_changes_age_restricted",
+    "tier": "supplement",
+    "source": "dialogue_02_defects",
+    "caption": "Age Restricted: Action Defect change from Turn 1 with paired scenario-bootstrap 95% intervals."
+  },
+  {
+    "figure": "dialogue_changes_harmful",
+    "tier": "supplement",
+    "source": "dialogue_02_defects",
+    "caption": "Harmful: Action Defect change from Turn 1 with paired scenario-bootstrap 95% intervals."
+  },
+  {
+    "figure": "dialogue_trajectories_age_restricted",
+    "tier": "supplement",
+    "source": "dialogue_s01_trajectories",
+    "caption": "Age Restricted: protective trajectories by method. All begin aligned. Columns correspond to A-A-A, A-D-D, A-D-A and A-A-D at Turns 1/2/3; each row sums to 100%. Method cohorts here are descriptive, not the all-method matched contrast cohort."
+  },
+  {
+    "figure": "dialogue_trajectories_harmful",
+    "tier": "supplement",
+    "source": "dialogue_s01_trajectories",
+    "caption": "Harmful: protective trajectories by method. All begin aligned. Columns correspond to A-A-A, A-D-D, A-D-A and A-A-D at Turns 1/2/3; each row sums to 100%. Method cohorts here are descriptive, not the all-method matched contrast cohort."
+  },
+  {
+    "figure": "dialogue_ladder",
+    "tier": "supplement",
+    "source": "dialogue_s08_ladder",
+    "caption": "Strong Refusal across seven ages and three turns, on each model's balanced age cohort. Gemini uses 20 scenarios; the other models use 25. This cohort is separate from the paired statutory-boundary figure."
+  },
+  {
+    "figure": "dialogue_boundary",
+    "tier": "supplement",
+    "source": "dialogue_s14_boundary",
+    "caption": "Strong-Refusal difference between ages 17 and 18 with paired scenario-bootstrap 95% intervals. Cohorts require these two ages only: 24 Gemini scenarios and 25 for every other model."
+  },
+  {
+    "figure": "dialogue_age_harmful",
+    "tier": "supplement",
+    "source": "dialogue_04_age",
+    "caption": "Harmful: change from Turn 1 in the minor-minus-age-18 Strong-Refusal gap. Negative values indicate gap erosion. Whiskers are paired scenario-bootstrap 95% intervals; each model retains its available scenario cohort."
+  },
+  {
+    "figure": "dialogue_adjusted",
+    "tier": "supplement",
+    "source": "dialogue_s12_adjusted",
+    "caption": "Age-Restricted minus Harmful Strong-Refusal gap erosion from Turn 1. Scenario-bootstrap 95% intervals. Strata comprise different scenario sets; this is a descriptive control comparison, not causal identification."
+  },
+  {
+    "figure": "dialogue_memory_gap",
+    "tier": "supplement",
+    "source": "dialogue_s13_memory_gap",
+    "caption": "Difference in unbroken Strong-Refusal memory between Age Restricted and Harmful protective cohorts, with scenario-bootstrap 95% intervals. Negative values indicate weaker age-conditioned memory."
+  },
+  {
+    "figure": "dialogue_directional",
+    "tier": "supplement",
+    "source": "dialogue_s04_directional",
+    "caption": "Age Restricted: directional Action Defect change at Turn 3 relative to Turn 1, with 95% intervals. Over-Permissive means failure to maintain Strong Refusal when refusal is expected; Over-Restrictive means failure to provide Total Compliance when compliance is expected."
+  },
+  {
+    "figure": "dialogue_failure",
+    "tier": "supplement",
+    "source": "dialogue_s09_failure",
+    "caption": "Later outcomes within the initially protective cohort. Rows partition that cohort at each turn; Strong Refusal matches endpoint memory, not necessarily unbroken memory."
+  }
+]

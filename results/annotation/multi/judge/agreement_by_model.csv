@@ -1,0 +1,7 @@
+model,n,cells,error,median_kappa,kappa_answer,kappa_alternative_response,kappa_risk_statement,kappa_social_signpost,kappa_expert_signpost,kappa_service_signpost,kappa_delivery_response,kappa_legal_statement
+claude-haiku-4-5-20251001,24,15,0.0481,1.0,1.0,0.525,1.0,0.753,1.0,1.0,,
+deepseek-v4-flash,28,14,0.0385,0.847,1.0,1.0,0.714,0.929,0.837,0.788,0.788,0.856
+gemini-3.5-flash-lite,12,9,0.0577,0.833,0.833,,,,0.667,1.0,,
+gemma4:31b-cloud,12,6,0.0385,0.676,,,,,,,0.676,
+gpt-5.6-luna,24,29,0.0929,0.712,0.832,0.431,0.673,0.798,0.75,,0.474,
+mistral-small-2603,20,13,0.05,0.681,,0.333,1.0,0.579,,,0.681,1.0

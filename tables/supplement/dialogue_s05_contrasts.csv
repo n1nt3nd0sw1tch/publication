@@ -1,0 +1,127 @@
+Scenario Type,Contrast,Turn,Model,Defect Change Difference (pp),CI Lower,CI Upper
+All Scenarios,Emotional Pushback minus Purpose Reverse,Turn 2,GPT-5.6 Luna,-15.29,-21.25,-9.53
+All Scenarios,Emotional Pushback minus Purpose Reverse,Turn 2,Claude Haiku 4.5,3.61,-2.64,10.57
+All Scenarios,Emotional Pushback minus Purpose Reverse,Turn 2,Gemini 3.5 Flash Lite,-39.15,-50.54,-26.94
+All Scenarios,Emotional Pushback minus Purpose Reverse,Turn 2,DeepSeek-V4 Flash,-47.36,-55.11,-39.43
+All Scenarios,Emotional Pushback minus Purpose Reverse,Turn 2,Mistral Small 4,-31.43,-39.75,-23.46
+All Scenarios,Emotional Pushback minus Purpose Reverse,Turn 2,Gemma 4 31B,-54.36,-62.93,-45.5
+All Scenarios,Emotional Pushback minus Purpose Reverse,Turn 2,Macro-average,-30.66,-35.28,-25.97
+All Scenarios,Emotional Pushback minus Role Play,Turn 2,GPT-5.6 Luna,-39.93,-48.14,-31.53
+All Scenarios,Emotional Pushback minus Role Play,Turn 2,Claude Haiku 4.5,-25.57,-33.75,-17.57
+All Scenarios,Emotional Pushback minus Role Play,Turn 2,Gemini 3.5 Flash Lite,-28.65,-37.46,-19.13
+All Scenarios,Emotional Pushback minus Role Play,Turn 2,DeepSeek-V4 Flash,-43.57,-51.43,-35.5
+All Scenarios,Emotional Pushback minus Role Play,Turn 2,Mistral Small 4,-37.14,-45.36,-29.0
+All Scenarios,Emotional Pushback minus Role Play,Turn 2,Gemma 4 31B,-30.11,-38.18,-22.14
+All Scenarios,Emotional Pushback minus Role Play,Turn 2,Macro-average,-34.16,-38.74,-29.52
+All Scenarios,Purpose Reverse minus Role Play,Turn 2,GPT-5.6 Luna,-24.64,-32.43,-16.79
+All Scenarios,Purpose Reverse minus Role Play,Turn 2,Claude Haiku 4.5,-29.18,-38.54,-20.21
+All Scenarios,Purpose Reverse minus Role Play,Turn 2,Gemini 3.5 Flash Lite,10.5,0.1,20.73
+All Scenarios,Purpose Reverse minus Role Play,Turn 2,DeepSeek-V4 Flash,3.79,-3.89,11.29
+All Scenarios,Purpose Reverse minus Role Play,Turn 2,Mistral Small 4,-5.71,-10.79,-0.68
+All Scenarios,Purpose Reverse minus Role Play,Turn 2,Gemma 4 31B,24.25,12.29,36.46
+All Scenarios,Purpose Reverse minus Role Play,Turn 2,Macro-average,-3.5,-8.68,1.79
+All Scenarios,Emotional Pushback minus Purpose Reverse,Turn 3,GPT-5.6 Luna,42.11,34.14,50.0
+All Scenarios,Emotional Pushback minus Purpose Reverse,Turn 3,Claude Haiku 4.5,31.68,23.11,40.43
+All Scenarios,Emotional Pushback minus Purpose Reverse,Turn 3,Gemini 3.5 Flash Lite,17.17,8.64,25.74
+All Scenarios,Emotional Pushback minus Purpose Reverse,Turn 3,DeepSeek-V4 Flash,-5.96,-14.68,3.14
+All Scenarios,Emotional Pushback minus Purpose Reverse,Turn 3,Mistral Small 4,5.46,0.71,10.46
+All Scenarios,Emotional Pushback minus Purpose Reverse,Turn 3,Gemma 4 31B,9.46,-1.79,20.64
+All Scenarios,Emotional Pushback minus Purpose Reverse,Turn 3,Macro-average,16.65,12.1,21.34
+All Scenarios,Emotional Pushback minus Role Play,Turn 3,GPT-5.6 Luna,1.43,-7.61,10.68
+All Scenarios,Emotional Pushback minus Role Play,Turn 3,Claude Haiku 4.5,-15.04,-23.86,-6.32
+All Scenarios,Emotional Pushback minus Role Play,Turn 3,Gemini 3.5 Flash Lite,-9.2,-20.31,2.13
+All Scenarios,Emotional Pushback minus Role Play,Turn 3,DeepSeek-V4 Flash,-25.54,-34.0,-16.53
+All Scenarios,Emotional Pushback minus Role Play,Turn 3,Mistral Small 4,-0.32,-5.04,4.75
+All Scenarios,Emotional Pushback minus Role Play,Turn 3,Gemma 4 31B,-17.79,-29.46,-5.46
+All Scenarios,Emotional Pushback minus Role Play,Turn 3,Macro-average,-11.07,-17.92,-3.99
+All Scenarios,Purpose Reverse minus Role Play,Turn 3,GPT-5.6 Luna,-40.68,-49.43,-31.75
+All Scenarios,Purpose Reverse minus Role Play,Turn 3,Claude Haiku 4.5,-46.71,-55.46,-37.64
+All Scenarios,Purpose Reverse minus Role Play,Turn 3,Gemini 3.5 Flash Lite,-26.36,-35.9,-17.54
+All Scenarios,Purpose Reverse minus Role Play,Turn 3,DeepSeek-V4 Flash,-19.57,-27.5,-11.96
+All Scenarios,Purpose Reverse minus Role Play,Turn 3,Mistral Small 4,-5.79,-10.86,-0.93
+All Scenarios,Purpose Reverse minus Role Play,Turn 3,Gemma 4 31B,-27.25,-37.96,-16.82
+All Scenarios,Purpose Reverse minus Role Play,Turn 3,Macro-average,-27.73,-33.01,-22.64
+Age Restricted,Emotional Pushback minus Purpose Reverse,Turn 2,GPT-5.6 Luna,-16.57,-26.29,-7.43
+Age Restricted,Emotional Pushback minus Purpose Reverse,Turn 2,Claude Haiku 4.5,-2.29,-10.29,4.57
+Age Restricted,Emotional Pushback minus Purpose Reverse,Turn 2,Gemini 3.5 Flash Lite,-38.0,-54.67,-18.19
+Age Restricted,Emotional Pushback minus Purpose Reverse,Turn 2,DeepSeek-V4 Flash,-57.71,-66.86,-48.0
+Age Restricted,Emotional Pushback minus Purpose Reverse,Turn 2,Mistral Small 4,-26.86,-36.0,-17.71
+Age Restricted,Emotional Pushback minus Purpose Reverse,Turn 2,Gemma 4 31B,-53.71,-62.29,-45.14
+Age Restricted,Emotional Pushback minus Purpose Reverse,Turn 2,Macro-average,-32.52,-37.13,-27.54
+Age Restricted,Emotional Pushback minus Role Play,Turn 2,GPT-5.6 Luna,-50.86,-62.29,-38.86
+Age Restricted,Emotional Pushback minus Role Play,Turn 2,Claude Haiku 4.5,-21.14,-32.0,-10.86
+Age Restricted,Emotional Pushback minus Role Play,Turn 2,Gemini 3.5 Flash Lite,-40.19,-52.95,-24.57
+Age Restricted,Emotional Pushback minus Role Play,Turn 2,DeepSeek-V4 Flash,-57.14,-66.29,-48.0
+Age Restricted,Emotional Pushback minus Role Play,Turn 2,Mistral Small 4,-38.29,-48.57,-27.43
+Age Restricted,Emotional Pushback minus Role Play,Turn 2,Gemma 4 31B,-41.71,-52.57,-30.86
+Age Restricted,Emotional Pushback minus Role Play,Turn 2,Macro-average,-41.56,-47.68,-35.33
+Age Restricted,Purpose Reverse minus Role Play,Turn 2,GPT-5.6 Luna,-34.29,-44.57,-24.57
+Age Restricted,Purpose Reverse minus Role Play,Turn 2,Claude Haiku 4.5,-18.86,-29.14,-9.14
+Age Restricted,Purpose Reverse minus Role Play,Turn 2,Gemini 3.5 Flash Lite,-2.19,-13.71,7.81
+Age Restricted,Purpose Reverse minus Role Play,Turn 2,DeepSeek-V4 Flash,0.57,-8.57,9.14
+Age Restricted,Purpose Reverse minus Role Play,Turn 2,Mistral Small 4,-11.43,-17.73,-5.71
+Age Restricted,Purpose Reverse minus Role Play,Turn 2,Gemma 4 31B,12.0,1.71,24.0
+Age Restricted,Purpose Reverse minus Role Play,Turn 2,Macro-average,-9.03,-13.1,-4.95
+Age Restricted,Emotional Pushback minus Purpose Reverse,Turn 3,GPT-5.6 Luna,49.71,41.14,59.43
+Age Restricted,Emotional Pushback minus Purpose Reverse,Turn 3,Claude Haiku 4.5,22.86,12.0,33.71
+Age Restricted,Emotional Pushback minus Purpose Reverse,Turn 3,Gemini 3.5 Flash Lite,13.33,-0.1,27.43
+Age Restricted,Emotional Pushback minus Purpose Reverse,Turn 3,DeepSeek-V4 Flash,-15.43,-25.71,-5.71
+Age Restricted,Emotional Pushback minus Purpose Reverse,Turn 3,Mistral Small 4,3.43,-4.0,10.87
+Age Restricted,Emotional Pushback minus Purpose Reverse,Turn 3,Gemma 4 31B,3.43,-14.86,22.86
+Age Restricted,Emotional Pushback minus Purpose Reverse,Turn 3,Macro-average,12.89,7.6,18.59
+Age Restricted,Emotional Pushback minus Role Play,Turn 3,GPT-5.6 Luna,-1.14,-10.86,8.0
+Age Restricted,Emotional Pushback minus Role Play,Turn 3,Claude Haiku 4.5,-20.57,-30.86,-10.29
+Age Restricted,Emotional Pushback minus Role Play,Turn 3,Gemini 3.5 Flash Lite,-16.19,-27.43,-4.29
+Age Restricted,Emotional Pushback minus Role Play,Turn 3,DeepSeek-V4 Flash,-32.57,-41.14,-23.99
+Age Restricted,Emotional Pushback minus Role Play,Turn 3,Mistral Small 4,-5.14,-10.86,0.0
+Age Restricted,Emotional Pushback minus Role Play,Turn 3,Gemma 4 31B,-16.57,-30.86,-0.57
+Age Restricted,Emotional Pushback minus Role Play,Turn 3,Macro-average,-15.37,-21.13,-9.62
+Age Restricted,Purpose Reverse minus Role Play,Turn 3,GPT-5.6 Luna,-50.86,-60.57,-41.71
+Age Restricted,Purpose Reverse minus Role Play,Turn 3,Claude Haiku 4.5,-43.43,-54.86,-31.43
+Age Restricted,Purpose Reverse minus Role Play,Turn 3,Gemini 3.5 Flash Lite,-29.52,-41.52,-18.28
+Age Restricted,Purpose Reverse minus Role Play,Turn 3,DeepSeek-V4 Flash,-17.14,-26.29,-8.57
+Age Restricted,Purpose Reverse minus Role Play,Turn 3,Mistral Small 4,-8.57,-14.86,-2.86
+Age Restricted,Purpose Reverse minus Role Play,Turn 3,Gemma 4 31B,-20.0,-35.43,-5.71
+Age Restricted,Purpose Reverse minus Role Play,Turn 3,Macro-average,-28.25,-34.06,-22.71
+Harmful,Emotional Pushback minus Purpose Reverse,Turn 2,GPT-5.6 Luna,-14.0,-21.5,-7.0
+Harmful,Emotional Pushback minus Purpose Reverse,Turn 2,Claude Haiku 4.5,9.5,0.0,21.0
+Harmful,Emotional Pushback minus Purpose Reverse,Turn 2,Gemini 3.5 Flash Lite,-40.3,-55.3,-25.4
+Harmful,Emotional Pushback minus Purpose Reverse,Turn 2,DeepSeek-V4 Flash,-37.0,-48.5,-25.5
+Harmful,Emotional Pushback minus Purpose Reverse,Turn 2,Mistral Small 4,-36.0,-49.5,-23.5
+Harmful,Emotional Pushback minus Purpose Reverse,Turn 2,Gemma 4 31B,-55.0,-70.0,-39.5
+Harmful,Emotional Pushback minus Purpose Reverse,Turn 2,Macro-average,-28.8,-36.63,-20.72
+Harmful,Emotional Pushback minus Role Play,Turn 2,GPT-5.6 Luna,-29.0,-39.5,-19.0
+Harmful,Emotional Pushback minus Role Play,Turn 2,Claude Haiku 4.5,-30.0,-42.0,-18.5
+Harmful,Emotional Pushback minus Role Play,Turn 2,Gemini 3.5 Flash Lite,-17.1,-27.7,-8.1
+Harmful,Emotional Pushback minus Role Play,Turn 2,DeepSeek-V4 Flash,-30.0,-41.0,-19.5
+Harmful,Emotional Pushback minus Role Play,Turn 2,Mistral Small 4,-36.0,-48.5,-24.0
+Harmful,Emotional Pushback minus Role Play,Turn 2,Gemma 4 31B,-18.5,-29.0,-9.0
+Harmful,Emotional Pushback minus Role Play,Turn 2,Macro-average,-26.77,-32.67,-21.18
+Harmful,Purpose Reverse minus Role Play,Turn 2,GPT-5.6 Luna,-15.0,-26.0,-4.0
+Harmful,Purpose Reverse minus Role Play,Turn 2,Claude Haiku 4.5,-39.5,-54.0,-25.0
+Harmful,Purpose Reverse minus Role Play,Turn 2,Gemini 3.5 Flash Lite,23.2,7.2,40.0
+Harmful,Purpose Reverse minus Role Play,Turn 2,DeepSeek-V4 Flash,7.0,-5.0,19.0
+Harmful,Purpose Reverse minus Role Play,Turn 2,Mistral Small 4,0.0,-7.5,7.0
+Harmful,Purpose Reverse minus Role Play,Turn 2,Gemma 4 31B,36.5,15.5,56.5
+Harmful,Purpose Reverse minus Role Play,Turn 2,Macro-average,2.03,-7.0,11.42
+Harmful,Emotional Pushback minus Purpose Reverse,Turn 3,GPT-5.6 Luna,34.5,22.5,47.0
+Harmful,Emotional Pushback minus Purpose Reverse,Turn 3,Claude Haiku 4.5,40.5,28.5,53.0
+Harmful,Emotional Pushback minus Purpose Reverse,Turn 3,Gemini 3.5 Flash Lite,21.0,11.0,31.5
+Harmful,Emotional Pushback minus Purpose Reverse,Turn 3,DeepSeek-V4 Flash,3.5,-10.0,18.0
+Harmful,Emotional Pushback minus Purpose Reverse,Turn 3,Mistral Small 4,7.5,1.99,13.5
+Harmful,Emotional Pushback minus Purpose Reverse,Turn 3,Gemma 4 31B,15.5,3.5,27.0
+Harmful,Emotional Pushback minus Purpose Reverse,Turn 3,Macro-average,20.42,13.67,27.83
+Harmful,Emotional Pushback minus Role Play,Turn 3,GPT-5.6 Luna,4.0,-11.01,20.5
+Harmful,Emotional Pushback minus Role Play,Turn 3,Claude Haiku 4.5,-9.5,-24.0,4.5
+Harmful,Emotional Pushback minus Role Play,Turn 3,Gemini 3.5 Flash Lite,-2.2,-21.2,16.3
+Harmful,Emotional Pushback minus Role Play,Turn 3,DeepSeek-V4 Flash,-18.5,-33.5,-3.0
+Harmful,Emotional Pushback minus Role Play,Turn 3,Mistral Small 4,4.5,-2.5,13.0
+Harmful,Emotional Pushback minus Role Play,Turn 3,Gemma 4 31B,-19.0,-37.0,-0.5
+Harmful,Emotional Pushback minus Role Play,Turn 3,Macro-average,-6.78,-19.12,6.25
+Harmful,Purpose Reverse minus Role Play,Turn 3,GPT-5.6 Luna,-30.5,-45.0,-17.0
+Harmful,Purpose Reverse minus Role Play,Turn 3,Claude Haiku 4.5,-50.0,-63.5,-36.0
+Harmful,Purpose Reverse minus Role Play,Turn 3,Gemini 3.5 Flash Lite,-23.2,-38.1,-9.7
+Harmful,Purpose Reverse minus Role Play,Turn 3,DeepSeek-V4 Flash,-22.0,-35.0,-10.0
+Harmful,Purpose Reverse minus Role Play,Turn 3,Mistral Small 4,-3.0,-11.0,5.0
+Harmful,Purpose Reverse minus Role Play,Turn 3,Gemma 4 31B,-34.5,-49.0,-20.5
+Harmful,Purpose Reverse minus Role Play,Turn 3,Macro-average,-27.2,-36.12,-18.87

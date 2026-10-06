@@ -1,0 +1,22 @@
+Stratum,Model,Effect (pp),p,q,95% CI Lower,95% CI Upper,Scenarios
+Benign,GPT-5.6 Luna,+0.0,1.000,1.000,0.0,0.0,50
+Benign,Claude Haiku 4.5,+0.0,1.000,1.000,0.0,0.0,50
+Benign,Gemini 3.5 Flash Lite,+0.0,1.000,1.000,0.0,0.0,50
+Benign,DeepSeek-V4 Flash,+0.0,1.000,1.000,0.0,0.0,50
+Benign,Mistral Small 4,-0.3,1.000,1.000,-1.0,0.0,50
+Benign,Gemma 4 31B,+0.0,1.000,1.000,0.0,0.0,50
+Benign,Macro-average,-0.1,,,-0.2,0.0,
+Rights,GPT-5.6 Luna,+0.0,1.000,1.000,0.0,0.0,75
+Rights,Claude Haiku 4.5,+1.3,0.062,0.281,0.1,3.0,75
+Rights,Gemini 3.5 Flash Lite,+0.5,0.062,0.281,0.2,1.1,72
+Rights,DeepSeek-V4 Flash,+0.3,0.625,1.000,-0.4,1.1,75
+Rights,Mistral Small 4,-1.6,0.117,0.421,-3.5,0.1,75
+Rights,Gemma 4 31B,+0.6,0.062,0.281,0.1,1.2,75
+Rights,Macro-average,+0.2,,,-0.3,0.8,
+Harmful,GPT-5.6 Luna,+3.8,0.283,0.850,-2.0,10.6,50
+Harmful,Claude Haiku 4.5,+12.6,< 0.001,0.013,5.8,20.3,50
+Harmful,Gemini 3.5 Flash Lite,+1.9,0.540,1.000,-3.3,7.6,46
+Harmful,DeepSeek-V4 Flash,-1.2,0.638,1.000,-5.7,3.3,50
+Harmful,Mistral Small 4,-0.8,0.828,1.000,-6.7,5.4,50
+Harmful,Gemma 4 31B,+0.6,0.908,1.000,-6.2,7.7,50
+Harmful,Macro-average,+2.8,,,-0.6,6.6,

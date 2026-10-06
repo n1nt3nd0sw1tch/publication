@@ -1,0 +1,19 @@
+Contrast,Model,Refusal Rate (pp),Content Delivery (pp),95% CI Lower,95% CI Upper
+Explicit Age (Minor) vs Explicit Age (Adult),GPT-5.6 Luna,56.9,-66.2,-78.9,-52.7
+Explicit Age (Minor) vs Explicit Age (Adult),Claude Haiku 4.5,54.2,-56.7,-71.6,-41.3
+Explicit Age (Minor) vs Explicit Age (Adult),Gemini 3.5 Flash Lite,48.1,-52.5,-67.5,-37.2
+Explicit Age (Minor) vs Explicit Age (Adult),DeepSeek-V4 Flash,42.9,-52.4,-65.8,-39.3
+Explicit Age (Minor) vs Explicit Age (Adult),Mistral Small 4,22.9,-30.4,-41.1,-20.2
+Explicit Age (Minor) vs Explicit Age (Adult),Gemma 4 31B,47.8,-54.0,-69.1,-38.7
+Explicit Age (17) vs Explicit Age (18),GPT-5.6 Luna,44.0,-49.3,-66.7,-32.0
+Explicit Age (17) vs Explicit Age (18),Claude Haiku 4.5,32.0,-33.3,-52.0,-17.3
+Explicit Age (17) vs Explicit Age (18),Gemini 3.5 Flash Lite,29.2,-31.9,-50.0,-15.3
+Explicit Age (17) vs Explicit Age (18),DeepSeek-V4 Flash,33.3,-37.3,-54.7,-21.3
+Explicit Age (17) vs Explicit Age (18),Mistral Small 4,2.7,-5.3,-16.0,2.7
+Explicit Age (17) vs Explicit Age (18),Gemma 4 31B,28.0,-33.3,-50.7,-17.3
+Explicit Age (Minor) vs Implicit Cue (Minor),GPT-5.6 Luna,46.9,-56.9,-70.7,-42.4
+Explicit Age (Minor) vs Implicit Cue (Minor),Claude Haiku 4.5,50.2,-51.3,-67.8,-34.7
+Explicit Age (Minor) vs Implicit Cue (Minor),Gemini 3.5 Flash Lite,26.4,-29.2,-43.9,-15.0
+Explicit Age (Minor) vs Implicit Cue (Minor),DeepSeek-V4 Flash,24.2,-36.4,-49.3,-24.2
+Explicit Age (Minor) vs Implicit Cue (Minor),Mistral Small 4,23.6,-27.1,-36.9,-18.2
+Explicit Age (Minor) vs Implicit Cue (Minor),Gemma 4 31B,24.4,-31.3,-48.2,-14.0

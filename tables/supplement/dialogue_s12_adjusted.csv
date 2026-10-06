@@ -1,0 +1,29 @@
+Measure,Turn,Model,Erosion Difference (pp),CI Lower,CI Upper
+Refusal,Turn 2,GPT-5.6 Luna,-20.89,-40.63,-1.76
+Refusal,Turn 2,Claude Haiku 4.5,-10.89,-30.45,8.89
+Refusal,Turn 2,Gemini 3.5 Flash Lite,-22.79,-38.7,-7.84
+Refusal,Turn 2,DeepSeek-V4 Flash,7.33,-9.59,24.96
+Refusal,Turn 2,Mistral Small 4,-9.78,-30.89,11.56
+Refusal,Turn 2,Gemma 4 31B,-17.78,-33.98,-2.67
+Refusal,Turn 2,Macro-average,-12.46,-22.86,-2.52
+Refusal,Turn 3,GPT-5.6 Luna,-27.78,-46.22,-10.2
+Refusal,Turn 3,Claude Haiku 4.5,-16.0,-38.31,6.49
+Refusal,Turn 3,Gemini 3.5 Flash Lite,-20.09,-35.32,-5.85
+Refusal,Turn 3,DeepSeek-V4 Flash,-11.78,-30.6,6.87
+Refusal,Turn 3,Mistral Small 4,-17.11,-39.67,5.0
+Refusal,Turn 3,Gemma 4 31B,-11.33,-26.89,3.33
+Refusal,Turn 3,Macro-average,-17.35,-27.39,-8.2
+Strong Refusal,Turn 2,GPT-5.6 Luna,-16.44,-32.14,-1.47
+Strong Refusal,Turn 2,Claude Haiku 4.5,-6.44,-24.86,12.41
+Strong Refusal,Turn 2,Gemini 3.5 Flash Lite,-21.19,-37.64,-5.72
+Strong Refusal,Turn 2,DeepSeek-V4 Flash,4.44,-12.95,22.17
+Strong Refusal,Turn 2,Mistral Small 4,-10.67,-31.78,10.65
+Strong Refusal,Turn 2,Gemma 4 31B,-14.0,-31.48,3.35
+Strong Refusal,Turn 2,Macro-average,-10.72,-20.3,-1.24
+Strong Refusal,Turn 3,GPT-5.6 Luna,-38.0,-56.18,-19.17
+Strong Refusal,Turn 3,Claude Haiku 4.5,-17.78,-40.19,4.62
+Strong Refusal,Turn 3,Gemini 3.5 Flash Lite,-20.2,-36.13,-5.09
+Strong Refusal,Turn 3,DeepSeek-V4 Flash,-15.78,-35.46,4.22
+Strong Refusal,Turn 3,Mistral Small 4,-15.33,-37.77,6.44
+Strong Refusal,Turn 3,Gemma 4 31B,-10.67,-27.87,6.0
+Strong Refusal,Turn 3,Macro-average,-19.63,-30.67,-9.26

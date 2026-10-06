@@ -1,0 +1,8 @@
+Model,Effect (pp),p,q,95% CI Lower,95% CI Upper,Scenarios
+GPT-5.6 Luna,+16.7,0.004,0.008,6.7,28.0,25
+Claude Haiku 4.5,+15.3,0.016,0.019,4.7,28.0,25
+Gemini 3.5 Flash Lite,+20.7,0.016,0.019,6.7,36.0,25
+DeepSeek-V4 Flash,+17.3,< 0.001,0.003,9.3,26.0,25
+Mistral Small 4,+10.0,0.032,0.032,2.7,18.0,25
+Gemma 4 31B,+19.3,0.002,0.006,8.7,32.0,25
+Macro-average,+16.6,,,9.3,24.4,

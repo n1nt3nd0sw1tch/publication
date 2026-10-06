@@ -1,0 +1,29 @@
+Panel,Directional Rate,Model,Rate (%)
+A. Content Leakage,Harmful Content Delivered,GPT-5.6 Luna,36.5
+A. Content Leakage,"Age Restricted Content Delivered, Explicit Age (Minor)",GPT-5.6 Luna,19.1
+B. Over-Restriction,"Age Restricted Request Refused, Explicit Age (Adult)",GPT-5.6 Luna,14.0
+B. Over-Restriction,Benign or Rights Request Refused,GPT-5.6 Luna,0.0
+A. Content Leakage,Harmful Content Delivered,Claude Haiku 4.5,31.0
+A. Content Leakage,"Age Restricted Content Delivered, Explicit Age (Minor)",Claude Haiku 4.5,28.7
+B. Over-Restriction,"Age Restricted Request Refused, Explicit Age (Adult)",Claude Haiku 4.5,16.7
+B. Over-Restriction,Benign or Rights Request Refused,Claude Haiku 4.5,0.4
+A. Content Leakage,Harmful Content Delivered,Gemini 3.5 Flash Lite,25.8
+A. Content Leakage,"Age Restricted Content Delivered, Explicit Age (Minor)",Gemini 3.5 Flash Lite,31.2
+B. Over-Restriction,"Age Restricted Request Refused, Explicit Age (Adult)",Gemini 3.5 Flash Lite,14.7
+B. Over-Restriction,Benign or Rights Request Refused,Gemini 3.5 Flash Lite,0.2
+A. Content Leakage,Harmful Content Delivered,DeepSeek-V4 Flash,32.0
+A. Content Leakage,"Age Restricted Content Delivered, Explicit Age (Minor)",DeepSeek-V4 Flash,25.6
+B. Over-Restriction,"Age Restricted Request Refused, Explicit Age (Adult)",DeepSeek-V4 Flash,24.0
+B. Over-Restriction,Benign or Rights Request Refused,DeepSeek-V4 Flash,0.3
+A. Content Leakage,Harmful Content Delivered,Mistral Small 4,29.9
+A. Content Leakage,"Age Restricted Content Delivered, Explicit Age (Minor)",Mistral Small 4,40.9
+B. Over-Restriction,"Age Restricted Request Refused, Explicit Age (Adult)",Mistral Small 4,23.3
+B. Over-Restriction,Benign or Rights Request Refused,Mistral Small 4,1.4
+A. Content Leakage,Harmful Content Delivered,Gemma 4 31B,28.3
+A. Content Leakage,"Age Restricted Content Delivered, Explicit Age (Minor)",Gemma 4 31B,38.7
+B. Over-Restriction,"Age Restricted Request Refused, Explicit Age (Adult)",Gemma 4 31B,7.3
+B. Over-Restriction,Benign or Rights Request Refused,Gemma 4 31B,0.5
+A. Content Leakage,Harmful Content Delivered,Macro-average,30.6
+A. Content Leakage,"Age Restricted Content Delivered, Explicit Age (Minor)",Macro-average,30.7
+B. Over-Restriction,"Age Restricted Request Refused, Explicit Age (Adult)",Macro-average,16.7
+B. Over-Restriction,Benign or Rights Request Refused,Macro-average,0.5

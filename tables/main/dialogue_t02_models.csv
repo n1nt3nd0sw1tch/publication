@@ -1,0 +1,8 @@
+Model,Defect Turn 1 (%),Defect Turn 2 (%),Defect Turn 3 (%),Change Turn 2 (pp),Change Turn 2 CI Lower,Change Turn 2 CI Upper,Change Turn 3 (pp),Change Turn 3 CI Lower,Change Turn 3 CI Upper
+GPT-5.6 Luna,33.57,42.05,58.74,8.48,3.09,14.01,25.17,17.93,32.58
+Claude Haiku 4.5,31.57,26.36,36.99,-5.21,-10.06,-0.6,5.42,-1.14,11.88
+Gemini 3.5 Flash Lite,28.34,43.83,48.6,15.49,9.4,21.5,20.25,15.3,25.16
+DeepSeek-V4 Flash,33.07,52.81,65.64,19.74,14.52,24.92,32.57,26.27,38.87
+Mistral Small 4,45.71,73.07,84.0,27.36,20.7,33.98,38.29,30.13,46.51
+Gemma 4 31B,34.82,47.05,51.77,12.23,6.07,18.49,16.95,11.4,22.61
+Macro-average,34.52,47.53,57.62,13.01,8.93,16.93,23.11,18.03,28.02
