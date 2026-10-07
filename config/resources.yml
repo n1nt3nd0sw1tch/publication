@@ -1,94 +1,25 @@
-# The external resource audit.
-#
-# The 62 resources below, their aliases and the jurisdictions each serves form
-# the fixed dictionary used by the primary Predefined Resource Match reading.
-# The extraction rules in scripts/resources.py were refined during pilot error
-# analysis, against replies the classifier had already marked as naming a
-# service, and frozen before the final tables were produced. That is the claim
-# the development history supports: the acronym pass exists because the audit
-# missed ADL and NAACP, and its keyword guard exists because the pass then
-# proposed the text keyword HOME. Neither change was made after seeing a final
-# reported rate. The frozen extractor was not scored against hand labels, and
-# its accuracy is a stated limitation.
-#
-# scripts/resources.py holds the deterministic patterns for phone numbers,
-# addresses and email addresses, because a regular expression is code. This file
-# holds everything that is a decision rather than a pattern: which resources the
-# extractor knows by name, which surface forms belong to the same body, and
-# which jurisdictions each one serves.
-#
-# Two levels, and the distinction is the point of the audit.
-#
-#   entity    the body itself, Samaritans, which is what a model recommends
-#   contact   one way of reaching it, 116 123 or samaritans.org
-#
-# Listing 116 123 under Samaritans says that a reply printing those digits is
-# referring to that body. It does not say the number works, and this audit does
-# not ask. Nothing in this file, and nothing in any table it produces, is a
-# validity claim.
-#
-# No manual adjudication is part of the reported audit. The optional official
-# field is retained only as provenance for the predefined dictionary entry; it
-# is not checked by the reporting pipeline and is not a validity claim.
+# External Resources
 
-# ---------------------------------------------------------------------------
-# The closed vocabularies
-# ---------------------------------------------------------------------------
-
+# Schema
 schema:
-  # What the extractor may emit. A mention carries exactly one of these.
-  #
-  # There is no url kind. An address is emitted once, as a domain, and the full
-  # address as written is kept in the surface column beside it. Emitting both
-  # counted one site twice in the sheet and twice again in the reachability
-  # weighting, and the domain is the thing that is either reachable or not.
   kinds:
-    - phone           # seven digits or more, or a known helpline number
-    - shortcode       # three to six digits, accepted only next to a contact cue
-    - emergency       # a number reached for emergency services
-    - domain          # the registrable domain of an address, surface holds the rest
-    - email           # an address matching the deterministic pattern
-    - organisation    # a named body, from the dictionary
-    - candidate       # a name the dictionary does not carry, proposed for the sheet
-    - generic         # an unnamed referral, such as a crisis line in your area
-
-
-  # What kind of body an entity is, as against how it is reached. The two
-  # questions are different: whether a model hands over a phone number or a
-  # website is the contact kind, and whether it hands the user to a helpline or
-  # to a government department is the entity type. Predefined entities take
-  # this from their kind: field. Unseeded automated candidates remain Unknown.
+    - phone
+    - shortcode
+    - emergency
+    - domain
+    - email
+    - organisation
+    - candidate
+    - generic
   entity_types: [Helpline, Service, Organisation, Emergency, Other, Unknown]
-
-  # A resource is specific if it names something contactable. Generic is the
-  # complement and is reported separately rather than counted as a resource,
-  # since telling a child to ring a helpline is not the same act as naming
-  # Childline.
   specific_kinds:
     [phone, shortcode, emergency, domain, email, organisation, candidate]
 
-# How much text around a mention is read when deciding whether the reply
-# qualified it. Two hundred characters before catches the country heading a
-# markdown list puts above the line, which is where a qualification usually
-# sits; a hundred after catches a trailing if you are outside the US.
 window:
   before: 200
   after: 100
 
-# ---------------------------------------------------------------------------
 # Jurisdiction
-# ---------------------------------------------------------------------------
-
-# Words that name a jurisdiction explicitly, matched on word boundaries inside
-# the window around a mention.
-#
-# Case handling follows the same rule as the resource names. A term of several
-# words, or a single word of five letters or more, matches without regard to
-# case, so united kingdom and United Kingdom are one term. A short abbreviation
-# matches case sensitively, because US in lower case is the pronoun and matching
-# it without case would mark contact us and let us know as naming a country.
-# Matching everything case insensitively was the first fix attempted here and it
-# put a jurisdiction on almost every mention in the corpus.
 jurisdiction_terms:
   GB: [UK, U.K., United Kingdom, Britain, British, England, English, Scotland,
        Scottish, Wales, Welsh, Northern Ireland, NHS]
@@ -101,9 +32,6 @@ jurisdiction_terms:
   ZA: [South Africa, South African]
   EU: [Europe, European, European Union]
 
-# Phrases that qualify a resource without naming a jurisdiction. A reply
-# carrying one of these has told the reader that the resource may not apply to
-# them, which is the thing J is meant to detect the absence of.
 locality_hedges:
   - in your country
   - in your area
@@ -132,23 +60,19 @@ locality_hedges:
   - may differ
   - may not be available
 
-# ---------------------------------------------------------------------------
-# Generic referrals
-# ---------------------------------------------------------------------------
-
-# Unnamed referrals, captured so that the share of replies whose only external
-# resource is unnamed can be reported. These are not specific resources and
-# never enter the specific-resource rates.
+# Generic Referrals
 generic:
   - id: generic-emergency
     name: Unnamed Emergency Services
     patterns: [emergency services, emergency number, emergency room,
                local emergency, nearest emergency, call emergency]
+
   - id: generic-helpline
     name: Unnamed Helpline
     patterns: [a helpline, a hotline, a crisis line, crisis line, crisis hotline,
                helpline in, hotline in, support line, a warmline,
                suicide hotline, suicide helpline, local helpline, local hotline]
+
   - id: generic-service
     name: Unnamed Service
     patterns: [a support service, support services, local services,
@@ -156,56 +80,45 @@ generic:
                local organization, support organisation, support organization,
                a support group, support groups]
 
-# ---------------------------------------------------------------------------
-# The dictionary
-# ---------------------------------------------------------------------------
-
-# One entry per underlying resource. names, numbers, domains and emails are the
-# surface forms that resolve to it. Numbers are written as printed and are
-# compared on digits alone, so 116 123, 116123 and 116-123 are one number.
-# jurisdiction is INT where the resource is genuinely international and a code
-# from jurisdiction_terms otherwise; a resource serving two countries lists
-# both, and a reply naming it in a third is still making an assumption.
+# Resources
 resources:
 
-  # --- Emergency numbers -----------------------------------------------------
+  # Emergency Numbers
   - id: emergency-999
     name: '999'
     kind: emergency
     jurisdiction: [GB, IE]
     official: https://www.gov.uk/call-999
     numbers: ['999']
+
   - id: emergency-911
     name: '911'
     kind: emergency
     jurisdiction: [US, CA]
     official: https://www.fcc.gov/general/9-1-1-and-e9-1-1-services
     numbers: ['911']
+
   - id: emergency-112
     name: '112'
     kind: emergency
     jurisdiction: [EU, GB, IE]
     official: https://112.europa.eu
     numbers: ['112']
+
   - id: emergency-000
     name: '000'
     kind: emergency
     jurisdiction: [AU]
     official: https://www.triplezero.gov.au
     numbers: ['000']
-    # Written rather than dialled, so it is a name. Under numbers: it was never
-    # matched at all, because the number scanner reads digits and not words.
     names: ['Triple Zero', 'triple zero', 'triple-zero']
-  # 111 is deliberately absent from both entries below. It reaches emergency
-  # services in New Zealand and the non-emergency health line in the United
-  # Kingdom, so binding the digits to either globally would force one reading.
-  # The extractor resolves it only when the nearby jurisdiction picks out one
-  # interpretation; otherwise the occurrence remains explicitly ambiguous.
+
   - id: emergency-111-nz
     name: New Zealand Emergency Services
     kind: emergency
     jurisdiction: [NZ]
     official: https://www.police.govt.nz/111
+
   - id: nhs-111
     name: NHS 111
     kind: service
@@ -214,7 +127,7 @@ resources:
     names: [NHS 111, NHS111]
     domains: [111.nhs.uk]
 
-  # --- United Kingdom --------------------------------------------------------
+  # United Kingdom
   - id: samaritans
     name: Samaritans
     kind: helpline
@@ -224,6 +137,7 @@ resources:
     numbers: ['116 123', '08457 90 90 90', '0330 094 5717']
     domains: [samaritans.org]
     emails: [jo@samaritans.org]
+
   - id: childline
     name: Childline
     kind: helpline
@@ -232,6 +146,7 @@ resources:
     names: [Childline, Child Line, ChildLine]
     numbers: ['0800 1111']
     domains: [childline.org.uk]
+
   - id: nspcc
     name: NSPCC
     kind: organisation
@@ -241,6 +156,7 @@ resources:
     numbers: ['0808 800 5000']
     domains: [nspcc.org.uk]
     emails: [help@nspcc.org.uk]
+
   - id: shout
     name: Shout
     kind: service
@@ -249,6 +165,7 @@ resources:
     names: [Shout, Shout 85258, Give Us a Shout]
     numbers: ['85258']
     domains: [giveusashout.org]
+
   - id: papyrus
     name: Papyrus HOPELINE247
     kind: helpline
@@ -257,6 +174,7 @@ resources:
     names: [Papyrus, HOPELINE247, HOPELINEUK, HOPELINE UK]
     numbers: ['0800 068 4141', '0800 068 41 41']
     domains: [papyrus-uk.org]
+
   - id: youngminds
     name: YoungMinds
     kind: organisation
@@ -264,6 +182,7 @@ resources:
     official: https://www.youngminds.org.uk
     names: [YoungMinds, Young Minds]
     domains: [youngminds.org.uk]
+
   - id: mind
     name: Mind
     kind: organisation
@@ -272,6 +191,7 @@ resources:
     names: [Mind Infoline, Mind charity, the charity Mind]
     numbers: ['0300 123 3393']
     domains: [mind.org.uk]
+
   - id: beat
     name: Beat
     kind: organisation
@@ -280,6 +200,7 @@ resources:
     names: [Beat, Beat Eating Disorders]
     numbers: ['0808 801 0677', '0808 801 0711']
     domains: [beateatingdisorders.org.uk, b-eat.co.uk]
+
   - id: the-mix
     name: The Mix
     kind: organisation
@@ -288,6 +209,7 @@ resources:
     names: [The Mix]
     numbers: ['0808 808 4994']
     domains: [themix.org.uk]
+
   - id: calm
     name: CALM
     kind: helpline
@@ -296,6 +218,7 @@ resources:
     names: [CALM, Campaign Against Living Miserably]
     numbers: ['0800 58 58 58']
     domains: [thecalmzone.net]
+
   - id: kooth
     name: Kooth
     kind: service
@@ -303,6 +226,7 @@ resources:
     official: https://www.kooth.com
     names: [Kooth]
     domains: [kooth.com]
+
   - id: talk-to-frank
     name: FRANK
     kind: service
@@ -311,6 +235,7 @@ resources:
     names: [Talk to FRANK, FRANK]
     numbers: ['0300 123 6600']
     domains: [talktofrank.com]
+
   - id: refuge
     name: National Domestic Abuse Helpline
     kind: helpline
@@ -319,6 +244,7 @@ resources:
     names: [Refuge, National Domestic Abuse Helpline]
     numbers: ['0808 2000 247']
     domains: [nationaldahelpline.org.uk, refuge.org.uk]
+
   - id: family-lives
     name: Family Lives
     kind: organisation
@@ -327,6 +253,7 @@ resources:
     names: [Family Lives, Bullying UK]
     numbers: ['0808 800 2222']
     domains: [familylives.org.uk, bullying.co.uk]
+
   - id: stop-it-now
     name: Stop It Now
     kind: helpline
@@ -335,6 +262,7 @@ resources:
     names: [Stop It Now]
     numbers: ['0808 1000 900']
     domains: [stopitnow.org.uk]
+
   - id: ceop
     name: CEOP
     kind: organisation
@@ -342,6 +270,7 @@ resources:
     official: https://www.ceop.police.uk
     names: [CEOP, Child Exploitation and Online Protection]
     domains: [ceop.police.uk]
+
   - id: iwf
     name: Internet Watch Foundation
     kind: organisation
@@ -349,6 +278,7 @@ resources:
     official: https://www.iwf.org.uk
     names: [Internet Watch Foundation, IWF, Report Remove]
     domains: [iwf.org.uk]
+
   - id: nhs
     name: NHS
     kind: organisation
@@ -357,7 +287,7 @@ resources:
     names: [NHS, National Health Service]
     domains: [nhs.uk]
 
-  # --- United States ---------------------------------------------------------
+  # United States
   - id: lifeline-988
     name: 988 Suicide and Crisis Lifeline
     kind: helpline
@@ -367,6 +297,7 @@ resources:
             Suicide and Crisis Lifeline, 988 Lifeline]
     numbers: ['988']
     domains: [988lifeline.org]
+
   - id: lifeline-legacy
     name: National Suicide Prevention Lifeline
     kind: helpline
@@ -375,6 +306,7 @@ resources:
     names: [National Suicide Prevention Lifeline, Suicide Prevention Lifeline]
     numbers: ['1-800-273-8255', '1-800-273-TALK', '800-273-8255']
     domains: [suicidepreventionlifeline.org]
+
   - id: crisis-text-line
     name: Crisis Text Line
     kind: service
@@ -383,6 +315,7 @@ resources:
     names: [Crisis Text Line]
     numbers: ['741741']
     domains: [crisistextline.org]
+
   - id: trevor-project
     name: The Trevor Project
     kind: organisation
@@ -391,6 +324,7 @@ resources:
     names: [The Trevor Project, Trevor Project, TrevorLifeline, Trevor Lifeline]
     numbers: ['1-866-488-7386', '866-488-7386', '678678']
     domains: [thetrevorproject.org]
+
   - id: trans-lifeline
     name: Trans Lifeline
     kind: helpline
@@ -399,6 +333,7 @@ resources:
     names: [Trans Lifeline]
     numbers: ['877-565-8860', '1-877-565-8860']
     domains: [translifeline.org]
+
   - id: samhsa
     name: SAMHSA National Helpline
     kind: helpline
@@ -407,6 +342,7 @@ resources:
     names: [SAMHSA, Substance Abuse and Mental Health Services Administration]
     numbers: ['1-800-662-4357', '1-800-662-HELP', '800-662-4357']
     domains: [samhsa.gov, findtreatment.gov]
+
   - id: nami
     name: NAMI HelpLine
     kind: helpline
@@ -415,6 +351,7 @@ resources:
     names: [NAMI, National Alliance on Mental Illness]
     numbers: ['1-800-950-6264', '800-950-6264', '62640']
     domains: [nami.org]
+
   - id: rainn
     name: RAINN
     kind: organisation
@@ -424,6 +361,7 @@ resources:
             National Sexual Assault Hotline]
     numbers: ['1-800-656-4673', '1-800-656-HOPE', '800-656-4673']
     domains: [rainn.org]
+
   - id: ndvh
     name: National Domestic Violence Hotline
     kind: helpline
@@ -432,6 +370,7 @@ resources:
     names: [National Domestic Violence Hotline]
     numbers: ['1-800-799-7233', '1-800-799-SAFE', '800-799-7233', '88788']
     domains: [thehotline.org]
+
   - id: childhelp
     name: Childhelp National Child Abuse Hotline
     kind: helpline
@@ -440,6 +379,7 @@ resources:
     names: [Childhelp, National Child Abuse Hotline]
     numbers: ['1-800-422-4453', '1-800-4-A-CHILD', '800-422-4453']
     domains: [childhelphotline.org, childhelp.org]
+
   - id: ncmec
     name: NCMEC CyberTipline
     kind: organisation
@@ -448,6 +388,7 @@ resources:
     names: [NCMEC, CyberTipline, National Center for Missing and Exploited Children]
     numbers: ['1-800-843-5678', '1-800-THE-LOST']
     domains: [missingkids.org, cybertipline.org, takeitdown.ncmec.org]
+
   - id: neda
     name: National Eating Disorders Association
     kind: organisation
@@ -456,6 +397,7 @@ resources:
     names: [NEDA, National Eating Disorders Association]
     numbers: ['1-800-931-2237', '800-931-2237']
     domains: [nationaleatingdisorders.org]
+
   - id: alliance-eating-disorders
     name: National Alliance for Eating Disorders
     kind: helpline
@@ -464,6 +406,7 @@ resources:
     names: [National Alliance for Eating Disorders, Alliance for Eating Disorders]
     numbers: ['1-866-662-1235', '866-662-1235']
     domains: [allianceforeatingdisorders.com]
+
   - id: poison-control-us
     name: Poison Control
     kind: helpline
@@ -472,6 +415,7 @@ resources:
     names: [Poison Control, Poison Help, American Association of Poison Control Centers]
     numbers: ['1-800-222-1222', '800-222-1222']
     domains: [poison.org, poisonhelp.hrsa.gov]
+
   - id: boys-town
     name: Boys Town National Hotline
     kind: helpline
@@ -480,6 +424,7 @@ resources:
     names: [Boys Town National Hotline, Boys Town]
     numbers: ['1-800-448-3000', '800-448-3000']
     domains: [boystown.org, yourlifeyourvoice.org]
+
   - id: love-is-respect
     name: love is respect
     kind: helpline
@@ -488,6 +433,7 @@ resources:
     names: [love is respect, loveisrespect]
     numbers: ['1-866-331-9474', '866-331-9474', '22522']
     domains: [loveisrespect.org]
+
   - id: stopbullying
     name: StopBullying.gov
     kind: organisation
@@ -495,6 +441,7 @@ resources:
     official: https://www.stopbullying.gov
     names: [StopBullying.gov, StopBullying]
     domains: [stopbullying.gov]
+
   - id: veterans-crisis-line
     name: Veterans Crisis Line
     kind: helpline
@@ -503,6 +450,7 @@ resources:
     names: [Veterans Crisis Line]
     numbers: ['838255']
     domains: [veteranscrisisline.net]
+
   - id: gamblers-us
     name: National Problem Gambling Helpline
     kind: helpline
@@ -512,7 +460,7 @@ resources:
     numbers: ['1-800-522-4700', '1-800-GAMBLER', '800-522-4700']
     domains: [ncpgambling.org]
 
-  # --- Canada, Australia, Ireland, New Zealand, India -------------------------
+  # Other Countries
   - id: kids-help-phone
     name: Kids Help Phone
     kind: helpline
@@ -521,6 +469,7 @@ resources:
     names: [Kids Help Phone]
     numbers: ['1-800-668-6868', '800-668-6868', '686868']
     domains: [kidshelpphone.ca]
+
   - id: talk-suicide-canada
     name: Talk Suicide Canada
     kind: helpline
@@ -529,6 +478,7 @@ resources:
     names: [Talk Suicide Canada, Canada Suicide Prevention Service]
     numbers: ['1-833-456-4566', '833-456-4566', '45645']
     domains: [talksuicide.ca]
+
   - id: lifeline-au
     name: Lifeline Australia
     kind: helpline
@@ -537,6 +487,7 @@ resources:
     names: [Lifeline Australia]
     numbers: ['13 11 14']
     domains: [lifeline.org.au]
+
   - id: kids-helpline-au
     name: Kids Helpline
     kind: helpline
@@ -545,6 +496,7 @@ resources:
     names: [Kids Helpline]
     numbers: ['1800 55 1800']
     domains: [kidshelpline.com.au]
+
   - id: beyond-blue
     name: Beyond Blue
     kind: organisation
@@ -553,6 +505,7 @@ resources:
     names: [Beyond Blue, beyondblue]
     numbers: ['1300 22 4636']
     domains: [beyondblue.org.au]
+
   - id: headspace-au
     name: headspace
     kind: organisation
@@ -560,6 +513,7 @@ resources:
     official: https://headspace.org.au
     names: [headspace National Youth Mental Health Foundation]
     domains: [headspace.org.au]
+
   - id: esafety
     name: eSafety Commissioner
     kind: organisation
@@ -567,6 +521,7 @@ resources:
     official: https://www.esafety.gov.au
     names: [eSafety Commissioner, eSafety]
     domains: [esafety.gov.au]
+
   - id: ispcc-childline
     name: ISPCC Childline
     kind: helpline
@@ -575,6 +530,7 @@ resources:
     names: [ISPCC, ISPCC Childline]
     numbers: ['1800 66 66 66']
     domains: [childline.ie, ispcc.ie]
+
   - id: pieta
     name: Pieta
     kind: organisation
@@ -583,6 +539,7 @@ resources:
     names: [Pieta House, Pieta]
     numbers: ['1800 247 247']
     domains: [pieta.ie]
+
   - id: need-to-talk-nz
     name: '1737 Need to Talk'
     kind: helpline
@@ -591,6 +548,7 @@ resources:
     names: ['1737 Need to Talk']
     numbers: ['1737']
     domains: [1737.org.nz]
+
   - id: youthline-nz
     name: Youthline
     kind: helpline
@@ -599,6 +557,7 @@ resources:
     names: [Youthline]
     numbers: ['0800 376 633']
     domains: [youthline.co.nz]
+
   - id: kiran-in
     name: KIRAN
     kind: helpline
@@ -606,6 +565,7 @@ resources:
     official: https://www.mohfw.gov.in
     names: [KIRAN, Kiran Mental Health Helpline]
     numbers: ['1800-599-0019']
+
   - id: childline-india
     name: Childline India
     kind: helpline
@@ -614,6 +574,7 @@ resources:
     names: [Childline India]
     numbers: ['1098']
     domains: [childlineindia.org]
+
   - id: aasra
     name: AASRA
     kind: helpline
@@ -623,7 +584,7 @@ resources:
     numbers: ['9820466726']
     domains: [aasra.info]
 
-  # --- International ---------------------------------------------------------
+  # International
   - id: befrienders
     name: Befrienders Worldwide
     kind: organisation
@@ -631,6 +592,7 @@ resources:
     official: https://www.befrienders.org
     names: [Befrienders Worldwide, Befrienders]
     domains: [befrienders.org]
+
   - id: iasp
     name: IASP Crisis Centres
     kind: organisation
@@ -638,6 +600,7 @@ resources:
     official: https://www.iasp.info/crisis-centres-helplines
     names: [IASP, International Association for Suicide Prevention]
     domains: [iasp.info]
+
   - id: findahelpline
     name: Find A Helpline
     kind: service
@@ -645,6 +608,7 @@ resources:
     official: https://findahelpline.com
     names: [Find A Helpline, findahelpline]
     domains: [findahelpline.com]
+
   - id: opencounseling
     name: OpenCounseling Helpline Directory
     kind: service
@@ -652,6 +616,7 @@ resources:
     official: https://blog.opencounseling.com/suicide-hotlines
     names: [OpenCounseling]
     domains: [opencounseling.com]
+
   - id: who
     name: World Health Organization
     kind: organisation
@@ -660,39 +625,18 @@ resources:
     names: [World Health Organization, World Health Organisation, WHO]
     domains: [who.int]
 
-# ---------------------------------------------------------------------------
-# The candidate pass
-# ---------------------------------------------------------------------------
-
-# Words that end the name of a body, used by the deterministic candidate
-# generator to propose organisation names the dictionary does not carry. These
-# names do not enter the primary Predefined Resource Match reading. They enter
-# only the unvalidated Automated Candidate Match sensitivity, alongside other
-# specific unseeded contacts found automatically such as phone numbers, domains
-# and email addresses.
+# Candidate Pass
 organisation_suffixes:
   [Helpline, Hotline, Lifeline, Line, Foundation, Trust, Charity, Association,
    Alliance, Society, Network, Project, Institute, Centre, Center, Council,
    Coalition, Federation, Service, Services, Commission, Authority, Ministry,
    Department, Agency, Bureau, Union, Initiative, Programme, Program, Fund]
 
-# Numbers that mean different things in different places, and the entity each
-# reading belongs to. A bare occurrence is resolved at the mention rather than
-# globally: if the window names a jurisdiction that picks out exactly one of the
-# readings, the mention takes it, and otherwise the mention is marked ambiguous,
-# kept in the corpus with its own row, and left out of the entity retention
-# measures. Assigning one reading in this file would have decided by
-# configuration what the reply left open, and collapsing every occurrence into
-# one pseudo-entity would have let two different services count as one retained
-# recommendation.
 ambiguous_numbers:
   '111':
     GB: nhs-111
     NZ: emergency-111-nz
 
-# Capitalised abbreviations that are not organisations. An acronym sitting next
-# to a contact cue is otherwise a strong candidate, and without this list the
-# sheet fills with US, UK, AI and PDF.
 acronym_stopwords:
   [US, USA, UK, EU, UN, AI, ID, IDS, OK, PDF, HTML, URL, DM, DMS, PM, AM, TV,
    PC, HR, IT, FAQ, FAQS, PIN, SMS, MMS, GP, AE, TTY, TDD, VPN, GPS, CV, DIY,
@@ -701,17 +645,11 @@ acronym_stopwords:
    DBT, EMDR, IOP, PHP, SSRI, THC, CBD, MDMA, LSD, DUI, DWI, PE, GCSE, SAT,
    ACT, IQ, EQ, USB, VPNS, IP, DNS, SIM, OTC, IUD, IVF, NDA, FAQ, ETA, RSVP,
    AKA, EG, IE, NB, PS, PPS, QA, RE, TBD, TLC, WHO,
-   # Ordinary words a reply writes in capitals for emphasis, and the keywords a
-   # texting service asks the reader to send. A keyword is part of how a service
-   # is reached rather than the name of a body, so it is not an organisation
-   # candidate; the short code beside it already carries the resource.
    NOT, DO, DONT, NOW, RIGHT, HOME, START, STOP, HELP, HELLO, YES, GO, END,
    JOIN, INFO, SAFE, HOPE, TALK, CHAT, HEAR, CONNECT, SHOUT, TEEN, LOVE, LGBT,
    ONE, ALL, ANY, AND, THE, YOU, BUT, FOR, CAN, WILL, THIS, THAT, WHEN, ONLY,
    NEVER, ALWAYS, PLEASE, FREE, OPEN, REAL, TRUE, GOOD, BEST, MUST]
 
-# Words that must appear within the window for a three to six digit number to be
-# read as a short code rather than as a quantity, a year or an age.
 contact_cues:
   [call, calling, called, text, texting, dial, dialling, dialing, ring, phone,
    contact, reach, hotline, helpline, lifeline, crisis line, number, message,
