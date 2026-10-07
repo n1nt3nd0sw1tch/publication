@@ -1,19 +1,8 @@
-"""Safety figures for the thesis and paper.
+"""Generate safety figures for the study.
 
-The figure grammar deliberately mirrors scripts/figureread.py:
-- the same typography scaling;
-- model panels where model is the natural unit;
-- outer axis labels rather than repeated labels;
-- bottom legends;
-- restrained panel titles only;
-- scenario-weighted rates throughout.
-
-Examples
---------
-python scripts/figuresafe.py
-python scripts/figuresafe.py --set main
-python scripts/figuresafe.py --set supplement
-python scripts/figuresafe.py --only outcomes_refusal
+Notes
+-----
+Read frozen safety outputs and export main and supplementary figures.
 """
 
 from __future__ import annotations
@@ -38,10 +27,6 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import analysis
 from settings import ROOT, measure_column
 
-
-# ---------------------------------------------------------------------
-# Configuration
-# ---------------------------------------------------------------------
 
 FIGURES = ROOT / "figures" / "safety"
 REGISTER = analysis.MACHINE / "register_safety.csv"
@@ -84,7 +69,7 @@ SCENARIO_AXIS = {
     "Harmful": "Harmful",
 }
 
-# Same scenario grammar as readability coverage.
+
 TYPE_STYLE = {
     "Benign": ("-.", "D", 0.34),
     "Rights": (":", "^", 0.52),
@@ -124,8 +109,7 @@ CELL_COLUMNS = {
     for cell in analysis.CELL_ORDER
 }
 
-# Main descriptive figure: keep the fields that carry the safety argument.
-# Identity / boundary fields remain in the dedicated supplementary field maps.
+
 RATE_FIELDS = [
     ("refusal", "Refusal"),
     ("delivered", "Delivery"),
@@ -137,8 +121,7 @@ RATE_FIELDS = [
     (measure_column("Service Signpost"), "Service"),
 ]
 
-# Main conditional-safeguard comparison: enough fields to answer the question
-# without turning every panel into a wall of labels.
+
 SAFEGUARD_MAIN = [
     (measure_column("Risk Statement"), "Risk"),
     (measure_column("Legal Statement"), "Legal"),
@@ -236,10 +219,6 @@ for cell in analysis.CELL_ORDER:
         f"safety_safeguards_{slug}.pdf",
     ]
 
-
-# ---------------------------------------------------------------------
-# Shared figure grammar
-# ---------------------------------------------------------------------
 
 def styled(display, width_inches=7.4, label_points=None):
     scale = display * TEXT_WIDTH_CM / (width_inches * 2.54)
@@ -393,10 +372,6 @@ def effect_note(ax, x, y, text, colour, points, dy=10):
     ])
 
 
-# ---------------------------------------------------------------------
-# Reduction helpers
-# ---------------------------------------------------------------------
-
 def load_register():
     if not REGISTER.exists():
         raise SystemExit(
@@ -464,10 +439,6 @@ def groups_for(kind, frame):
     raise ValueError(kind)
 
 
-# ---------------------------------------------------------------------
-# Heatmap helper
-# ---------------------------------------------------------------------
-
 def draw_heatmap(ax, table, points, vmax, annotate=True):
     map_panel(ax, None, points)
     blues = colormaps["Blues"]
@@ -497,10 +468,6 @@ def draw_heatmap(ax, table, points, vmax, annotate=True):
                 )
     return image
 
-
-# ---------------------------------------------------------------------
-# Main 1: rates by scenario
-# ---------------------------------------------------------------------
 
 def scenario_rate_table(part, fields):
     return pd.DataFrame(
@@ -601,15 +568,11 @@ def draw_rates(returned, display):
     return save(fig, FIGURESPEC["rates"][1])
 
 
-# ---------------------------------------------------------------------
-# Main 2: outcomes by scenario and model
-# ---------------------------------------------------------------------
-
 def draw_outcome_pair(returned, display, cells, filename):
     """Draw one wide 1x2 outcome figure for a pair of outcome cells."""
     points = styled(display, width_inches=11.0, label_points=9.6)
 
-    # Same scenario palette as every other figure.
+
     colour = SCENARIO_COLOUR
 
     fig, axes = plt.subplots(
@@ -627,15 +590,15 @@ def draw_outcome_pair(returned, display, cells, filename):
         wspace=0.12,
     )
 
-    # More vertical breathing room between model groups.
+
     group_gap = 2.02
     y = np.arange(len(analysis.ORDER))[::-1] * group_gap
 
-    # Four clearly separated bars per model.
+
     height = 0.14
     offsets = np.array([0.45, 0.15, -0.15, -0.45])
 
-    # Small-value panels benefit from a light minimum text offset.
+
     tiny_columns = [0.20, 0.42, 0.64, 0.86]
 
     for index, (ax, cell) in enumerate(zip(axes, cells)):
@@ -670,15 +633,15 @@ def draw_outcome_pair(returned, display, cells, filename):
                 y_text = bar.get_y() + bar.get_height() / 2
 
                 if cell == "Weak Refusal":
-                    # Place numbers close to each bar end rather than in distant columns.
+
                     x_text = value + 0.07
                     if value < 0.12:
                         x_text = max(x_text, 0.12)
                 elif cell == "Total Compliance" and value >= 95:
-                    # Keep near-100 labels inside the panel and separated from the border.
+
                     x_text = min(value + 0.45, 101.0)
                 elif value < 1.5:
-                    # Tiny values in the left panel still need a little room from the axis.
+
                     x_text = max(value + 0.08, tiny_columns[s_idx])
                 else:
                     x_text = value + max(0.10, maximum * 0.016)
@@ -714,7 +677,7 @@ def draw_outcome_pair(returned, display, cells, filename):
             ax.set_xlim(0, nice_ceiling(maximum * 1.45))
         elif cell == "Strong Refusal":
             ax.set_xlim(0, nice_ceiling(maximum * 1.18))
-        else:  # Total Compliance
+        else:
             ax.set_xlim(0, 104)
             ax.set_xticks([0, 20, 40, 60, 80, 100])
 
@@ -723,9 +686,7 @@ def draw_outcome_pair(returned, display, cells, filename):
         if index == 1:
             ax.tick_params(labelleft=False)
 
-    # Centre the shared x-axis label over the actual two-panel plotting area,
-    # not over the full page. The large left margin for model names means
-    # figure coordinate x=0.5 is visibly too far left.
+
     fig.canvas.draw()
     left_edge = axes[0].get_position().x0
     right_edge = axes[1].get_position().x1
@@ -783,10 +744,6 @@ def draw_outcomes_compliance(returned, display):
         FIGURESPEC["outcomes_compliance"][1],
     )
 
-
-# ---------------------------------------------------------------------
-# Main 3: safeguards within Strong Refusal vs Total Compliance
-# ---------------------------------------------------------------------
 
 def conditional_field_rates(part, model, fields):
     model_part = part[part["label"].eq(model)]
@@ -888,10 +845,6 @@ def draw_safeguards(returned, display):
     legend(fig, handles, names, points, 2)
     return save(fig, FIGURESPEC["safeguards"][1])
 
-
-# ---------------------------------------------------------------------
-# Main 4: exact-age trajectory
-# ---------------------------------------------------------------------
 
 def age_bands(ax):
     ax.axvspan(6.4, 17.5, color=MINOR_BAND, zorder=0)
@@ -1028,10 +981,6 @@ def draw_trajectory(focus, display):
     return save(fig, FIGURESPEC["trajectory"][1])
 
 
-# ---------------------------------------------------------------------
-# Main 5: primary contrasts
-# ---------------------------------------------------------------------
-
 def forest(ax, table, points):
     y = np.arange(len(table))
 
@@ -1117,10 +1066,6 @@ def draw_primary(register, display):
     return save(fig, FIGURESPEC["primary"][1])
 
 
-# ---------------------------------------------------------------------
-# Supplement 1: age trajectories for all scenario types
-# ---------------------------------------------------------------------
-
 def dynamic_ylim(values):
     values = np.asarray(values, dtype=float)
     values = values[np.isfinite(values)]
@@ -1145,8 +1090,7 @@ def draw_controls(returned, display):
     """
     points = styled(display)
 
-    # Keep the original compact 2x2 geometry, but reserve explicit space
-    # between rows and below the panels for the shared x-label and legend.
+
     fig, axes = plt.subplots(
         2,
         2,
@@ -1203,14 +1147,13 @@ def draw_controls(returned, display):
                 zorder=1,
             )
 
-    # Only the bottom row needs x tick labels; only the left column needs y labels.
+
     for ax in axes[0, :]:
         ax.tick_params(labelbottom=False)
     for ax in axes[:, 1]:
         ax.tick_params(labelleft=False)
 
-    # Use fixed figure coordinates rather than supxlabel/supylabel so
-    # bbox_inches="tight" cannot pull the labels into the panels.
+
     fig.text(
         0.535,
         0.132,
@@ -1247,10 +1190,6 @@ def draw_controls(returned, display):
 
     return save(fig, FIGURESPEC["controls"][1])
 
-
-# ---------------------------------------------------------------------
-# Supplement 2: signal ladder
-# ---------------------------------------------------------------------
 
 def draw_cues(returned, display):
     """Refusal across the five age-signal levels, one model per panel."""
@@ -1310,7 +1249,7 @@ def draw_cues(returned, display):
         ax.set_ylim(0, 85)
         ax.yaxis.set_major_locator(MultipleLocator(20))
 
-        # Label the explicit adult baseline and the two minor conditions.
+
         for xpos in (2, 3, 4):
             value = values.iloc[xpos]
             if not np.isfinite(value):
@@ -1353,10 +1292,6 @@ def draw_cues(returned, display):
     )
     return save(fig, FIGURESPEC["cues"][1])
 
-
-# ---------------------------------------------------------------------
-# Supplement 3-5: safeguard field maps
-# ---------------------------------------------------------------------
 
 def draw_field_slice(returned, display, kind):
     points = styled(
@@ -1416,7 +1351,7 @@ def draw_field_slice(returned, display, kind):
     ax.tick_params(axis="x", labelsize=points * 0.80)
     ax.tick_params(axis="y", labelsize=points * 0.80)
 
-    # Explicitly keep every field label horizontal.
+
     plt.setp(
         ax.get_xticklabels(),
         rotation=0,
@@ -1453,10 +1388,6 @@ def draw_field_slice(returned, display, kind):
     return save(fig, FIGURESPEC[f"fields_{kind}"][1])
 
 
-# ---------------------------------------------------------------------
-# Supplement 6: directional failures
-# ---------------------------------------------------------------------
-
 def failure_series(returned):
     harmful = returned[returned["scenario_type"].eq("Harmful")]
     age_restricted = returned[returned["scenario_type"].eq("Age Restricted")]
@@ -1488,15 +1419,15 @@ def failure_series(returned):
 
 def grouped_failure_panel(ax, series_items, points, title):
     """Grouped horizontal bars using the same layout grammar as safety_outcomes."""
-    # Match safety_outcomes exactly for model spacing.
+
     group_gap = 2.02
     y = np.arange(len(analysis.ORDER))[::-1] * group_gap
     n = len(series_items)
 
-    # Same narrow-bin style as safety_outcomes.
+
     height = 0.14
 
-    # Preserve the requested visual order from top to bottom.
+
     if n == 2:
         offsets = np.array([0.15, -0.15])
     elif n == 3:
@@ -1577,7 +1508,7 @@ def draw_failures(returned, display):
     )
     series = failure_series(returned)
 
-    # Match safety_outcomes canvas, margins, and panel spacing.
+
     fig, axes = plt.subplots(
         1,
         2,
@@ -1593,9 +1524,7 @@ def draw_failures(returned, display):
         wspace=0.12,
     )
 
-    # Global visual order:
-    # Benign -> Rights -> Age Restricted -> Harmful.
-    # Each panel shows only the categories relevant to that failure direction.
+
     grouped_failure_panel(
         axes[0],
         [
@@ -1618,7 +1547,7 @@ def draw_failures(returned, display):
 
     axes[1].tick_params(labelleft=False)
 
-    # Same centering logic as safety_outcomes.
+
     fig.canvas.draw()
     left_edge = axes[0].get_position().x0
     right_edge = axes[1].get_position().x1
@@ -1662,12 +1591,6 @@ def draw_failures(returned, display):
     )
 
     return save(fig, FIGURESPEC["failures"][1])
-
-
-# ---------------------------------------------------------------------
-# CLI
-# ---------------------------------------------------------------------
-
 
 
 def draw_age_steps(focus, display):
@@ -1737,7 +1660,7 @@ def draw_tradeoff(returned, display):
         "refusal",
     )
 
-    # Name offsets: move GPT label to the LEFT, keep others to the right.
+
     name_offsets = {
         "GPT-5.6 Luna": (-10, -5),
         "Claude Haiku 4.5": (10, -7),
@@ -1747,7 +1670,7 @@ def draw_tradeoff(returned, display):
         "Gemma 4 31B": (10, -5),
     }
 
-    # Alignment for labels.
+
     name_align = {
         "GPT-5.6 Luna": "right",
         "Claude Haiku 4.5": "left",
@@ -1757,7 +1680,7 @@ def draw_tradeoff(returned, display):
         "Gemma 4 31B": "left",
     }
 
-    # Value labels above points.
+
     value_offsets = {
         "GPT-5.6 Luna": (0, 14),
         "Claude Haiku 4.5": (0, 14),
@@ -1790,11 +1713,11 @@ def draw_tradeoff(returned, display):
         zorder=1,
     )
 
-    # More right padding so GPT and the bottom-right corner label both fit cleanly.
+
     x_min = float(harmful.min()) - 0.9
     x_max = float(harmful.max()) + 2.4
 
-    # Small negative lower bound so GPT is fully visible.
+
     y_min = -0.16
     y_max = float(restrictive.max()) + 0.22
 

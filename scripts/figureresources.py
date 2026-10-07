@@ -1,12 +1,8 @@
-"""External-resource figures for the thesis.
+"""Generate external-resource figures for the study.
 
-Exact visual grammar matched to scripts/figureread.py and scripts/figuresafe.py.
-
-This version outputs:
-- Numbers / Calls
-- Support resources (Helplines + Organisations / public resources), top 15
-
-python scripts/figureresources.py
+Notes
+-----
+Summarise resource mentions and export publication-ready figures.
 """
 
 from __future__ import annotations

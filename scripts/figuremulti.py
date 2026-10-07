@@ -1,14 +1,8 @@
-"""Experiment 2 retention figures from the frozen Notebook 19 tables.
+"""Generate multi-turn safety retention figures.
 
-Run: python scripts/figuremulti.py [--set main|supplement|all]
-Requires the latest Notebook 19 exports.
-No inference calls, classification, bootstrap reruns, or changes to source data.
-Style and model/scenario colours are imported from figuresafe and analysis.
-
-The default figure set is deliberately small. It prioritises the two retention
-questions used in the thesis: whether an established boundary survives, and
-whether the three matched attack methods differ. Dense diagnostic heatmaps and
-plots that duplicate appendix tables are retired automatically.
+Notes
+-----
+Read frozen dialogue tables and export main and supplementary figures.
 """
 from __future__ import annotations
 
@@ -48,7 +42,7 @@ RADAR_STRATUM_MARKER = {
     "Harmful": "D",
 }
 
-# Old outputs are removed so the folder contains only the lean figure set.
+
 RETIRED = [
     "dialogue_outcomes",
     "dialogue_defects",

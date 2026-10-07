@@ -1,30 +1,8 @@
-"""Readability across the turns of Experiment 2.
+"""Analyse readability across multi-turn dialogues.
 
-A scratch script, not part of the pipeline. It lives at the repository root
-rather than in scripts/, measures nothing that is written back, and can be
-deleted without affecting a single reported number.
-
-    python turns_readability.py            # measure, cache, report
-    python turns_readability.py --remeasure # ignore the cache
-
-Three measures, not fifteen. The grade level is the primary readability measure
-of Section 3.4.3, Response Length is the complementary one that moves with it,
-and Mean AoA is the vocabulary measure that separates a fall in word length from
-a fall in sentence length. The other twelve are computed by scripts/language.py
-for Experiment 1 and are not needed to see whether a model rewrites as a
-dialogue is pressed.
-
-Two tables for the chapter, levels and the paired change from the opening, and
-two for the appendix behind it: the share of turns the fifty-word floor removes,
-by model and turn, and the same change split by attack method.
-
-The floor table is not decoration. The change columns rest on the dialogues long
-enough at both ends, that share differs sharply across the panel and moves in
-opposite directions within it, so the grade-level rows are not all measured on
-comparably complete subsets. Without the table that caveat is an assertion.
-
-Nothing here is confirmatory: Experiment 2 carries no declared readability
-hypothesis, so every number below is descriptive.
+Notes
+-----
+Measure selected language metrics and report descriptive turn-level changes.
 """
 
 import argparse
@@ -37,16 +15,14 @@ HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent if HERE.name == 'scripts' else HERE
 sys.path.insert(0, str(ROOT / 'scripts'))
 
-import evaluate                                              # noqa: E402
-from analysis import NAME, ORDER, interval, macro_average    # noqa: E402
-from language import FLOOR, measure_text                     # noqa: E402
-from settings import TURNS_PATH, measure_column              # noqa: E402
+import evaluate
+from analysis import NAME, ORDER, interval, macro_average
+from language import FLOOR, measure_text
+from settings import TURNS_PATH, measure_column
 
 CACHE = ROOT / 'results' / 'language' / 'turns_scratch.csv'
 
-# The three measures, and whether each needs the fifty-word floor. Only the
-# grade level does: Response Length is the length, and an age of acquisition is
-# a mean over whatever words are there.
+
 MEASURES = {
     'FKGL': True,
     'Response Length': False,
@@ -66,9 +42,7 @@ def measured(remeasure=False):
     turns['turn'] = pd.to_numeric(turns['turn'], errors='coerce')
     turns = turns[turns['turn'].isin(TURNS)]
 
-    # Returned turns only, on the rule of scripts/language.py: a turn the
-    # provider withheld is empty, and measured it reports an intervention
-    # outside the model as a model writing nothing.
+
     turns['text'] = turns['text'].fillna('').astype(str)
     withheld = (turns['text'].str.strip() == '').sum()
     turns = turns[turns['text'].str.strip() != '']
@@ -192,7 +166,7 @@ def report(effects, title, order, width=24, macro_row=True):
         if not per_label:
             macro.append('---')
             continue
-        # One series a model, taken from that model's own row.
+
         panel = {name: series
                  for label, block in per_label.items()
                  for name, series in block.items() if name == label}
@@ -258,12 +232,12 @@ if __name__ == '__main__':
 
     frame = measured(arguments.remeasure)
 
-    # Chapter.
+
     levels(frame)
     change(frame, 'FKGL')
     change(frame, 'Response Length')
 
-    # Appendix.
+
     by_method(frame, 'FKGL')
     by_method(frame, 'Response Length')
     floor_table(frame)

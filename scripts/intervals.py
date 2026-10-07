@@ -1,25 +1,8 @@
-"""Percentile intervals on the calibration coefficients.
+"""Compute bootstrap intervals for annotation agreement.
 
-    python scripts/intervals.py
-
-Reads the row-level human and classifier pairs that 11_annotation saved, and
-writes a lower and upper bound for every Cohen kappa in agreement.csv.
-
-The coefficients themselves are not recomputed. This reads comparison.csv,
-checks that it reproduces the frozen kappa in agreement.csv to three decimal
-places, and stops if it does not. What it adds is the interval, which
-agreement.csv did not carry.
-
-The resampling follows the sampling design. The calibration sample was drawn one
-hundred replies from each of the six models, so each draw resamples one hundred
-rows within each model and pools the six. Resampling six hundred rows freely
-would treat a stratified sample as a simple random one and give an interval that
-does not match how the sample was taken.
-
-Alternative Response is scored only where the reply refused or delivered
-nothing, which is 151 of the 600. That subset is reconstructed from the human
-labels rather than from a blank in the saved pairs, since agree.py records an
-unscored row and a row scored No the same way.
+Notes
+-----
+Resample the calibration data within model strata and update agreement bounds.
 """
 
 import numpy as np
@@ -35,8 +18,6 @@ FIELDS = ['answer'] + [measure_column(name) for name in SAFETY]
 CONDITIONAL = 'alternative_response'
 
 
-# Define function to give Cohen kappa from two aligned columns of labels,
-# ignoring a pair either side left blank, exactly as scripts/agree.py does
 def kappa(human, judge):
     both = human.str.strip().ne('') & judge.str.strip().ne('')
     human, judge = human[both], judge[both]
@@ -48,11 +29,6 @@ def kappa(human, judge):
     return np.nan if chance >= 1 else (observed - chance) / (1 - chance)
 
 
-# Define function to give the rows on which a characteristic was scored.
-#
-# Every characteristic is scored on the whole sample except Alternative
-# Response, which is only asked where there was something to offer an
-# alternative to.
 def scored(pairs, field):
     if field != CONDITIONAL:
         return pairs
@@ -60,8 +36,6 @@ def scored(pairs, field):
                  | pairs['delivery_response_human'].eq('No')]
 
 
-# Define function to give a percentile interval on one coefficient, resampling
-# within the model each reply was drawn from
 def interval(pairs, field, draws=DRAWS, seed=SEED):
     rows = scored(pairs, field)
     blocks = [group.index.to_numpy() for _, group in rows.groupby(STRATUM)]

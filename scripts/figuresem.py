@@ -1,20 +1,8 @@
-"""Semantic-similarity figures for the thesis.
+"""Generate semantic-similarity figures for the study.
 
-Reads the frozen semantic results directly from:
-    results/semantics/minilm/
-    results/semantics/mpnet/
-
-Produces only three main figures:
-    figures/semantic/semantic_age.pdf
-    figures/semantic/semantic_drift.pdf
-    figures/semantic/semantic_outcomes.pdf
-
-Run:
-    python scripts/figuresem.py
-    python scripts/figuresem.py --only age drift
-    python scripts/figuresem.py --png
-
-The script does not recompute embeddings or statistics.
+Notes
+-----
+Read frozen semantic results and export the reported figures.
 """
 
 from __future__ import annotations
@@ -36,10 +24,6 @@ import analysis
 import figuresafe as house
 
 
-# ---------------------------------------------------------------------
-# Paths and reporting order
-# ---------------------------------------------------------------------
-
 SEMANTICS = analysis.ROOT / "results" / "semantics"
 FIGURES = analysis.FIGURES / "semantic"
 
@@ -48,7 +32,7 @@ ENCODERS = {
     "mpnet": "MPNet",
 }
 
-# Keep the frozen file keys, but display them with the thesis wording.
+
 CONTRASTS = [
     "Control vs Explicit Age (Minor)",
     "Explicit Age (Minor) vs Explicit Age (Adult)",
@@ -95,10 +79,6 @@ ENCODER_STYLE = {
     "mpnet": ("#8E8E93", "s"),
 }
 
-
-# ---------------------------------------------------------------------
-# I/O and house style
-# ---------------------------------------------------------------------
 
 def read_semantic(encoder: str, stem: str) -> pd.DataFrame:
     path = SEMANTICS / encoder / f"{stem}.csv"
@@ -179,10 +159,6 @@ def pad_limits(values, lower=None, upper=None, pad=0.02, floor=None, ceiling=Non
     return lo, hi
 
 
-# ---------------------------------------------------------------------
-# Experiment 1: age-conditioned semantic separation
-# ---------------------------------------------------------------------
-
 def e1_summary(encoder="minilm") -> pd.DataFrame:
     d = read_semantic(encoder, "e1_summary").copy()
     required = {
@@ -218,15 +194,15 @@ def draw_age(png=False):
     """Experiment 1: scenario separation and semantic specificity."""
     d = e1_summary("minilm")
 
-    # Extra height is deliberate: four estimates are shown for each contrast.
+
     fig, axes, p = layout(1, 2, width=14.8, height=8.2)
 
-    # Left. Semantic separation by scenario type.
+
     ax = axes[0, 0]
     panel(ax, p)
     ax.axvline(0, color=analysis.MUTED, lw=0.9, ls="--")
 
-    # Space each contrast group apart, then offset the four strata within it.
+
     base = np.arange(len(CONTRASTS))[::-1] * 1.28
     offsets = {
         "Benign": +0.27,
@@ -264,7 +240,7 @@ def draw_age(png=False):
             zorder=3,
         )
 
-        # Put the value just beyond the CI rather than on top of the point/bar.
+
         for hi, yi, value in zip(high, y, est):
             ax.text(
                 hi + 0.004,
@@ -301,7 +277,7 @@ def draw_age(png=False):
         columnspacing=0.9,
     )
 
-    # Right. Semantic specificity, encoder sensitivity.
+
     ax = axes[0, 1]
     panel(ax, p)
     ax.axvline(0, color=analysis.MUTED, lw=0.9, ls="--")
@@ -352,7 +328,7 @@ def draw_age(png=False):
                 clip_on=False,
             )
 
-    # The left panel already names the six contrasts.
+
     ax.set_yticks(base, [""] * len(base))
     ax.set_xlabel("Semantic Specificity")
     ax.set_ylabel("")
@@ -372,10 +348,6 @@ def draw_age(png=False):
 
     save(fig, "semantic_age", png)
 
-
-# ---------------------------------------------------------------------
-# Experiment 2: semantic drift across turns
-# ---------------------------------------------------------------------
 
 def e2_summary(encoder="minilm") -> pd.DataFrame:
     d = read_semantic(encoder, "e2_summary").copy()
@@ -410,12 +382,12 @@ def draw_drift(png=False):
 
     fig, axes, p = layout(1, 2, width=14.7, height=7.2)
 
-    # Left. Attack method.
+
     ax = axes[0, 0]
     panel(ax, p)
     method_rows = d[d["axis"].eq("method")].set_index("method")
 
-    # Fixed text offsets keep the numerically close T2 estimates legible.
+
     method_dy = {
         "Emotional Pushback": +10,
         "Role Play": 0,
@@ -456,7 +428,7 @@ def draw_drift(png=False):
             zorder=2,
         )
 
-        # T2 and T3 values; the T2 offsets are staggered by method.
+
         ax.annotate(
             f"{values[1]:.3f}", (1, values[1]),
             xytext=(7, method_dy[method]), textcoords="offset points",
@@ -485,7 +457,7 @@ def draw_drift(png=False):
         columnspacing=0.9,
     )
 
-    # Right. Model.
+
     ax = axes[0, 1]
     panel(ax, p)
     model_rows = d[d["axis"].eq("model")].copy()
@@ -516,7 +488,7 @@ def draw_drift(png=False):
         t2_values.append(values[1])
         t3_values.append(values[2])
 
-    # Stagger both label columns and connect labels back to their points.
+
     t2_text = _stagger(t2_values, min_gap=0.022)
     t3_text = _stagger(t3_values, min_gap=0.022)
 
@@ -571,10 +543,6 @@ def draw_drift(png=False):
     save(fig, "semantic_drift", png)
 
 
-# ---------------------------------------------------------------------
-# Experiment 2: relation between semantic drift and safety outcome
-# ---------------------------------------------------------------------
-
 def e2_transitions(encoder: str) -> pd.DataFrame:
     d = read_semantic(encoder, "e2_transitions").copy()
     required = {
@@ -611,7 +579,7 @@ def draw_outcomes(png=False):
     fig, axes, p = layout(1, 2, width=14.4, height=6.7)
     base = np.arange(len(TRANSITIONS))[::-1] * 1.10
 
-    # Left. Turn-3 drift by action transition.
+
     ax = axes[0, 0]
     panel(ax, p)
     encoder_offsets = {"minilm": +0.11, "mpnet": -0.11}
@@ -670,7 +638,7 @@ def draw_outcomes(png=False):
         columnspacing=1.0,
     )
 
-    # Right. Adjusted similarity association.
+
     ax = axes[0, 1]
     panel(ax, p)
     ax.axvline(0, color=analysis.MUTED, lw=0.9, ls="--")
@@ -696,7 +664,7 @@ def draw_outcomes(png=False):
             capsize=0,
             zorder=3,
         )
-        # Put the estimate after the right CI endpoint to keep the bar unobscured.
+
         ax.text(
             high + 0.003, y, f"{est:+.3f}",
             va="center", ha="left",
@@ -714,10 +682,6 @@ def draw_outcomes(png=False):
 
     save(fig, "semantic_outcomes", png)
 
-
-# ---------------------------------------------------------------------
-# CLI
-# ---------------------------------------------------------------------
 
 BUILDERS = {
     "age": draw_age,

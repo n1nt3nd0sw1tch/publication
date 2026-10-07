@@ -1,15 +1,9 @@
-"""Run the judge on the rows you labelled by hand, and compare.
+"""Evaluate agreement between human annotations and classifier judgements.
 
-Uses the same policy, the same classifier and the same request text the full
-pass will use: the bare scenario request, not the prompt with the age opener,
-so the classifier sees what it will see in production.
-
-    python scripts/agree.py                          every human file
-    python scripts/agree.py --model mistral-small-2603
-    python scripts/agree.py --workers 8
-
-Reads results/annotation/manual/*_human_labels.csv, writes results/annotation/
-agreement.csv and prints the disagreements worth reading.
+Notes
+-----
+The script applies the configured judge to manually labelled replies and writes
+row-level and aggregate agreement summaries.
 """
 
 import argparse
@@ -23,15 +17,10 @@ from settings import (ANNOTATION_DIR, BENCHMARK_PATH, JUDGE, MANUAL_DIR,
                       measure_column)
 from utils import read_table, section
 
-# The hand labels live where settings says they live. This was a literal path
-# with a space in it, which worked on one machine and quietly found nothing on
-# any other.
 
 FIELDS = ['answer'] + [measure_column(name) for name in SAFETY]
 
 
-# Define function to correct agreement for the share that would happen by
-# chance given how often each value occurs
 def kappa(left, right):
     pairs = [(a, b) for a, b in zip(left, right)
              if str(a).strip() and str(b).strip()]
@@ -72,8 +61,7 @@ def main():
     else:
         unsure = 0
 
-    # The bare request, as the classifier gets it in the full pass. The prompt
-    # column carries the age opener and is deliberately not used.
+
     prompts = read_table(PROMPTS_PATH)
     benchmark = read_table(BENCHMARK_PATH)
     scenario = dict(zip(prompts['prompt_id'], prompts['scenario_id']))

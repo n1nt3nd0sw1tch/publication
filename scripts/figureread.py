@@ -1,8 +1,8 @@
-"""Readability figures for the thesis.
+"""Generate readability figures for the study.
 
-python scripts/figureread.py
-python scripts/figureread.py --set main
-python scripts/figureread.py --only ladder
+Notes
+-----
+Read frozen readability results and export main and supplementary figures.
 """
 
 from __future__ import annotations
@@ -32,18 +32,11 @@ from analysis import (
 from settings import ROOT
 
 
-# ---------------------------------------------------------------------
-# Configuration
-# ---------------------------------------------------------------------
-
 FIGURES = ROOT / "figures/readability"
 
-# The primary contrast is drawn from the table the notebook froze, not
-# recomputed here, so the figure and Table 4.12 cannot come apart. The script
-# says so and stops if the file is absent, on the same rule figuresafe.py uses
-# for the safety register.
+
 CONDITIONING_PATH = ROOT / "tables/main/readability_02_conditioning.csv"
-MACRO = "Macro-average"  # machine/data key; do not rename
+MACRO = "Macro-average"
 
 def display_label(value):
     """Canonical display spelling for figure labels."""
@@ -53,11 +46,7 @@ TEXT_WIDTH_CM = 16.0
 LABEL_POINTS = 11
 GRID_SIZE = (13.5, 7.8)
 
-# A single axis carrying seven rows. Its width is passed to styled() as the real
-# canvas width, so the type arrives at LABEL_POINTS once LaTeX has scaled the
-# file to \textwidth. The grid figures above keep their existing call for now,
-# since they are already tuned and re-scaling them would move every readability
-# figure in the thesis.
+
 FOREST_SIZE = (9.0, 5.4)
 
 LADDER = [7, 9, 11, 13, 15, 17, 18, 21]
@@ -85,8 +74,8 @@ SECONDARY_CONDITIONING = [
     ("response_length", "Difference in Response Length",
      "readability_conditioning_response_length.pdf"),
 ]
-# Scenario line grammar. Colour comes from SCENARIO_COLOUR; line style and
-# marker provide a redundant cue for print and colour-vision accessibility.
+
+
 TYPE_STYLE = {
     "Benign": ("-.", "D"),
     "Rights": (":", "^"),
@@ -117,10 +106,6 @@ LEGEND = dict(
 )
 
 
-# ---------------------------------------------------------------------
-# Reduction
-# ---------------------------------------------------------------------
-
 def by_scenario(df, measure, keys):
     cell = df.groupby(keys + ["scenario_id", "condition"], observed=True)[measure].mean()
     scenario = cell.groupby(keys + ["scenario_id"], observed=True).mean()
@@ -144,10 +129,6 @@ def contrast(df, column="fkgl"):
     point, low, high = bootstrap_paired(diff)
     return point, low, high, len(diff)
 
-
-# ---------------------------------------------------------------------
-# Shared figure grammar
-# ---------------------------------------------------------------------
 
 def styled(display, width_inches=7.4, label_points=None):
     scale = display * TEXT_WIDTH_CM / (width_inches * 2.54)
@@ -259,27 +240,23 @@ def spread_labels(values, minimum_gap, lower, upper):
     order = valid[np.argsort(values[valid])]
     placed = values[order].copy()
 
-    # Forward pass: enforce the minimum vertical separation.
+
     for i in range(1, len(placed)):
         placed[i] = max(placed[i], placed[i - 1] + minimum_gap)
 
-    # Shift the group back inside the plotting range if needed.
+
     if placed[-1] > upper:
         placed -= placed[-1] - upper
     if placed[0] < lower:
         placed += lower - placed[0]
 
-    # A second backward pass keeps separation if clamping moved the group.
+
     for i in range(len(placed) - 2, -1, -1):
         placed[i] = min(placed[i], placed[i + 1] - minimum_gap)
 
     positions[order] = placed
     return positions
 
-
-# ---------------------------------------------------------------------
-# Ladder
-# ---------------------------------------------------------------------
 
 def ladder_panel(ax, df, model, points, title=None, small=False):
     values = by_scenario(df, "fkgl", ["age"]).reindex(LADDER)
@@ -295,9 +272,7 @@ def ladder_panel(ax, df, model, points, title=None, small=False):
         linewidth=1.5 if small else 1.9, color=COLOUR[model], zorder=3
     )
 
-    # Representative ages: child, adolescent, pre-threshold and adult threshold.
-    # Labels are staggered, and high points are moved below the line so they do
-    # not collide with panel titles or the top edge.
+
     base_specs = {
         7:  ((0, 11), "bottom"),
         13: ((0, 11), "bottom"),
@@ -355,10 +330,6 @@ def draw_ladder(frame, display, kind=None):
     return save(fig, filename("readability_ladder", kind))
 
 
-# ---------------------------------------------------------------------
-# Distributions
-# ---------------------------------------------------------------------
-
 def overlap(minor, adult, edges):
     if minor.empty or adult.empty:
         return np.nan
@@ -397,10 +368,6 @@ def draw_distribution(frame, display, kind=None):
     )
     return save(fig, filename("readability_distribution", kind))
 
-
-# ---------------------------------------------------------------------
-# Signal strength
-# ---------------------------------------------------------------------
 
 def signal_level(frame):
     level = pd.Series("", index=frame.index, dtype=object)
@@ -449,8 +416,7 @@ def draw_signals(frame, display, kind=None):
         ax.margins(y=0.26)
         ax.yaxis.set_major_locator(MultipleLocator(0.25))
 
-        # Show exact values for Minor Cue and Minor Age in dedicated label
-        # columns rather than directly on top of the trajectories.
+
         ymin, ymax = ax.get_ylim()
         pad = 0.07 * (ymax - ymin)
 
@@ -499,18 +465,12 @@ def draw_signals(frame, display, kind=None):
     return save(fig, filename("readability_signals", kind))
 
 
-# ---------------------------------------------------------------------
-# Coverage
-# ---------------------------------------------------------------------
-
 def draw_coverage(frame, floor, display):
     points = styled(display)
     frame = frame.assign(short=frame["response_length"] < floor)
     fig, axes = grid(sharex=True, sharey=True, constrained_layout=True)
 
-    # Enough labels to make the plot quantitative without turning every line
-    # segment into text. These capture the youngest point, mid-adolescence,
-    # the minor/adult boundary, and the oldest point.
+
     label_ages = [7, 13, 17, 18, 21]
 
     for index, (ax, model) in enumerate(zip(axes.flat, ORDER)):
@@ -549,8 +509,7 @@ def draw_coverage(frame, floor, display):
             for kind in TYPES:
                 value = series[kind].get(age, np.nan)
 
-                # Suppress tiny values: visually they are already zero and
-                # printing them adds clutter without information.
+
                 if np.isfinite(value) and value >= 1.5:
                     values.append(float(value))
                     colours.append(SCENARIO_COLOUR[kind])
@@ -565,7 +524,7 @@ def draw_coverage(frame, floor, display):
                 upper=ymax - 0.04 * yrange,
             )
 
-            # Alternate left/right around the crowded 17/18 boundary.
+
             if age == 17:
                 text_x, ha = age - 0.25, "right"
             elif age == 18:
@@ -651,10 +610,6 @@ def draw_coverage_grid(frame, floor, display):
     return save(fig, "readability_coverage_grid.pdf")
 
 
-# ---------------------------------------------------------------------
-# Correlations
-# ---------------------------------------------------------------------
-
 def draw_correlations(frame, display):
     points = styled(display, 10.5, label_points=9.0)
     columns = [key for key, _ in MEASURES if key in frame.columns]
@@ -694,17 +649,6 @@ def draw_correlations(frame, display):
     return save(fig, "readability_correlations.pdf")
 
 
-# ---------------------------------------------------------------------
-# CLI
-# ---------------------------------------------------------------------
-
-# Define function to draw the primary readability contrast as a forest.
-#
-# The distributions elsewhere in this chapter show what the grade levels look
-# like; none of them shows the paired estimand itself, which is one number a
-# model with an interval on it. A forest is the plainest way to put the six
-# effects, their intervals and the panel figure on one axis, and it is the same
-# grammar the safety chapter uses for its primary contrasts.
 def draw_conditioning(display):
     """Primary paired FKGL contrast shown with the standard readability panel."""
     if not CONDITIONING_PATH.exists():
@@ -794,10 +738,8 @@ def draw_conditioning(display):
 
 def conditioning_panel(ax, frame, measure, xlabel, rows, positions, points):
     """Draw one model-level forest panel for a secondary conditioning metric."""
-    # The macro row is the joint bootstrap of Section 3.6.3 over the six
-    # per-model differences, not a contrast over the pooled replies of all six.
-    # Pooling weights a model by how many replies it returned, which is a
-    # property of provider blocking rather than of behaviour.
+
+
     per_model = {}
     for model in ORDER:
         minor, adult = blocks(frame[frame["label"] == model], measure)
@@ -953,9 +895,8 @@ def registry(raw, frame, age_conditioned, floor, display):
 
 
 def main(args):
-    # Start from exactly the same global Matplotlib grammar as figuresafe.py.
-    # STYLE enables the shared faint x/y grid; panel() then applies the common
-    # horizontal-grid styling on top. Heatmaps explicitly opt out via map_panel().
+
+
     plt.rcParams.update(STYLE)
 
     raw = language.load()

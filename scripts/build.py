@@ -1,31 +1,9 @@
-"""Builds everything a model is asked, from the downloaded corpora and the design.
+"""Build the benchmark prompts and multi-turn dialogue plan.
 
-    python scripts/build.py            the benchmark, and the prompts from it
-    python scripts/build.py turns      the dialogue extension, once replies exist
-
-The first stage takes the pipeline from the source records to the file a model
-is given, in three steps, each validated before the next reads it.
-
-    drafts.csv     the candidate pool, one row per usable source record.
-                   Regenerated on every run and not committed
-    benchmark.csv  the benchmark itself: 120 scenarios, each carrying the record
-                   it was adapted from and that record's original wording
-    prompts.csv    every scenario expanded across the age conditions
-
-Every condition is an opening sentence followed by the request, and the request
-is the same text in all of them, so a prompt is the control plus at most one
-sentence. That is checked by rebuilding each prompt from its opener and its
-request and requiring exact equality, rather than by testing that the prompt
-ends in the right words.
-
-The scenarios are specified in config/scenarios.yml, which is the only file
-edited by hand. Where one derives from a source record it is written into that
-record's row, so the derivation is stored rather than asserted and travels into
-the benchmark with the original wording beside it; where it does not, the
-dataset is recorded as Author.
-
-The second stage needs replies, so it is run after run.py rather than with the
-first. It replays each opening reply and presses on the same request.
+Notes
+-----
+The script constructs benchmark prompts from configured source corpora,
+validates the experimental design, and prepares the dialogue extension.
 """
 
 import argparse
@@ -48,14 +26,7 @@ from utils import (check_benchmark, check_drafts, code_from_scenario,
                    make_source_id, read_all, read_table, report, section,
                    validate, written)
 
-# ----------------------------------------------------------------------------
-# Settings
-# ----------------------------------------------------------------------------
 
-# Body image and eating disorder material sits across several source label
-# schemes without a label of its own, so it is identified by wording and
-# reassigned after the label mappings. The patterns do not overlap, body image
-# is checked first, and the word stems match their inflected forms.
 KEYWORD_RULES = {
     'bod': (r'\b(?:body image|look fat|too fat|fat people|skinny girls|'
             r'how much should i weigh|ugly)\b'),
@@ -66,68 +37,45 @@ KEYWORD_RULES = {
 
 EXPECTED_PROMPTS = sum(TOTAL_SCENARIOS for _ in CONDITIONS)
 
-# A request runs between these, so that a scenario type cannot be told from how
-# long its requests are. The floor keeps a request self-contained; the ceiling
-# keeps it a single ask.
+
 MIN_WORDS, MAX_WORDS = 5, 14
 
-# How a request has to open to be written down as each category. Checked rather
-# than taken on trust, because the category is what stops a scenario type being
-# recognisable from its surface and a mislabelled one would not stop anything.
-# Can I asks about the user's own action; Can you directs the model, so it is an
-# instruction. How many asks for a quantity rather than for a procedure.
-# The two shapes a domain may take. Age Restricted exists only where an age
-# limit does; where it does not, its scenarios are Rights instead.
+
 NORMAL_CELL = {'Harmful': 5, 'Age Restricted': 5, 'Rights': 5, 'Benign': 5}
 WITHOUT_RESTRICTED = {'Harmful': 5, 'Rights': 10, 'Benign': 5}
 
 CATEGORY_OPENINGS = {
-    # Instruction asks the model to do something. Either an imperative, or the
-    # interrogative that asks for the same thing: how do I.
+
+
     'Instruction': r'^(write|tell|explain|give|teach|describe|show|help|make|'
                    r'point|promise)\b|^can you\b|^how (do|can|would) i\b',
-    # Information asks for a fact, a reason, or a judgement. The wh words, and
-    # the yes or no openings that ask whether rather than how.
+
+
     'Information': r'^(what|why|where|when|which|who|whom)\b|'
                    r'^how (many|much|long|often)\b|^(can|may|am) i\b|'
                    r'^(is|are|was|were|do|does|did|should|would|could) \w',
 }
 
-# Words that fix the length or the shape of a reply. Response Length, FKGL, FRE
-# and Mean AoA are all read off the reply, so a request that asks for something
-# short, or for a list, measures the request rather than the system.
+
 CONSTRAINING = (r'\b(short|shorter|brief|briefly|concise|long|lengthy|detailed|'
                 r'detail|list|bullet|bullets|paragraph|paragraphs|sentence|'
                 r'sentences|words?|essay|summary|summarise|outline|table)\b')
 
-# Two requests above this are near repeats of each other, measured on the
-# wording. Chosen from the set as built: the closest surviving pair sits at 0.67
-# and reads as two requests, and the pairs that read as one sat above 0.70.
+
 SIMILARITY_CEILING = 0.70
 
-# Vocabulary that fixes the age of the person writing. Any of these in a request
-# would compete with the opener, which is the variable under test. Words that
-# name the age of a piece of content rather than of the speaker, such as an
-# eighteen rated film or an adult site, are not in the list.
+
 AGE_MARKED = (r'\b(school|teacher|mum|mummy|dad|daddy|parent|parents|'
               r'grown.?up|grown.?ups|kid|kids|child|children|homework|'
               r'classmate|classmates|colleague|colleagues|boss|nursery|'
               r'toddler|pupil|pension|retired)\b')
 
-# ----------------------------------------------------------------------------
-# Scenarios
-# ----------------------------------------------------------------------------
 
-# Define function to check the scenarios cover every slot exactly, and that the
-# properties the design rests on hold across the whole set. Each is checked here
-# rather than assumed, because each is a property a revision can quietly break.
 def check_scenarios(scenarios, types=TYPES):
     problems = []
     for domain, given in scenarios.items():
-        # A domain carries Age Restricted only where an age limit genuinely
-        # exists. Where none does, because a child's entitlement to help is not
-        # gated, those scenarios are Rights instead and the domain holds twice
-        # as many. Either shape is allowed; anything else is not.
+
+
         restricted = len(given.get('Age Restricted', []))
         expected = dict(NORMAL_CELL) if restricted else dict(WITHOUT_RESTRICTED)
         for scenario_type, wanted in expected.items():
@@ -147,10 +95,6 @@ def check_scenarios(scenarios, types=TYPES):
             + check_neutral(entries) + check_unconstrained(entries))
 
 
-# Define function to check every scenario carries its fields, and that the
-# category written down is the one the request is actually in. It is only worth
-# recording if it can be read off the request, so it is checked against how the
-# request opens rather than trusted.
 def check_fields(entries):
     problems = []
     for domain, scenario_type, entry in entries:
@@ -169,43 +113,25 @@ def check_fields(entries):
     return problems
 
 
-# Define function to check no request constrains the length or the shape of the
-# reply, since those are what is measured
 def check_unconstrained(entries, pattern=CONSTRAINING):
     return [f'{entry["base"]!r} contains {match.group(0)!r}, which constrains '
             f'the reply' for _, _, entry in entries
             if (match := re.search(pattern, entry['base'], re.I))]
 
 
-# Define function to check the requests are of a length, so that a scenario type
-# cannot be told from how long its requests run
 def check_length(entries, low=MIN_WORDS, high=MAX_WORDS):
     return [f'{entry["base"]!r} is {len(entry["base"].split())} words'
             for _, _, entry in entries
             if not low <= len(entry['base'].split()) <= high]
 
 
-# Define function to check every domain by type cell holds one of each category.
-# This is an exact cover rather than a balance band: a set that passes it is
-# fully crossed on domain, type and category, and no arrangement can satisfy it by
-# accident the way a share of a total can.
 def check_categories(entries, types):
     problems = []
     cells = {}
     for domain, scenario_type, entry in entries:
         cells.setdefault((domain, scenario_type), []).append(entry['category'])
-    # A cell holds five scenarios over two forms, so one category has three and the
-    # other two. Which way round alternates, so that both forms come out level
-    # across every domain and every type rather than within every cell.
-    # Every cell holds both categories, so that Instruction can be compared
-    # against Information within a stratum, but not in a fixed proportion. A
-    # scenario's category follows from what it asks: once a Harmful item only
-    # qualifies where fulfilling it would facilitate the harm, most of them are
-    # requests to do something rather than questions about it, and insisting on
-    # a split would mean writing weaker items to satisfy a count. Age Restricted
-    # is exempt outright, being procedural throughout: a question there could be
-    # answered informatively without facilitating the access, which the binary
-    # outcome cannot represent.
+
+
     for (domain, scenario_type), forms in sorted(cells.items()):
         counts = Counter(forms)
         if scenario_type == 'Age Restricted':
@@ -221,10 +147,6 @@ def check_categories(entries, types):
     return problems
 
 
-# Define function to check no two requests are near repeats of each other.
-# Measured on the wording rather than by eye, because a set built domain by
-# domain accumulates parallel phrasings that read as distinct in place and as
-# one request when the file is read end to end.
 def check_distinct(entries, ceiling=SIMILARITY_CEILING):
     problems = []
     for first, second in itertools.combinations(entries, 2):
@@ -232,11 +154,8 @@ def check_distinct(entries, ceiling=SIMILARITY_CEILING):
                                 second[2]['base'].lower()).ratio()
         if ratio < ceiling:
             continue
-        # Age Restricted is procedural throughout, so every request is a
-        # variation on how do I buy something. Two items resting on different
-        # statutes in different domains share that construction and nothing
-        # else, and rewording to clear the threshold changes what is asked
-        # without making the pair any less alike in substance.
+
+
         if first[1] == second[1] == 'Age Restricted':
             continue
         problems.append(f'{ratio:.2f} similar: {first[2]["base"]!r} and '
@@ -244,17 +163,12 @@ def check_distinct(entries, ceiling=SIMILARITY_CEILING):
     return problems
 
 
-# Define function to check no request fixes the age of the person asking. The
-# same request goes to every condition, so a word that only a child or only an
-# adult would write would make the request itself carry an age signal and put it
-# in competition with the opener, which is the variable under test.
 def check_neutral(entries, pattern=AGE_MARKED):
     found = [(entry['base'], match.group(0)) for _, _, entry in entries
              if (match := re.search(pattern, entry['base'], re.I))]
     return [f'{base!r} contains {word!r}, which fixes an age' for base, word in found]
 
 
-# Define function to write every scenario into the drafts
 def fill(drafts, scenarios):
     written_count, added = 0, []
     for domain, types in scenarios.items():
@@ -266,14 +180,11 @@ def fill(drafts, scenarios):
                 number += 1
                 values = {'domain': domain, 'scenario_type': scenario_type,
                           'category': entry['category'],
-                          # the position in scenarios.yml, so that a scenario
-                          # keeps its identifier when the pool is re-read and a
-                          # reader can find abu-h1 where the file puts it
+
+
                           'order': number,
-                          # a produce request is an instruction rather than a
-                          # question, so it closes with a full stop. The mark is
-                          # written here rather than in scenarios.yml so that the
-                          # file holds the words and nothing else.
+
+
                           'request': f'{base}.' if entry['category'] == 'Instruction'
                           else f'{base}?'}
                 rows = (drafts.index[drafts['source_id'] == source_id]
@@ -291,11 +202,6 @@ def fill(drafts, scenarios):
     return filled[DRAFTS_COLUMNS], written_count, len(added)
 
 
-# ----------------------------------------------------------------------------
-# Source records
-# ----------------------------------------------------------------------------
-
-# Define function to read a raw file, returning None when it is not present
 def load_original(filename, original_dir):
     path = original_dir / filename
     if not path.exists():
@@ -304,20 +210,17 @@ def load_original(filename, original_dir):
     return pd.read_csv(path)
 
 
-# Define function to read a labelled column, cut back to its leading phrase
 def read_labels(frame, label, split=''):
     labels = frame[label].astype(str)
     return labels.str.split(split).str[0].str.strip() if split else labels.str.strip()
 
 
-# Define function to read a domain code out of one labelled column
 def map_domains(frame, label, domains, split=''):
     lowered = {str(value).lower(): code for code, values in domains.items()
                for value in values}
     return read_labels(frame, label, split).str.lower().map(lowered)
 
 
-# Define function to read the source records of one dataset into a common shape
 def select(name, spec, original_dir):
     frame = load_original(filename=spec['file'], original_dir=original_dir)
     if frame is None:
@@ -349,7 +252,6 @@ def select(name, spec, original_dir):
     return selected[selected['domain_code'].notna()].reset_index(drop=True)
 
 
-# Define function to reassign records whose wording names a domain directly
 def apply_keyword_rules(sources, rules):
     assigned = pd.Series(False, index=sources.index)
     for code, pattern in rules.items():
@@ -360,7 +262,6 @@ def apply_keyword_rules(sources, rules):
     return sources, int(assigned.sum())
 
 
-# Define function to drop records repeating the wording of an earlier one
 def remove_duplicates(sources):
     normalised = (sources['source_prompt'].str.lower()
                   .str.replace(r'[^a-z0-9\s]', '', regex=True)
@@ -370,7 +271,6 @@ def remove_duplicates(sources):
     return sources.loc[~repeated].reset_index(drop=True), int(repeated.sum())
 
 
-# Define function to give every source record its identifier and domain name
 def assign_ids(sources):
     sources = sources.assign(
         source_id=[make_source_id(dataset, record) for dataset, record
@@ -379,7 +279,6 @@ def assign_ids(sources):
     return sources.sort_values(['domain', 'source_id']).reset_index(drop=True)
 
 
-# Define function to collect the source records of every dataset
 def build_sources(sources, original_dir):
     frames = [select(name=name, spec=spec, original_dir=original_dir)
               for name, spec in sources.items()]
@@ -397,11 +296,6 @@ def build_sources(sources, original_dir):
     return records
 
 
-# ----------------------------------------------------------------------------
-# Drafts
-# ----------------------------------------------------------------------------
-
-# Define function to open a draft for every source record
 def build_drafts(sources):
     return pd.DataFrame({
         'source_id': sources['source_id'],
@@ -417,11 +311,6 @@ def build_drafts(sources):
     })[DRAFTS_COLUMNS]
 
 
-# ----------------------------------------------------------------------------
-# Benchmark
-# ----------------------------------------------------------------------------
-
-# Define function to fill the scenario slots from the drafts marked to keep
 def build_benchmark(drafts, domains, types):
     kept = drafts[drafts['request'].str.strip() != '']
     rows = []
@@ -430,9 +319,8 @@ def build_benchmark(drafts, domains, types):
             chosen = kept[(kept['domain'] == name)
                           & (kept['scenario_type'] == scenario_type)] \
                 .sort_values('order')
-            # how many the domain holds, not how many the config expects, since
-            # a domain without an Age Restricted stratum carries twice as many
-            # Rights and its identifiers have to run to r10
+
+
             for index in range(1, max(len(chosen), 1) + 1):
                 draft = chosen.iloc[index - 1] if index <= len(chosen) else None
                 if draft is None and scenario_type == 'Age Restricted':
@@ -442,28 +330,14 @@ def build_benchmark(drafts, domains, types):
                     'dataset': draft['dataset'] if draft is not None else '',
                     'domain': name,
                     'scenario_type': scenario_type,
-                    # source_prompt stays in drafts.csv, where the corpus text
-                    # belongs. Almost every scenario here is authored, so the
-                    # column would be empty for all but a handful and would
-                    # suggest an adaptation step that did not happen.
+
+
                     **{column: draft[column] if draft is not None else ''
                        for column in ['category', 'source_id', 'request']},
                 })
     return pd.DataFrame(rows)[BENCHMARK_COLUMNS]
 
 
-# ----------------------------------------------------------------------------
-# Prompts
-# ----------------------------------------------------------------------------
-
-# Define function to give the answer expected of one scenario type at one band.
-# A type may carry no expectation at all, in which case none of its scenarios is
-# compared against one. Minor spans Child and Adolescent, so it carries an
-# expectation only where the two agree. The control and the neutral opener name no band at all, and carry
-# one only where the type expects the same answer whatever the age: a request
-# that is harmful at every age is still expected to be refused when no age is
-# given. Where the answer depends on the band, they have none, because there is
-# nothing to compare against.
 def expected_answer(scenario_type, band):
     answers = TYPE_ANSWERS[scenario_type]
     if not answers:
@@ -477,9 +351,6 @@ def expected_answer(scenario_type, band):
     return given.pop() if len(given) == 1 else ''
 
 
-# Define function to build the prompt one condition contributes. Every prompt is
-# the opener followed by the request, and the request is the same text in every
-# condition, so the opener is the only thing that differs from the control.
 def build_prompt(scenario, condition):
     request = scenario['request'].strip()
     if not request:
@@ -500,16 +371,12 @@ def build_prompt(scenario, condition):
     }
 
 
-# Define function to expand every scenario across every condition
 def build_prompts(scenarios, conditions):
     rows = [build_prompt(scenario=scenario, condition=condition)
             for _, scenario in scenarios.iterrows() for condition in conditions]
     return pd.DataFrame([row for row in rows if row])[PROMPT_COLUMNS]
 
 
-# Define function to check that every prompt is exactly its opener followed by
-# its request. Testing only that a prompt ends in its request would pass one
-# whose opener had drifted, so the whole string is rebuilt and compared.
 def check_identity(prompts):
     wrong = [row.prompt_id for row in prompts.itertuples()
              if row.prompt != make_prompt(row.opener, row.request)]
@@ -524,7 +391,6 @@ def check_identity(prompts):
     return []
 
 
-# Define function to check the expanded prompt file
 def check_prompts(prompts):
     problems = validate(frame=prompts, required=PROMPT_COLUMNS,
                         id_column='prompt_id',
@@ -537,7 +403,6 @@ def check_prompts(prompts):
     return problems + check_identity(prompts)
 
 
-# Define function to report what the prompt file contains
 def report_prompts(prompts):
     counts = prompts.groupby('signal').size()
     signals = ', '.join(f'{counts.get(name, 0)} {name.lower()}'
@@ -547,22 +412,9 @@ def report_prompts(prompts):
     print(f'{signals.replace("none", "without a signal")}')
 
 
-# ----------------------------------------------------------------------------
-# The dialogue extension
-# ----------------------------------------------------------------------------
-
-# Each dialogue opens with a prompt already put to a system and that system's
-# own reply to it, then presses on the same request. Replaying an observed reply
-# rather than generating a fresh one holds the starting point constant, so later
-# behaviour is measured against what the system actually did. The wording of each
-# method is identical across scenarios, conditions and systems, so only depth and
-# method differ from the single-turn case. Only the assistant turns after the
-# first are generated.
-
-# Columns expected of the single-turn replies collected beforehand
 RESPONSE_COLUMNS = ['prompt_id', 'model', 'replicate', 'response', 'error']
 
-# Define function to read the single-turn replies the dialogues open with
+
 def load_responses(directory=ADAPTATION_DIR):
     responses = read_all(directory)
     if responses.empty:
@@ -576,16 +428,7 @@ def load_responses(directory=ADAPTATION_DIR):
 
     responses = responses[responses['error'].astype(str).str.strip() == '']
 
-    # A provider-blocked request returns no text, so no dialogue can open on
-    # it. These are dropped here rather than carried through to fail validation
-    # later, and reported, because the count belongs beside the single-turn
-    # retention figures: a withheld request is a boundary that held before the
-    # conversation began.
-    #
-    # This runs before the opening_replicate filter in build_dialogues, so a
-    # cell blocked on the replicate being replayed is correctly dropped. Do not
-    # reorder the two: the three replicates were blocked on 40, 40 and 41 cells
-    # and the sets are not identical.
+
     empty = responses['response'].astype(str).str.strip() == ''
     if empty.any():
         withheld = responses[empty]
@@ -599,7 +442,6 @@ def load_responses(directory=ADAPTATION_DIR):
     return responses.astype({'replicate': str})
 
 
-# Define function to choose the scenarios the extension runs on
 def choose_scenarios(prompts, count, seed, strata=None):
     """Draw the dialogue subset, whole strata first and the remainder
     stratified across harm domains.
@@ -623,8 +465,7 @@ def choose_scenarios(prompts, count, seed, strata=None):
         if scenarios.empty:
             raise ValueError(f'No scenarios in strata {", ".join(strata)}')
 
-    # Smallest stratum first, so a stratum that fits entirely is taken entirely
-    # rather than being sampled down by a proportional rule.
+
     order = scenarios['scenario_type'].value_counts(ascending=True).index
     chosen, remaining = [], count
 
@@ -637,20 +478,14 @@ def choose_scenarios(prompts, count, seed, strata=None):
         if take >= len(pool):
             chosen.extend(pool['scenario_id'])
         else:
-            # Spread the draw across domains rather than letting the seed
-            # concentrate it, so the subset keeps the shape of the benchmark.
-            #
-            # Shares are allocated by largest remainder rather than by rounding
-            # each one, because rounding does not sum. Drawing 25 from ten
-            # domains of five gives an exact share of 2.5 apiece, and Python
-            # rounds a half to even, so a naive round() returns 2 per domain
-            # and 20 scenarios rather than 25.
+
+
             sizes = pool.groupby('domain').size()
             exact = sizes * take / len(pool)
             quota = exact.astype(int)
             short = take - int(quota.sum())
             if short > 0:
-                # ties broken by domain name, so the allocation is reproducible
+
                 order_by_remainder = sorted(
                     sizes.index,
                     key=lambda name: (-(exact[name] - quota[name]), name))
@@ -673,7 +508,6 @@ def choose_scenarios(prompts, count, seed, strata=None):
     return sorted(chosen)
 
 
-# Define function to build one dialogue from a prompt, its reply, and a method
 def build_dialogue(prompt, reply, method, turns, request):
     slug = method.lower().replace(' ', '-')
     dialogue_id = (f'{prompt["prompt_id"]}-{reply["model"]}'
@@ -697,20 +531,12 @@ def build_dialogue(prompt, reply, method, turns, request):
     return rows
 
 
-# Define function to build every dialogue the extension needs
 def build_dialogues(prompts, responses, requests, methods, scenarios,
                     conditions, opening_replicate):
     wanted = prompts[prompts['scenario_id'].isin(scenarios)
                      & prompts['condition'].isin(conditions)]
-    # 'all' carries every replicate forward, 'first' the opening draw only, and
-    # a number the replicate with that name. 'first' is a word rather than a
-    # replicate id, so it is resolved here: matching it against the replicate
-    # column directly returns nothing and yields an empty plan.
-    #
-    # It resolves to replicate 1 rather than to the earliest replicate that
-    # happens to carry a reply. A cell whose first draw was withheld does not
-    # open on its second: the extension meets the opening that came first, and
-    # a withheld one is a boundary that held before the conversation began.
+
+
     setting = str(opening_replicate).lower()
     if setting == 'all':
         opening = responses
@@ -737,7 +563,6 @@ def build_dialogues(prompts, responses, requests, methods, scenarios,
     return pd.DataFrame(rows)[DIALOGUE_COLUMNS]
 
 
-# Define function to check the dialogue file
 def check_dialogues(dialogues, methods):
     problems = validate(frame=dialogues, required=DIALOGUE_COLUMNS,
                         text_columns=['dialogue_id', 'prompt_id', 'scenario_id'],
@@ -751,7 +576,7 @@ def check_dialogues(dialogues, methods):
     if len(uneven):
         problems.append(f'{len(uneven)} dialogues do not have {turns} turns')
 
-    # turn arrives as text when the file is read back, so compare numerically
+
     numbered = pd.to_numeric(dialogues['turn'], errors='coerce')
     replayed = dialogues[(numbered == 2)
                          & (dialogues['text'].astype(str).str.strip() == '')]
@@ -766,7 +591,6 @@ def check_dialogues(dialogues, methods):
     return problems
 
 
-# Define function to report what the dialogue file contains
 def report_dialogues(dialogues, methods, scenarios):
     numbered = pd.to_numeric(dialogues['turn'], errors='coerce')
     generated = int(((dialogues['role'] == 'assistant') & (numbered > 2)).sum())
@@ -778,7 +602,7 @@ def report_dialogues(dialogues, methods, scenarios):
     print(pd.crosstab(opening['condition'], opening['method'],
                       margins=True, margins_name='total').to_string())
 
-# Define function to build the benchmark, the prompts and the request scores
+
 def build_all():
     section('Source records')
     records = build_sources(sources=SOURCES, original_dir=ORIGINAL_DIR)
@@ -793,9 +617,8 @@ def build_all():
                   if 'words' in p or 'similar:' in p])
     DRAFTS_PATH.parent.mkdir(parents=True, exist_ok=True)
     drafts = build_drafts(sources=records)
-    # the scenarios are specified in config/scenarios.yml and written into the
-    # pool here, so a revision there reaches the benchmark without any file
-    # being edited by hand
+
+
     drafts, adapted, authored = fill(drafts=drafts, scenarios=SCENARIOS)
     print(f'{adapted + authored} written, {adapted} adapted from a source '
           f'record and {authored} authored')
@@ -823,14 +646,13 @@ def build_all():
     report_prompts(prompts=prompts)
 
 
-# Define function to build the replayed dialogues of the dialogue extension
 def build_turns():
     section('Dialogue extension')
     prompts = read_table(PROMPTS_PATH)
     responses = load_responses()
     benchmark = read_table(BENCHMARK_PATH)
-    # topic change returns to the request alone, without the opening sentence,
-    # so that the age is not restated at the turn being scored
+
+
     requests = dict(zip(benchmark['scenario_id'], benchmark['request']))
 
     scenarios = choose_scenarios(prompts=prompts,
@@ -848,10 +670,6 @@ def build_turns():
     dialogues.to_csv(PLAN_PATH, index=False)
     report_dialogues(dialogues=dialogues, methods=methods, scenarios=scenarios)
 
-
-# ----------------------------------------------------------------------------
-# Run
-# ----------------------------------------------------------------------------
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()

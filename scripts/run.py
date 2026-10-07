@@ -1,27 +1,8 @@
-"""Puts the benchmark to a model, and checks the panel before doing so.
+"""Run benchmark generation, collection, and provider checks.
 
-    python scripts/run.py check
-    python scripts/run.py check --model gemma3:12b --prompt-id sub-h1-age09
-
-    ollama pull gemma3:12b
-    python scripts/run.py generate --model gemma3:12b --backend ollama
-
-    python scripts/run.py generate --backend mlx --limit 60 \
-        --model mlx-community/Qwen2.5-7B-Instruct-4bit
-
-Replies append one line at a time and any prompt already collected is skipped,
-so a run that stops part way resumes where it left off. That matters because a
-full pass is tens of thousands of generations and will not finish in one
-sitting. Run it with a limit first: the rate it reports is enough to estimate the
-whole pass before committing a night to it. Progress prints once a minute rather
-than per reply, so the log stays short enough to read the morning after.
-
-The check looks every identifier up against its provider, so a renamed or
-retired model fails here rather than part way through generation, and local
-models are checked against the Hugging Face Hub so a missing repository is
-caught before a cluster job starts. Naming a model puts one prompt through
-generation, scoring and comparison as well; passing --reply instead scores a
-supplied text, which exercises the scoring path without loading a large model.
+Notes
+-----
+Generate model replies, manage batch workflows, and validate model access.
 """
 
 import argparse
@@ -47,13 +28,10 @@ from utils import (WORKERS, announce, api_key, append_line, collect,
                    make_directories, model_slug, outstanding, read_all,
                    read_lines, read_table, result_path, section, shape_of)
 
-# ----------------------------------------------------------------------------
-# Settings
-# ----------------------------------------------------------------------------
 
 TIMEOUT = 30
 
-# Where each provider lists the models a key can reach
+
 LISTINGS = {
     'openai': {'url': 'https://api.openai.com/v1/models',
                'headers': lambda key: {'Authorization': f'Bearer {key}'},
@@ -68,11 +46,7 @@ LISTINGS = {
 }
 HUB = 'https://huggingface.co/api/models'
 
-# ----------------------------------------------------------------------------
-# Generation
-# ----------------------------------------------------------------------------
 
-# Define function to collect a reply to every prompt, once per replicate
 def run_generation(arguments):
     section('Generation')
     prompts = read_table(PROMPTS_PATH)
@@ -95,9 +69,8 @@ def run_generation(arguments):
         raise SystemExit('Nothing outstanding')
 
     def produce(item):
-        # the two flags are set here even when nothing happened, so that every
-        # row has them and a later pass over the raw files has something to
-        # correct rather than a column that is missing on half the file
+
+
         return {'response': ask(item['backend'], item['model'],
                                 by_id[item['prompt_id']], arguments.max_tokens,
                                 item['temperature']),
@@ -140,31 +113,14 @@ def run_generation(arguments):
     return failures
 
 
-
-
-# ----------------------------------------------------------------------------
-# Live runs, in parts
-# ----------------------------------------------------------------------------
-
-# A provider with no batch queue is generated live. The pass is cut into parts
-# so that a long run is checkpointed rather than all or nothing, and so that
-# progress is visible in whole chunks rather than only as a rate. Each part
-# writes the raw responses in the shape a batch job would have returned, which
-# means the same read_batch ingests them and the same evidence is left behind.
-
-# Define function to name the file one part of a live pass writes to
 def part_path(model, part):
     return BATCHES_DIR / f'part{part}-{model_slug(model)}_output.jsonl'
 
 
-# Define function to name the file the parts are joined into
 def joined_path(model):
     return BATCHES_DIR / f'live-{model_slug(model)}_output.jsonl'
 
 
-# Define function to list what one part of a live pass should ask for. The split
-# is over what is outstanding at the moment it is taken, so a part rerun after a
-# failure asks only for what that part still lacks.
 def part_items(model, part, parts, replicates=None, temperature=None):
     replicates = GENERATION['replicates'] if replicates is None else replicates
     temperature = GENERATION['temperature'] if temperature is None else temperature
@@ -175,7 +131,7 @@ def part_items(model, part, parts, replicates=None, temperature=None):
               for replicate in range(1, replicates + 1)]
     pending = outstanding(wanted=wanted, keys=['prompt_id', 'replicate'],
                           collected=read_lines(result_path(model, ADAPTATION_DIR)))
-    size = -(-len(wanted) // parts)          # ceiling, so the last part is short
+    size = -(-len(wanted) // parts)
     lower, upper = (part - 1) * size, part * size
     order = {(item['prompt_id'], str(item['replicate'])): i
              for i, item in enumerate(wanted)}
@@ -183,8 +139,6 @@ def part_items(model, part, parts, replicates=None, temperature=None):
             if lower <= order[(item['prompt_id'], str(item['replicate']))] < upper]
 
 
-# Define function to generate one part of a live pass, writing each raw response
-# as it arrives so that an interrupted part loses only the call in flight
 def generate_part(model, part, parts, replicates=None, max_tokens=None,
                   temperature=None, workers=None):
     max_tokens = GENERATION['max_tokens'] if max_tokens is None else max_tokens
@@ -196,8 +150,7 @@ def generate_part(model, part, parts, replicates=None, max_tokens=None,
     prompts = read_table(PROMPTS_PATH)
     by_id = dict(zip(prompts['prompt_id'], prompts['prompt']))
 
-    # Ollama is a different backend from the five that speak http directly, so
-    # the call is chosen by provider rather than assumed
+
     call = call_ollama if provider_of(model) == 'ollama' else call_api
 
     def produce(item):
@@ -213,8 +166,8 @@ def generate_part(model, part, parts, replicates=None, max_tokens=None,
                        meter=lambda: (spent(model),
                                       USAGE['input'] + USAGE['output']),
                        workers=WORKERS if workers is None else workers)
-    # the log holds why each call failed, so it is kept when any did. A clean
-    # part has nothing in it worth reading and is tidied away.
+
+
     if failures:
         print(f'  {failures} failed, reasons in {log.name}. They stay '
               f'outstanding, so re-running this part retries them.')
@@ -225,8 +178,6 @@ def generate_part(model, part, parts, replicates=None, max_tokens=None,
     return path, len(items), failures
 
 
-# Define function to count why calls failed, so a run reports the reason rather
-# than only the number
 def reasons_in(log):
     from collections import Counter
     if not log.exists():
@@ -236,22 +187,17 @@ def reasons_in(log):
                    if line.strip() and json.loads(line).get('error'))
 
 
-# Define function to join the parts into one file and remove them, so that a
-# live pass leaves a single record of what the provider returned
 def join_parts(model, parts):
     joined = joined_path(model)
     present = [part_path(model, part) for part in range(1, parts + 1)]
     present = [path for path in present if path.exists()]
     if not present:
-        # The parts were joined already, so there is nothing to add. Writing
-        # here would empty the file that holds the whole pass.
+
+
         already = len(joined.read_text().splitlines()) if joined.exists() else 0
         return joined, already
 
-    # What is already joined is kept and what the parts hold is merged into it,
-    # rather than the parts replacing it. A part collected on its own, to pick
-    # up a handful of calls that failed the first time, holds only those calls,
-    # and writing it over the joined file would discard the rest of the pass.
+
     def keyed(lines):
         found = {}
         for line in lines:
@@ -277,27 +223,11 @@ def join_parts(model, parts):
     return joined, len(records)
 
 
-# ----------------------------------------------------------------------------
-# The provider batch queues
-# ----------------------------------------------------------------------------
-
-# A batch job halves the price and runs asynchronously, so it is submitted from
-# the provider's console rather than driven from here. Two stages bracket it:
-# export writes the file to upload, ingest reads the file that comes back. The
-# body of each request is built by the same function the live path uses, so the
-# two cannot drift apart, and ingest writes the same records live generation
-# does, so nothing downstream knows or cares which route a reply took.
-
-# Define function to name the file a batch is written to or read from. Before a
-# job exists the file is named after the model; once the provider has given an
-# identifier it is renamed after that, matching the name the results come back
-# under, so the request and reply files for a job sit together.
 def batch_path(model_id, suffix, job_id=""):
     stem = job_id if job_id else f"pending-{model_slug(model_id)}"
     return BATCHES_DIR / f"{stem}_{suffix}.jsonl"
 
 
-# Define function to rename a written request file after the job it became
 def name_after_job(model_id, job_id):
     pending = batch_path(model_id, "requests")
     named = batch_path(model_id, "requests", job_id)
@@ -306,8 +236,6 @@ def name_after_job(model_id, job_id):
     return named
 
 
-# Define function to write the batch file to upload, skipping anything already
-# collected so that it composes with a run that stopped part way
 def write_batch(model, endpoint='/v1/responses', replicates=None, max_tokens=None,
                 temperature=None, limit=0, fresh=False):
     replicates = GENERATION['replicates'] if replicates is None else replicates
@@ -320,8 +248,8 @@ def write_batch(model, endpoint='/v1/responses', replicates=None, max_tokens=Non
                'backend': 'api', 'temperature': temperature}
               for prompt_id in prompts['prompt_id']
               for replicate in range(1, replicates + 1)]
-    # a rerun asks the same prompts again, so what is already collected is not a
-    # reason to skip them
+
+
     pending = wanted if fresh else outstanding(
         wanted=wanted, keys=['prompt_id', 'replicate'],
         collected=read_lines(result_path(model, ADAPTATION_DIR)))
@@ -339,17 +267,15 @@ def write_batch(model, endpoint='/v1/responses', replicates=None, max_tokens=Non
             [{'role': 'user', 'content': by_id[item['prompt_id']]}],
             max_tokens, item['temperature'])
         custom_id = f'{item["prompt_id"]}-r{item["replicate"]}'
-        # Each provider names the parts differently. OpenAI takes a file of
-        # addressed requests, Anthropic the parameters alone with the endpoint
-        # fixed for the job, Google a key beside a bare request, and Mistral a
-        # body with the model stripped out, since the job carries it.
+
+
         if provider == 'anthropic':
             line = {'custom_id': custom_id, 'params': body}
         elif provider == 'google':
             line = {'key': custom_id, 'request': body}
         elif provider == 'mistral':
-            # the model is set once when the job is created, so a line carrying
-            # one would be describing something the job does not read
+
+
             line = {'custom_id': custom_id,
                     'body': {k: v for k, v in body.items() if k != 'model'}}
         else:
@@ -359,12 +285,6 @@ def write_batch(model, endpoint='/v1/responses', replicates=None, max_tokens=Non
     return path, len(pending)
 
 
-# Define function to set a model's collected replies aside before it is run
-# again. Ingest appends and skips what it already has, so a rerun over an
-# existing file would either be skipped entirely or leave two replies per prompt
-# collected under different request parameters. The earlier pass is kept rather
-# than deleted, outside the directory the pipeline reads, because it is evidence
-# of what the model did under the conditions that produced it.
 def set_aside_replies(model):
     current = result_path(model, ADAPTATION_DIR)
     if not current.exists():
@@ -376,11 +296,6 @@ def set_aside_replies(model):
     return moved
 
 
-# Define function to read a finished batch into the results, writing the same
-# records live generation writes so that nothing downstream can tell them apart.
-# Anything already collected for a prompt and replicate is skipped: ingesting the
-# same file twice, or two batches covering the same prompts, would otherwise
-# leave duplicate rows that no later stage could tell apart.
 def read_batch(model, source, temperature=None):
     temperature = GENERATION['temperature'] if temperature is None else temperature
     source = Path(source)
@@ -398,15 +313,14 @@ def read_batch(model, source, temperature=None):
         if not line.strip():
             continue
         row = json.loads(line)
-        # Google returns the identifier as key, the other two as custom_id
+
         prompt_id, _, replicate = str(row.get('custom_id')
                                       or row.get('key')).rpartition('-r')
         if (prompt_id, replicate) in seen:
             repeated += 1
             continue
 
-        # Anthropic reports the outcome under result; OpenAI under response
-        # with a status code; Google under response with an error beside it
+
         if 'key' in row and 'result' not in row:
             body = row.get('response') or {}
             failure = row.get('error') or (None if body else row)
@@ -419,11 +333,8 @@ def read_batch(model, source, temperature=None):
             body = response.get('body') or {}
             failure = (row.get('error')
                        or (body if response.get('status_code', 200) != 200 else None))
-        # A prompt refused by the provider's own filter never reached the model,
-        # so there is no reply to score. It is recorded rather than dropped,
-        # because where a provider intervenes before generation is itself a
-        # result, and it is kept out of the error field so that a rerun does not
-        # keep resubmitting something that will be blocked again.
+
+
         stopped, cut = flags_of(body, row)
         error = ''
         if failure:
@@ -433,8 +344,8 @@ def read_batch(model, source, temperature=None):
             blocked += 1
         else:
             record_usage(provider, body)
-            # a reply stopped by the token cap has a censored length rather than
-            # a measured one, and Response Length is an outcome measure
+
+
             truncated += cut
 
         append_line(path, {'prompt_id': prompt_id, 'model': model,
@@ -448,7 +359,6 @@ def read_batch(model, source, temperature=None):
     return read, failed, truncated, repeated, blocked
 
 
-# Define function to write the batch file from the command line
 def run_export(arguments):
     section('Batch export')
     path, count = write_batch(model=arguments.model, endpoint=arguments.endpoint,
@@ -468,7 +378,6 @@ def run_export(arguments):
     return 0
 
 
-# Define function to read a finished batch from the command line
 def run_ingest(arguments):
     section('Batch ingest')
     read, failed, truncated, repeated, blocked = read_batch(
@@ -491,11 +400,6 @@ def run_ingest(arguments):
     return 0
 
 
-# ----------------------------------------------------------------------------
-# The panel
-# ----------------------------------------------------------------------------
-
-# Define function to list the models one api key can reach
 def list_available(provider, key):
     listing = LISTINGS[provider]
     response = requests.get(listing['url'], timeout=TIMEOUT,
@@ -506,7 +410,6 @@ def list_available(provider, key):
             for entry in response.json().get(collection, [])}
 
 
-# Define function to check one api model against its provider
 def check_api(spec):
     key = api_key(spec['provider'])
     if not key:
@@ -518,7 +421,6 @@ def check_api(spec):
     return 'ok' if spec['id'].split('/')[-1] in available else 'not offered to this key'
 
 
-# Define function to check one local model against the hub
 def check_local(spec):
     try:
         response = requests.get(f'{HUB}/{spec["id"]}', timeout=TIMEOUT)
@@ -530,7 +432,6 @@ def check_local(spec):
         else f'http {response.status_code}'
 
 
-# Define function to check every model in the panel
 def check_panel(models, judge):
     rows = []
     for name, spec in {**models, 'judge': judge}.items():
@@ -541,7 +442,6 @@ def check_panel(models, judge):
     return pd.DataFrame(rows)
 
 
-# Define function to report how many calls the panel implies
 def report_cost(models, generation, prompts):
     calls = prompts * len(models) * generation['replicates']
     section('Run size')
@@ -551,11 +451,6 @@ def report_cost(models, generation, prompts):
     print(f'Replies to judge: {calls}')
 
 
-# ----------------------------------------------------------------------------
-# One prompt end to end
-# ----------------------------------------------------------------------------
-
-# Define function to load one prompt with the canonical request behind it
 def load_prompt(prompt_id, prompts_path, benchmark_path):
     prompts = read_table(prompts_path)
     benchmark = read_table(benchmark_path)
@@ -566,14 +461,12 @@ def load_prompt(prompt_id, prompts_path, benchmark_path):
     return row, benchmark.set_index('scenario_id').loc[row['scenario_id']]
 
 
-# Define function to print a block of text under a heading
 def show(title, text, width=76):
     print(f'{title}:')
     for line in textwrap.wrap(str(text), width=width) or ['']:
         print(f'  {line}')
 
 
-# Define function to put one prompt through generation, scoring and comparison
 def trace(arguments):
     row, scenario = load_prompt(prompt_id=arguments.prompt_id,
                                 prompts_path=PROMPTS_PATH,
@@ -599,8 +492,8 @@ def trace(arguments):
         output = arguments.verdict
     else:
         print(f'Scoring with {arguments.judge}')
-        # the classifier sees the canonical request, never the cued variant or
-        # the opener, so it cannot infer which condition produced the reply
+
+
         output = generate(arguments.backend, arguments.judge,
                           [{'role': 'system', 'content': build_policy()},
                            {'role': 'user',
@@ -623,7 +516,6 @@ def trace(arguments):
           f'{deviation if deviation is not None else "n/a"}  ({describe(deviation)})')
 
 
-# Define function to check the panel, and one prompt where a model is named
 def run_check(arguments):
     section('Model panel')
     panel = check_panel(models=MODELS, judge=JUDGE)
@@ -636,67 +528,29 @@ def run_check(arguments):
     prompts = read_table(PROMPTS_PATH) if PROMPTS_PATH.exists() else pd.DataFrame()
     report_cost(models=MODELS, generation=GENERATION, prompts=len(prompts))
 
-    # the trace calls a model, so it runs only when one is named or a reply is
-    # supplied to score in its place
+
     if arguments.model or arguments.reply:
         trace(arguments)
     return 0
 
 
-# ----------------------------------------------------------------------------
-# Run
-# ----------------------------------------------------------------------------
-
-# ----------------------------------------------------------------------------
-# Dialogue extension
-# ----------------------------------------------------------------------------
-
-# The single-turn pass sends one user message per call and resumes on prompt_id
-# and replicate. A dialogue needs the conversation sent in order and resumption
-# on dialogue_id and turn, since one prompt opens three dialogues and each
-# generates two replies, so this is a second entry point rather than a flag on
-# the first. Everything else is shared: generate() already takes a message list,
-# and outstanding(), collect() and append_line() give the same resumption,
-# logging and cost meter as the adaptation pass.
-
-# Define function to name the file one model's collected turns are written to
 def dialogue_path(model):
     return DIALOGUE_DIR / f'{model_slug(model)}.jsonl'
 
 
-# Define function to list the turns of one dialogue as a message list, up to
-# but not including the turn being asked for
-#
-# Every call carries the whole conversation, not the previous reply alone. The
-# age is stated only at turn one, so a truncated history would remove the very
-# thing the extension measures, and any movement would then be a general
-# capitulation rather than the loss of a disclosed age.
 def history_before(turns, turn):
     return [{'role': row['role'], 'content': row['text']}
             for _, row in turns.iterrows()
             if int(row['turn']) < int(turn)]
 
 
-# Define function to list the dialogues a pass still needs
-#
-# The unit of work is the dialogue, not the turn. Turn 5 cannot be sent until
-# turn 4 has come back, so the two turns of one dialogue are always sequential;
-# it is the dialogues that are independent of each other and can run at once.
-# Keying the work on the turn instead would let collect() put both turns of one
-# dialogue into the same parallel group and send the second before the first
-# had been answered.
-#
-# The cost of the coarser key is that a dialogue whose second turn failed is
-# retried whole, so its first turn is generated again. That is a few calls on a
-# rerun, and it is the right trade: a dialogue holding only its first generated
-# turn cannot give a trajectory and would be dropped at the merge anyway.
 def dialogue_items(model):
     plan = read_table(PLAN_PATH)
     plan = plan[plan['model'] == model]
     wanted = [{'dialogue_id': name, 'model': model}
               for name in plan['dialogue_id'].unique()]
 
-    # a dialogue counts as collected once every generated turn is on disk
+
     have = read_lines(dialogue_path(model))
     if have.empty:
         return wanted
@@ -709,12 +563,6 @@ def dialogue_items(model):
     return [item for item in wanted if item['dialogue_id'] not in done]
 
 
-# Define function to collect one model's dialogues
-#
-# Ordering is by opening cell rather than by dialogue_id. The three methods on
-# one cell share turns one and two, so asking for them together keeps a
-# provider's prefix cache warm and the shared opening is billed once rather than
-# three times. It costs nothing but the sort.
 def collect_dialogues(model, backend='api', max_tokens=None, temperature=None,
                       workers=1):
     pending = dialogue_items(model)
@@ -731,31 +579,22 @@ def collect_dialogues(model, backend='api', max_tokens=None, temperature=None,
              for name, rows in grouped.items()}
     pending.sort(key=lambda item: order[item['dialogue_id']])
 
-    # Turns already on disk, read once and never written to, so a rerun that
-    # picks up a part-finished dialogue does not generate its earlier turns
-    # again. read_lines returns a frame, and iterating a frame walks its column
-    # names rather than its rows, which is the bug this replaced.
+
     have = read_lines(path)
     existing = ({} if have.empty else
                 {(row['dialogue_id'], str(row['turn'])): row['text']
                  for _, row in have.iterrows()})
 
     def produce(item):
-        # The conversation is built forward. Every call carries the whole
-        # history, not the previous reply alone: the age is stated only at turn
-        # one, so a truncated history would remove the very thing the extension
-        # measures and any movement would be a general capitulation rather than
-        # the loss of a disclosed age.
+
+
         messages = []
         for _, row in grouped[item['dialogue_id']].iterrows():
             if row['role'] == 'user':
                 messages.append({'role': 'user', 'content': row['text']})
                 continue
 
-            # read_table keeps an empty cell as '' rather than NaN, but a plan
-            # loaded any other way would give NaN here and str(NaN) is 'nan',
-            # which is not empty. That would skip generation and write the
-            # string nan into the conversation, silently.
+
             text = '' if pd.isna(row['text']) else str(row['text']).strip()
             if not text:
                 key = (item['dialogue_id'], str(row['turn']))
@@ -786,7 +625,6 @@ def collect_dialogues(model, backend='api', max_tokens=None, temperature=None,
     return path, len(pending), failures
 
 
-# Define function to run one model's dialogue pass
 def run_dialogue(arguments):
     if not PLAN_PATH.exists():
         raise SystemExit('No plan.csv, run: python scripts/build.py turns')
@@ -803,19 +641,12 @@ def run_dialogue(arguments):
     return failures
 
 
-# Define function to fill the plan from the collected turns
-#
-# Kept apart from collection so that it can be rerun, and so that an incomplete
-# dialogue fails loudly here rather than passing quietly into the analysis as a
-# short conversation. A dialogue missing either generated turn cannot give a
-# trajectory, so it is dropped whole and counted, which is the rule the paired
-# contrasts already use: missing either side, drop the item.
 def merge_turns():
     plan = read_table(PLAN_PATH)
     collected = {}
     for model in plan['model'].unique():
-        # read_lines returns a frame, and iterating a frame walks its column
-        # names rather than its rows
+
+
         frame = read_lines(dialogue_path(model))
         if frame.empty:
             continue
@@ -845,11 +676,6 @@ def merge_turns():
     return plan
 
 
-# Define function to build the argument parser
-#
-# Extracted from __main__ so that a notebook can build the same arguments
-# the command line does, with the same defaults, rather than assembling a
-# namespace by hand and drifting from it.
 def parser():
     parser = argparse.ArgumentParser()
     parser.add_argument('stage',
