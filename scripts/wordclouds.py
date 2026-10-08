@@ -1,209 +1,283 @@
-"""Generate distinctive-vocabulary word-cloud figures.
+"""Generate age-conditioned distinctive-vocabulary word clouds.
 
 Notes
 -----
-Compare disclosure conditions and export scenario- and model-level word clouds.
+Compare eight explicit ages and the Neutral condition across all scenarios.
+Normalize plural forms before ranking words by weighted log-odds.
 """
 
+from __future__ import annotations
+
 import argparse
+import re
 import sys
+from functools import lru_cache
 from pathlib import Path
 
 import matplotlib.pyplot as plt
-from matplotlib import colormaps, colors
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import language
-from analysis import INK, MUTED, NAME, ORDER, PALE
+from analysis import MUTED
 from settings import ROOT
 
-FIGURES = ROOT / 'figures'
+
+FIGURES = ROOT / "figures" / "readability"
+AGES = (7, 9, 11, 13, 15, 17, 18, 21)
+CONDITIONS = [(f"age{age:02d}", f"Age {age}") for age in AGES] + [("neutral", "Neutral")]
+
+PALETTE = (
+    "#0B4F8C",
+    "#0B775E",
+    "#A23B72",
+    "#B86E00",
+    "#2C7FB8",
+    "#A84300",
+    "#B79F00",
+)
+OUTLINE = "#008F5A"
+INK = "#202326"
+BACKGROUND = "#FFFFFF"
+
+FIGURE_SIZE = (11.2, 8.2)
+TITLE_SIZE = 16
+RESOLUTION = 240
+
+# Only clean tokens for this word cloud; never alter the source response texts
+# or the readability measurements. Keep these choices explicit and auditable.
+TOKEN = re.compile(r"[a-z]+")
+ARTIFACTS = {
+    "http", "https", "www", "com", "org", "html", "href", "mailto",
+    "nbsp", "amp", "utm", "jpeg", "png", "pdf", "markdown",
+}
+
+# Standard English irregular plurals and selected obvious inflections.
+IRREGULAR = {
+    "children": "child",
+    "people": "person",
+    "women": "woman",
+    "men": "man",
+    "teeth": "tooth",
+    "feet": "foot",
+    "mice": "mouse",
+    "crises": "crisis",
+    "analyses": "analysis",
+    "diagnoses": "diagnosis",
+    "counsellors": "counselor",
+    "counsellor": "counselor",
+    "counselors": "counselor",
+    "movies": "movie",
+    "cookies": "cookie",
+    "brownies": "brownie",
+    "smoothies": "smoothie",
+    "selfies": "selfie",
+    "zombies": "zombie",
+    "rookies": "rookie",
+    "ties": "tie",
+    "pies": "pie",
+}
+
+# Do not strip the final "s" from these singular nouns or non-plural words.
+INVARIANT = {
+    "crisis", "analysis", "diagnosis", "thesis", "status", "loss",
+    "stress", "class", "process", "access", "success", "address",
+    "news", "series", "species", "physics", "mathematics", "diabetes",
+    "business", "glass", "grass", "discuss", "across", "always",
+    "perhaps", "plus", "virus", "campus", "bonus", "bias", "gas",
+    "focus", "cannabis", "serious", "curious", "various",
+}
 
 
-LADDER = (7, 9, 11, 13, 15, 17, 18, 21)
-CONDITIONS = ([(f'age{age:02d}', f'Age {age}') for age in LADDER]
-              + [('neutral', 'Neutral')])
+@lru_cache(maxsize=20000)
+def canonical_word(word: str) -> str:
+    """Conservatively merge common plural forms without aggressive stemming.
 
-TYPES = ['Harmful', 'Age Restricted', 'Rights', 'Benign']
+    Notes
+    -----
+    Preserve ordinary lexical meaning: ``parents`` -> ``parent`` and
+    ``families`` -> ``family``, but ``parental`` remains distinct. This
+    intentionally does not attempt context-dependent verb lemmatization.
+    """
+    if word in IRREGULAR:
+        return IRREGULAR[word]
+    if word in INVARIANT or len(word) < 4:
+        return word
+    if word.endswith("ies") and len(word) > 4:
+        # "families" -> "family"; common -ie exceptions are listed above.
+        return word[:-3] + "y"
+    if word.endswith(("sses", "ches", "shes", "xes", "zzes")):
+        return word[:-2]
+    if word.endswith("s") and not word.endswith(
+        ("ss", "us", "is", "ous", "ics", "as")
+    ):
+        return word[:-1]
+    return word
 
 
-COLOURMAP, TONE_DARK, TONE_PALE = colormaps['viridis'], 0.02, 0.88
+def clean_reply(text: str) -> str:
+    """Remove response formatting and normalize tokens before scoring.
 
-
-OUTLINE = colors.to_hex(COLOURMAP(0.72))
-
-
-TEXT_WIDTH_CM = 16.0
-
-
-LABEL_POINTS = 7.0
-
-
-SIGNPOST = {'parent', 'parents', 'guardian', 'guardians', 'teacher', 'teachers',
-            'counselor', 'counsellor', 'adult', 'adults', 'trusted',
-            'caregiver', 'caregivers', 'school', 'family', 'someone',
-            'mom', 'dad', 'mum', 'grandparent', 'nurse', 'coach'}
+    Notes
+    -----
+    Use the same stopword list as the original weighted log-odds analysis.
+    Remove stopwords both before and after inflection merging, preventing
+    generic words from resurfacing under a newly normalized form.
+    """
+    plain = language.clean(text).lower()
+    words = []
+    for token in TOKEN.findall(plain):
+        if len(token) < 3 or token in language.STOPWORDS or token in ARTIFACTS:
+            continue
+        base = canonical_word(token)
+        if len(base) >= 3 and base not in language.STOPWORDS and base not in ARTIFACTS:
+            words.append(base)
+    return " ".join(words)
 
 
 def load_conditions():
+    """Load all age-conditioned and Neutral replies."""
     replies = language.load_texts()
-
-
     wanted = {key for key, _ in CONDITIONS}
-    replies = replies[replies['condition'].isin(wanted)].copy()
-    return replies.assign(key=replies['condition'])
+    replies = replies.loc[replies["condition"].isin(wanted)].copy()
+    replies["key"] = replies["condition"]
+    replies["cloud_text"] = replies["response"].map(clean_reply)
+    return replies
 
 
-def assign_words(part, minimum):
-    scored = {}
+def assign_words(replies, minimum):
+    """Assign each distinctive word to its strongest age contrast."""
+    scores = {}
+
     for key, _ in CONDITIONS:
-        here = part[part['key'] == key]['response']
-        rest = part[part['key'] != key]['response']
-        series = language.distinctive_words(here, rest, minimum=minimum)
-        scored[key] = series[series > 0]
-
-    best = {}
-    for key, series in scored.items():
-        for word, value in series.items():
-            if word not in best or value > best[word][1]:
-                best[word] = (key, value)
+        here = replies.loc[replies["key"].eq(key), "cloud_text"]
+        other = replies.loc[replies["key"].ne(key), "cloud_text"]
+        values = language.distinctive_words(here, other, minimum=minimum)
+        scores[key] = values[values > 0]
 
     assigned = {key: {} for key, _ in CONDITIONS}
-    for word, (key, value) in best.items():
-        assigned[key][word] = value
-    return {key: dict(sorted(words.items(), key=lambda item: -item[1]))
-            for key, words in assigned.items()}
+    strongest = {}
+
+    for key, values in scores.items():
+        for word, score in values.items():
+            if word not in strongest or score > strongest[word][1]:
+                strongest[word] = (key, score)
+
+    for word, (key, score) in strongest.items():
+        assigned[key][word] = score
+
+    return {
+        key: dict(sorted(words.items(), key=lambda pair: -pair[1]))
+        for key, words in assigned.items()
+    }
 
 
-def draw(words, axis, top):
+def draw_cloud(ax, words, top, width, height):
+    """Render a proportional word cloud inside one panel."""
     from wordcloud import WordCloud
 
-    words = dict(list(words.items())[:top])
-    if not words:
-        axis.text(0.5, 0.5, 'no words peak here', ha='center', va='center',
-                  fontsize=8, color=MUTED)
+    entries = dict(list(words.items())[:top])
+    ax.set_facecolor(BACKGROUND)
+
+    if entries:
+        ranks = {word: rank for rank, word in enumerate(entries)}
+
+        def color_func(word, **_):
+            return PALETTE[ranks[word] % len(PALETTE)]
+
+        cloud = WordCloud(
+            width=width,
+            height=height,
+            background_color="white",
+            max_words=top,
+            prefer_horizontal=0.91,
+            relative_scaling=0.48,
+            min_font_size=9,
+            max_font_size=130,
+            margin=3,
+            collocations=False,
+            random_state=7,
+            color_func=color_func,
+        ).generate_from_frequencies(entries)
+        ax.imshow(cloud, interpolation="bilinear", aspect="auto")
     else:
-        ranks = {word: index for index, word in enumerate(words)}
-        span = max(len(words) - 1, 1)
+        ax.text(
+            0.5,
+            0.5,
+            "No Distinctive Words",
+            ha="center",
+            va="center",
+            transform=ax.transAxes,
+            fontsize=12,
+            color=MUTED,
+        )
 
-        def tone(word, **kwargs):
-
-
-            position = ranks[word] / span
-            return colors.to_hex(
-                COLOURMAP(TONE_DARK + position * (TONE_PALE - TONE_DARK)))
-
-        cloud = WordCloud(width=680, height=500, background_color='white',
-                          prefer_horizontal=0.88,
-                          relative_scaling=0.55, min_font_size=6,
-                          max_words=top, color_func=tone,
-                          random_state=7).generate_from_frequencies(words)
-        axis.imshow(cloud, interpolation='bilinear')
-    axis.set_xticks([])
-    axis.set_yticks([])
-    for spine in axis.spines.values():
+    ax.set_xticks([])
+    ax.set_yticks([])
+    for spine in ax.spines.values():
+        spine.set_visible(True)
         spine.set_edgecolor(OUTLINE)
-        spine.set_linewidth(1.1)
+        spine.set_linewidth(1.05)
 
 
-def draw_grid(assigned, top, filename, display):
-    width = 9.9
-    figure, axes = plt.subplots(3, 3, figsize=(width, 7.9))
+def draw_grid(assigned, top, filename):
+    """Render a three-by-three grid without title overlaps."""
+    plt.rcParams.update({
+        "font.family": "DejaVu Sans",
+        "pdf.fonttype": 42,
+        "ps.fonttype": 42,
+    })
+
+    fig, axes = plt.subplots(
+        3, 3, figsize=FIGURE_SIZE, facecolor=BACKGROUND
+    )
+    fig.subplots_adjust(
+        left=0.035,
+        right=0.985,
+        top=0.948,
+        bottom=0.035,
+        wspace=0.055,
+        hspace=0.27,
+    )
+
+    for ax, (key, label) in zip(axes.flat, CONDITIONS):
+        box = ax.get_position()
+        image_width = max(1, round(box.width * FIGURE_SIZE[0] * RESOLUTION))
+        image_height = max(1, round(box.height * FIGURE_SIZE[1] * RESOLUTION))
+        draw_cloud(ax, assigned.get(key, {}), top, image_width, image_height)
+        ax.set_title(
+            label,
+            fontsize=TITLE_SIZE,
+            color=INK,
+            weight="normal",
+            pad=5,
+        )
+
+    FIGURES.mkdir(parents=True, exist_ok=True)
+    destination = FIGURES / filename
+    fig.savefig(destination, dpi=300, facecolor=BACKGROUND)
+    plt.close(fig)
+    print(f"Figure: {destination.name}")
+    return destination
 
 
-    scale = (display * TEXT_WIDTH_CM) / (width * 2.54)
-    points = LABEL_POINTS / scale
-
-    for index, (key, label) in enumerate(CONDITIONS):
-        axis = axes[index // 3][index % 3]
-        draw(assigned[key], axis, top)
-        axis.set_title(label, fontsize=points, color=INK,
-                       pad=points * 0.22)
-
-
-    figure.tight_layout(h_pad=points * 0.14, w_pad=0.7)
-
-    written = FIGURES / filename
-    figure.savefig(written, bbox_inches='tight')
-    plt.close(figure)
-    return written
-
-
-def report(title, assigned, written, top):
-    print(f'{title}   {written.name}')
-    for key, label in CONDITIONS:
-        words = list(assigned[key])[:top]
-        named = sum(1 for word in words if word in SIGNPOST)
-        print(f'  {label:<8} {len(assigned[key]):>4} words  '
-              f'{named}/{len(words)}  {", ".join(words)}')
-    print()
-
-
-def main(arguments):
+def main(args):
+    """Write the single age-conditioned vocabulary figure."""
     replies = load_conditions()
-    stated = int((replies['key'] != 'neutral').sum())
-    control = len(replies) - stated
-    print(f'{len(replies):,} replies across {len(CONDITIONS)} conditions: '
-          f'{stated:,} at a stated age and {control:,} under the control\n')
-    FIGURES.mkdir(exist_ok=True)
+    if replies.empty:
+        raise ValueError("No age-conditioned replies found")
 
-
-    def build(title, part, filename):
-        if part.empty:
-            print(f'{title}   no replies, skipped\n')
-            return
-        try:
-            assigned = assign_words(part, arguments.minimum)
-            written = draw_grid(assigned, arguments.top, filename,
-                                arguments.display)
-        except Exception as failure:
-            print(f'{title}   FAILED, {type(failure).__name__}: {failure}\n')
-            return
-        report(title, assigned, written, arguments.top)
-
-    if arguments.only in ('types', 'both'):
-        present = set(replies['scenario_type'].unique())
-        missing = [kind for kind in TYPES if kind not in present]
-        if missing:
-            print(f'scenario types absent from the corpus: '
-                  f'{", ".join(missing)}')
-            print(f'present: {", ".join(sorted(present))}\n')
-        for kind in TYPES:
-            build(kind, replies[replies['scenario_type'] == kind],
-                  f'readability_words_type_'
-                  f'{kind.lower().replace(" ", "_")}.pdf')
-
-    if arguments.only in ('models', 'both'):
-        slugs = {'GPT-5.6 Luna': 'gpt', 'Claude Haiku 4.5': 'claude',
-                 'Gemini 3.5 Flash Lite': 'gemini',
-                 'DeepSeek-V4 Flash': 'deepseek', 'Mistral Small 4': 'mistral',
-                 'Gemma 4 31B': 'gemma'}
-        replies['label'] = replies['model'].map(NAME)
-        for label in ORDER:
-            build(label, replies[replies['label'] == label],
-                  f'readability_words_model_{slugs[label]}.pdf')
-
-    print(f'Written to {FIGURES.relative_to(ROOT)}')
-    print('Upload them to Overleaf: figures/fig_readability_words.tex expects '
-          'them there, and the Overleaf tooling writes text only.')
+    assigned = assign_words(replies, args.minimum)
+    draw_grid(assigned, args.top, "readability_words_age.pdf")
 
 
 def parser():
-    parser = argparse.ArgumentParser(description=__doc__.split('\n')[0])
-    parser.add_argument('--top', type=int, default=10,
-                        help='words drawn in each panel, after assignment')
-    parser.add_argument('--minimum', type=int, default=10,
-                        help='times a word must appear in the cut before it '
-                             'can be scored')
-    parser.add_argument('--display', type=float, default=0.48,
-                        help='fraction of the text width the figure will be '
-                             'included at, which sets the panel label size')
-    parser.add_argument('--only', default='both',
-                        choices=['both', 'types', 'models'],
-                        help='draw one set of figures rather than both')
-    return parser
+    """Parse figure-generation options."""
+    cli = argparse.ArgumentParser(description=__doc__.splitlines()[0])
+    cli.add_argument("--top", type=int, default=20)
+    cli.add_argument("--minimum", type=int, default=10)
+    return cli
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main(parser().parse_args())

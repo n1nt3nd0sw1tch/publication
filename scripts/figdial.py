@@ -43,13 +43,13 @@ MACRO = "Macro-average"
 MODEL_ORDER = MODELS + [MACRO]
 
 MODEL_AXIS = {
-    "GPT-5.6 Luna": "GPT-5.6\nLuna",
-    "Claude Haiku 4.5": "Claude\nHaiku 4.5",
-    "Gemini 3.5 Flash Lite": "Gemini 3.5\nFlash Lite",
-    "DeepSeek-V4 Flash": "DeepSeek-V4\nFlash",
-    "Mistral Small 4": "Mistral\nSmall 4",
-    "Gemma 4 31B": "Gemma 4\n31B",
-    MACRO: "Macro-\nAverage",
+    "GPT-5.6 Luna": "GPT-5.6 Luna",
+    "Claude Haiku 4.5": "Claude Haiku 4.5",
+    "Gemini 3.5 Flash Lite": "Gemini 3.5 Flash Lite",
+    "DeepSeek-V4 Flash": "DeepSeek-V4 Flash",
+    "Mistral Small 4": "Mistral Small 4",
+    "Gemma 4 31B": "Gemma 4 31B",
+    MACRO: "Macro-average",
 }
 
 STRATA = ["Age Restricted", "Harmful"]
@@ -108,8 +108,8 @@ def set_style():
     """Apply a journal-style Matplotlib theme."""
     plt.rcParams.update(
         {
-            "font.family": "DejaVu Serif",
-            "mathtext.fontset": "dejavuserif",
+            "font.family": "DejaVu Sans",
+            "mathtext.fontset": "dejavusans",
             "font.size": 8.3,
             "axes.titlesize": 9.2,
             "axes.titleweight": "bold",
@@ -211,9 +211,9 @@ def draw_retention(tables, output, png=False):
     fig.subplots_adjust(
         left=0.075,
         right=0.992,
-        bottom=0.31,
+        bottom=0.285,
         top=0.88,
-        wspace=0.72,
+        wspace=0.82,
     )
 
     ax = axes[0]
@@ -257,7 +257,7 @@ def draw_retention(tables, output, png=False):
         )
         handles.append(handle)
 
-    ax.set_title("(a) Refusal Across Turns", pad=5)
+    ax.set_title("Refusal Across Turns", pad=5)
     ax.set_xticks(x, ["T1", "T2", "T3"])
     ax.set_xlim(-0.14, 2.14)
     ax.set_ylim(0, 80)
@@ -371,7 +371,7 @@ def draw_retention(tables, output, png=False):
     ax.set_xlim(lower - 4.5, upper + 4.5)
     ax.xaxis.set_major_locator(MultipleLocator(10))
     ax.set_xlabel("Age-Gap Change, T3 − T1 (pp)")
-    ax.set_title("(b) Age-Gap Erosion", pad=5)
+    ax.set_title("Age-Gap Erosion", pad=5)
 
     ax.text(
         0.02,
@@ -397,14 +397,19 @@ def draw_retention(tables, output, png=False):
     figure_legend = fig.legend(
         handles=handles,
         labels=[handle.get_label() for handle in handles],
-        ncol=2,
+        ncol=4,
         loc="lower center",
-        bbox_to_anchor=(0.5, 0.025),
-        frameon=False,
-        handlelength=2.15,
-        handletextpad=0.45,
-        columnspacing=1.55,
+        bbox_to_anchor=((fig.subplotpars.left + fig.subplotpars.right) / 2, 0.02),
+        frameon=True,
+        fancybox=True,
+        framealpha=1.0,
+        edgecolor=LIGHT_GREY,
+        handlelength=2.0,
+        handletextpad=0.5,
+        columnspacing=1.15,
+        borderpad=0.45,
     )
+    figure_legend.get_frame().set_linewidth(0.6)
     for line in figure_legend.get_lines():
         line.set_linewidth(1.65)
 
@@ -451,7 +456,7 @@ def draw_boundary(tables, output, png=False):
         sharex=True,
     )
     fig.subplots_adjust(
-        left=0.175,
+        left=0.30,
         right=0.992,
         bottom=0.22,
         top=0.88,
@@ -512,7 +517,7 @@ def draw_boundary(tables, output, png=False):
         ax.set_ylim(len(MODEL_ORDER) - 0.45, -0.55)
         ax.set_xlim(-8, 76)
         ax.xaxis.set_major_locator(MultipleLocator(25))
-        ax.set_title(f"({chr(97 + panel)}) T{panel + 1}", pad=5)
+        ax.set_title(f"T{panel + 1}", pad=5)
 
         if panel == 0:
             ax.set_yticks(
@@ -544,10 +549,15 @@ def draw_boundary(tables, output, png=False):
             clip_on=False,
         )
 
-    fig.supxlabel(
-        "Age 17 − Age 18 Refusal Gap (pp)",
+    left = axes[0].get_position().x0
+    right = axes[-1].get_position().x1
+    fig.text(
+        (left + right) / 2,
+        0.05,
+        "Refusal Gap 17 vs 18 (pp)",
+        ha="center",
+        va="center",
         fontsize=8.7,
-        y=0.05,
     )
 
     save_figure(fig, output, "dialogue_boundary", png)
@@ -587,13 +597,13 @@ def draw_methods(tables, output, png=False):
     fig.subplots_adjust(
         left=0.11,
         right=0.985,
-        bottom=0.34,
+        bottom=0.30,
         top=0.84,
         wspace=0.10,
     )
 
     x = np.arange(len(METHODS))
-    method_labels = ["Emotional\nPushback", "Purpose\nReverse", "Role Play"]
+    method_labels = ["Emotional Pushback", "Purpose Reverse", "Role Play"]
 
     all_values = []
 
@@ -659,9 +669,9 @@ def draw_methods(tables, output, png=False):
         ax.set_xticks(x, method_labels)
         ax.set_xlim(-0.35, len(METHODS) - 0.65)
         ax.set_title(
-            "(a) Age Restricted"
+            "Age Restricted"
             if panel == 0
-            else "(b) Harmful Control",
+            else "Harmful Control",
             pad=6,
         )
 
@@ -702,16 +712,21 @@ def draw_methods(tables, output, png=False):
             label="T3",
         ),
     ]
-    fig.legend(
+    methods_legend = fig.legend(
         handles=handles,
         labels=["T2", "T3"],
         ncol=2,
         loc="lower center",
-        bbox_to_anchor=(0.5, 0.02),
-        frameon=False,
-        handletextpad=0.45,
-        columnspacing=1.2,
+        bbox_to_anchor=((fig.subplotpars.left + fig.subplotpars.right) / 2, 0.02),
+        frameon=True,
+        fancybox=True,
+        framealpha=1.0,
+        edgecolor=LIGHT_GREY,
+        handletextpad=0.55,
+        columnspacing=1.4,
+        borderpad=0.45,
     )
+    methods_legend.get_frame().set_linewidth(0.6)
 
     save_figure(fig, output, "dialogue_methods", png)
 
@@ -778,26 +793,12 @@ def main():
     if not jobs:
         parser.error("No figures match the requested selection")
 
-    manifest = []
-    for key, tier, function in jobs:
-        caption = function(
+    for _, _, function in jobs:
+        function(
             args.tables,
             args.output,
             args.png,
         )
-        manifest.append(
-            {
-                "figure": f"dialogue_{key}",
-                "tier": tier,
-                "caption": caption,
-            }
-        )
-
-    args.output.mkdir(parents=True, exist_ok=True)
-    (args.output / "captions.json").write_text(
-        json.dumps(manifest, indent=2) + "\n",
-        encoding="utf-8",
-    )
 
 
 if __name__ == "__main__":
