@@ -252,8 +252,8 @@ def read_drift_summary(encoder: str = "minilm") -> pd.DataFrame:
 def draw_specificity(output: Path, png: bool = False) -> None:
     """Create the Experiment 1 specificity figure."""
     set_style()
-    fig, ax = plt.subplots(1, 1, figsize=(TEXT_WIDTH, 3.85))
-    fig.subplots_adjust(left=0.34, right=0.99, bottom=0.23, top=0.88)
+    fig, ax = plt.subplots(1, 1, figsize=(8.2, 4.15))
+    fig.subplots_adjust(left=0.36, right=0.99, bottom=0.23, top=0.90)
 
     style_axis(ax, "both")
     ax.axvline(0, color=BLACK, linestyle=(0, (4, 3)), linewidth=0.9, zorder=1)
@@ -339,7 +339,7 @@ def draw_specificity(output: Path, png: bool = False) -> None:
     ax.set_yticks(y, [CONTRAST_AXIS[name] for name in CONTRASTS])
     ax.set_ylim(len(CONTRASTS) - 0.5, -0.5)
     ax.set_xlabel("Specificity (Age Restricted − Control Mean)")
-    ax.set_title("Semantic Specificity By Contrast", pad=5)
+    ax.set_title("Semantic Specificity by Age Contrast", pad=5)
 
     lower = min(min(all_low), -0.01)
     upper = max(max(all_high), 0.01)

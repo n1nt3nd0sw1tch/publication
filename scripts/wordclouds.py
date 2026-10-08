@@ -41,7 +41,7 @@ INK = "#202326"
 BACKGROUND = "#FFFFFF"
 
 FIGURE_SIZE = (11.2, 8.2)
-TITLE_SIZE = 16
+TITLE_SIZE = 11
 RESOLUTION = 240
 
 # Only clean tokens for this word cloud; never alter the source response texts
@@ -237,7 +237,7 @@ def draw_grid(assigned, top, filename):
         top=0.948,
         bottom=0.035,
         wspace=0.055,
-        hspace=0.27,
+        hspace=0.20,
     )
 
     for ax, (key, label) in zip(axes.flat, CONDITIONS):
@@ -250,7 +250,7 @@ def draw_grid(assigned, top, filename):
             fontsize=TITLE_SIZE,
             color=INK,
             weight="normal",
-            pad=5,
+            pad=3,
         )
 
     FIGURES.mkdir(parents=True, exist_ok=True)

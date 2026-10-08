@@ -64,10 +64,10 @@ FORMULAE = ["fkgl", "fre", "gunning_fog", "ari", "smog"]
 
 SIGNALS = [
     ("neutral", "Neutral"),
-    ("adult_cue", "Adult\nCue"),
-    ("adult_age", "Adult\nAge"),
-    ("minor_cue", "Minor\nCue"),
-    ("minor_age", "Minor\nAge"),
+    ("adult_cue", "Adult Cue"),
+    ("adult_age", "Adult Age"),
+    ("minor_cue", "Minor Cue"),
+    ("minor_age", "Minor Age"),
 ]
 TRACKS = [
     ("fkgl", "FKGL", "-", "o"),
@@ -376,10 +376,10 @@ def draw_aoa(data: pd.DataFrame, output: Path, png: bool = False) -> None:
 
 def draw_ladder(data: pd.DataFrame, output: Path, png: bool = False) -> None:
     """Plot explicit-age FKGL with a 17-to-18 readout per model."""
-    fig, axes = plt.subplots(2, 3, figsize=(8.5, 5.55), sharex=True, sharey=True)
+    fig, axes = plt.subplots(2, 3, figsize=(9.25, 6.15), sharex=True, sharey=True)
     fig.subplots_adjust(
-        left=0.109, right=0.988, top=0.90, bottom=0.205,
-        wspace=0.19, hspace=0.36,
+        left=0.099, right=0.989, top=0.92, bottom=0.19,
+        wspace=0.20, hspace=0.33,
     )
 
     for i, (ax, model) in enumerate(zip(axes.flat, MODELS)):
@@ -408,7 +408,7 @@ def draw_ladder(data: pd.DataFrame, output: Path, png: bool = False) -> None:
             ax.text(
                 0.035, 0.975, f"17–18: {delta:+.2f} grades",
                 transform=ax.transAxes, ha="left", va="top",
-                fontsize=7.0, color=BLACK,
+                fontsize=7.4, color=BLACK,
                 bbox={"facecolor": "white", "edgecolor": "none", "alpha": 0.94, "pad": 2.0},
                 zorder=7,
             )
@@ -449,10 +449,10 @@ def draw_signals(data: pd.DataFrame, output: Path, png: bool = False) -> None:
     levels = [key for key, _ in SIGNALS]
     tick_labels = [label for _, label in SIGNALS]
 
-    fig, axes = plt.subplots(2, 3, figsize=(8.5, 5.65), sharex=True, sharey=True)
+    fig, axes = plt.subplots(2, 3, figsize=(9.25, 6.15), sharex=True, sharey=True)
     fig.subplots_adjust(
-        left=0.109, right=0.988, top=0.90, bottom=0.23,
-        wspace=0.19, hspace=0.35,
+        left=0.099, right=0.989, top=0.92, bottom=0.235,
+        wspace=0.20, hspace=0.33,
     )
     all_shifts = []
 
@@ -487,7 +487,7 @@ def draw_signals(data: pd.DataFrame, output: Path, png: bool = False) -> None:
                     0.035, 0.975,
                     f"FKGL (SD): Cue {cue:+.2f}  |  Age {explicit:+.2f}",
                     transform=ax.transAxes, ha="left", va="top",
-                    fontsize=6.9, color=BLACK,
+                    fontsize=7.4, color=BLACK,
                     bbox={"facecolor": "white", "edgecolor": "none", "alpha": 0.94, "pad": 2.0},
                     zorder=6,
                 )
@@ -495,7 +495,7 @@ def draw_signals(data: pd.DataFrame, output: Path, png: bool = False) -> None:
         ax.set_title(model, pad=6)
         ax.set_xlim(-0.2, 4.2)
         ax.set_xticks(range(len(levels)), tick_labels)
-        ax.tick_params(axis="x", labelsize=7.0, labelbottom=i >= 3, pad=4)
+        ax.tick_params(axis="x", labelsize=7.1, labelbottom=i >= 3, pad=6, rotation=25)
         if i % 3 != 0:
             ax.tick_params(axis="y", labelleft=False)
 

@@ -39,7 +39,8 @@ MODELS = [
     "Mistral Small 4",
     "Gemma 4 31B",
 ]
-MACRO = "Macro-average"
+MACRO = "Macro-average"  # Frozen CSV label: do not change.
+MACRO_DISPLAY = "Macro-Average"
 MODEL_ORDER = MODELS + [MACRO]
 
 MODEL_AXIS = {
@@ -49,7 +50,7 @@ MODEL_AXIS = {
     "DeepSeek-V4 Flash": "DeepSeek-V4 Flash",
     "Mistral Small 4": "Mistral Small 4",
     "Gemma 4 31B": "Gemma 4 31B",
-    MACRO: "Macro-average",
+    MACRO: MACRO_DISPLAY,
 }
 
 STRATA = ["Age Restricted", "Harmful"]
@@ -80,7 +81,7 @@ MODEL_COLOUR = {
     "DeepSeek-V4 Flash": "#CC79A7",
     "Mistral Small 4": "#E69F00",
     "Gemma 4 31B": "#56B4E9",
-    MACRO: BLACK,
+    MACRO: "#5E3C99",
 }
 
 MODEL_MARKER = {
@@ -205,15 +206,15 @@ def draw_retention(tables, output, png=False):
     fig, axes = plt.subplots(
         1,
         2,
-        figsize=(7.8, 4.15),
+        figsize=(8.7, 4.5),
         gridspec_kw={"width_ratios": [0.88, 1.42]},
     )
     fig.subplots_adjust(
         left=0.075,
         right=0.992,
-        bottom=0.285,
-        top=0.88,
-        wspace=0.82,
+        bottom=0.245,
+        top=0.90,
+        wspace=0.75,
     )
 
     ax = axes[0]
@@ -399,7 +400,7 @@ def draw_retention(tables, output, png=False):
         labels=[handle.get_label() for handle in handles],
         ncol=4,
         loc="lower center",
-        bbox_to_anchor=((fig.subplotpars.left + fig.subplotpars.right) / 2, 0.02),
+        bbox_to_anchor=((fig.subplotpars.left + fig.subplotpars.right) / 2, 0.045),
         frameon=True,
         fancybox=True,
         framealpha=1.0,
@@ -451,14 +452,14 @@ def draw_boundary(tables, output, png=False):
     fig, axes = plt.subplots(
         1,
         3,
-        figsize=(TEXT_WIDTH, 3.10),
+        figsize=(8.55, 3.65),
         sharey=True,
         sharex=True,
     )
     fig.subplots_adjust(
-        left=0.30,
-        right=0.992,
-        bottom=0.22,
+        left=0.295,
+        right=0.990,
+        bottom=0.19,
         top=0.88,
         wspace=0.12,
     )
@@ -499,7 +500,7 @@ def draw_boundary(tables, output, png=False):
                 fmt=MODEL_MARKER[model],
                 color=colour,
                 ecolor=colour,
-                markerfacecolor=colour if not is_macro else BLACK,
+                markerfacecolor=colour,
                 markeredgecolor=colour,
                 markersize=5.1 if is_macro else 3.7,
                 linewidth=1.55 if is_macro else 1.0,
@@ -538,7 +539,7 @@ def draw_boundary(tables, output, png=False):
             va="center",
             fontsize=6.9,
             fontweight="bold",
-            color=BLACK,
+            color=MODEL_COLOUR[MACRO],
             bbox={
                 "facecolor": "white",
                 "edgecolor": "none",
@@ -591,7 +592,7 @@ def draw_methods(tables, output, png=False):
     fig, axes = plt.subplots(
         1,
         2,
-        figsize=(TEXT_WIDTH, 3.05),
+        figsize=(8.5, 3.35),
         sharey=True,
     )
     fig.subplots_adjust(

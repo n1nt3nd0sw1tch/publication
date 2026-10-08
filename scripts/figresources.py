@@ -1,225 +1,208 @@
-"""Generate age-based distinctive-vocabulary word clouds.
+"""Generate one supplementary Top 10 support-resource figure.
 
 Notes
 -----
-Compare explicit age conditions and the neutral condition across the full
-corpus. Words are assigned to the age where they are most distinctive.
+Create a single supplementary figure showing the most frequently
+mentioned support resources in Experiment 1.
 """
 
-import argparse
+from __future__ import annotations
+
 import sys
 from pathlib import Path
 
+import matplotlib as mpl
 import matplotlib.pyplot as plt
-from matplotlib import colors
+import pandas as pd
+from matplotlib.ticker import FuncFormatter, MultipleLocator
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-import language
-from analysis import INK, MUTED
+import analysis
 from settings import ROOT
 
-FIGURES = ROOT / 'figures' / 'readability'
 
-LADDER = (7, 9, 11, 13, 15, 17, 18, 21)
-CONDITIONS = ([(f'age{age:02d}', f'Age {age}') for age in LADDER]
-              + [('neutral', 'Neutral')])
-
-# Colorblind-safe Okabe-Ito palette, used cyclically by rank.
-PALETTE = [
-    '#0072B2',  # blue
-    '#009E73',  # bluish green
-    '#CC79A7',  # reddish purple
-    '#E69F00',  # orange
-    '#56B4E9',  # sky blue
-    '#D55E00',  # vermilion
-    '#F0E442',  # yellow
-]
-OUTLINE = '#00A651'
-BACKGROUND = 'white'
+FIGURES = ROOT / "figures" / "resources"
+INVENTORY = ROOT / "tables" / "supplement" / "resource_inventory_taxonomy.csv"
 
 TEXT_WIDTH_CM = 16.0
-LABEL_POINTS = 7.0
-TITLE_POINTS = 9.2
+LABEL_POINTS = 10.2
+PANEL_FILL = "white"
+GRID = "#D9D9D9"
+MUTED = analysis.MUTED
+TOTAL_E1_REPLIES = 46_640
+TOP_N = 10
 
-SIGNPOST = {
-    'parent', 'parents', 'guardian', 'guardians', 'teacher', 'teachers',
-    'counselor', 'counsellor', 'adult', 'adults', 'trusted',
-    'caregiver', 'caregivers', 'school', 'family', 'someone',
-    'mom', 'dad', 'mum', 'grandparent', 'nurse', 'coach'
+GROUP_MAP = {
+    "Named helpline": "Support Resources",
+    "Organisation / charity": "Support Resources",
+    "Public / institutional resource": "Support Resources",
+}
+
+RESOURCE_COLOUR = "#2E8B57"
+
+DISPLAY = {
+    "988 Suicide and Crisis Lifeline": "988 Suicide & Crisis Lifeline",
+    "Papyrus HOPELINE247": "PAPYRUS HOPELINE247",
+    "World Health Organization": "World Health Organization (WHO)",
+    "headspace": "headspace",
+    "love is respect": "love is respect",
 }
 
 
-def load_conditions():
-    """Load replies for the explicit-age and neutral conditions."""
-    replies = language.load_texts()
-    wanted = {key for key, _ in CONDITIONS}
-    replies = replies[replies['condition'].isin(wanted)].copy()
-    return replies.assign(key=replies['condition'])
+def display_name(value: str) -> str:
+    """Return standardised display names."""
+    return DISPLAY.get(value, value)
 
 
 
-def assign_words(part, minimum):
-    """Assign each word to the condition where it is most distinctive."""
-    scored = {}
-    for key, _ in CONDITIONS:
-        here = part[part['key'] == key]['response']
-        rest = part[part['key'] != key]['response']
-        series = language.distinctive_words(here, rest, minimum=minimum)
-        scored[key] = series[series > 0]
+def styled(display: float, width_inches: float = 7.4, label_points: float | None = None) -> float:
+    """Apply publication plotting defaults and return scaled point size."""
+    scale = display * TEXT_WIDTH_CM / (width_inches * 2.54)
+    points = (LABEL_POINTS if label_points is None else label_points) / scale
+    plt.rcParams.update(
+        {
+            "font.family": "DejaVu Sans",
+            "font.size": points,
+            "axes.labelsize": points,
+            "axes.titlesize": points * 1.05,
+            "xtick.labelsize": points * 0.95,
+            "ytick.labelsize": points * 0.95,
+            "legend.fontsize": points * 0.95,
+            "axes.edgecolor": MUTED,
+            "axes.labelcolor": "black",
+            "axes.linewidth": 0.7,
+            "text.color": "black",
+            "xtick.color": MUTED,
+            "ytick.color": MUTED,
+            "xtick.labelcolor": "black",
+            "ytick.labelcolor": "black",
+        }
+    )
+    return points
 
-    best = {}
-    for key, series in scored.items():
-        for word, value in series.items():
-            if word not in best or value > best[word][1]:
-                best[word] = (key, value)
 
-    assigned = {key: {} for key, _ in CONDITIONS}
-    for word, (key, value) in best.items():
-        assigned[key][word] = value
 
-    return {
-        key: dict(sorted(words.items(), key=lambda item: -item[1]))
-        for key, words in assigned.items()
-    }
+def panel(ax) -> None:
+    """Apply consistent axis styling."""
+    ax.set_facecolor(PANEL_FILL)
+    ax.grid(axis="x", linestyle="-", linewidth=0.6, alpha=0.45, color=GRID)
+    ax.grid(axis="y", visible=False)
+    ax.set_axisbelow(True)
+    ax.spines["top"].set_visible(False)
+    ax.spines["right"].set_visible(False)
 
 
 
-def draw(words, axis, top):
-    """Draw one word-cloud panel."""
-    from wordcloud import WordCloud
+def save(fig: plt.Figure, filename: str) -> Path:
+    """Write a figure and print the filename."""
+    FIGURES.mkdir(parents=True, exist_ok=True)
+    path = FIGURES / filename
+    fig.savefig(path, bbox_inches="tight")
+    plt.close(fig)
+    print(f"Figure: {path.name}")
+    return path
 
-    words = dict(list(words.items())[:top])
-    if not words:
-        axis.text(
-            0.5,
-            0.5,
-            'no distinctive words',
-            ha='center',
-            va='center',
-            fontsize=8,
-            color=MUTED,
+
+
+def nice_step(maximum: float) -> float:
+    """Choose a readable major-tick spacing."""
+    if maximum > 8:
+        return 2.0
+    if maximum > 4:
+        return 1.0
+    if maximum > 2:
+        return 0.5
+    return 0.2
+
+
+
+def figure_height(rows: int) -> float:
+    """Choose figure height from row count."""
+    return max(3.4, 1.6 + 0.42 * rows)
+
+
+
+def load_frame() -> pd.DataFrame:
+    """Load and prepare the resource inventory."""
+    frame = pd.read_csv(INVENTORY)
+    frame = frame[frame["Resource Class"].isin(GROUP_MAP)].copy()
+    frame["Figure Group"] = frame["Resource Class"].map(GROUP_MAP)
+    frame["Rate"] = 100.0 * frame["E1 Replies"] / TOTAL_E1_REPLIES
+    frame["Display"] = frame["Resource"].map(display_name)
+    return frame
+
+
+
+def top_support_resources(frame: pd.DataFrame, top_n: int = TOP_N) -> pd.DataFrame:
+    """Return the top support resources by reply rate."""
+    part = frame[frame["Figure Group"].eq("Support Resources")].copy()
+    part = part.sort_values(["Rate", "Display"], ascending=[False, True]).head(top_n).copy()
+    part = part.sort_values(["Rate", "Display"], ascending=[True, False]).reset_index(drop=True)
+    return part
+
+
+
+def draw_support_resources(frame: pd.DataFrame, display: float = 1.0) -> Path:
+    """Draw the single publication resource figure."""
+    part = top_support_resources(frame)
+
+    width = 8.4
+    points = styled(display, width_inches=width)
+    fig, ax = plt.subplots(
+        figsize=(width, figure_height(len(part))),
+        constrained_layout=True,
+    )
+
+    bars = ax.barh(
+        part["Display"],
+        part["Rate"],
+        height=0.64,
+        facecolor=mpl.colors.to_rgba(RESOURCE_COLOUR, 0.22),
+        edgecolor=RESOURCE_COLOUR,
+        linewidth=1.10,
+        zorder=3,
+    )
+
+    panel(ax)
+    ax.set_xlabel("Mentions (%)")
+    ax.set_ylabel("")
+    ax.tick_params(axis="y", length=0)
+
+    maximum = float(part["Rate"].max())
+    step = nice_step(maximum)
+    ceiling = (int(maximum / step) + 2) * step
+    ax.set_xlim(0, ceiling)
+    ax.xaxis.set_major_locator(MultipleLocator(step))
+    ax.xaxis.set_major_formatter(FuncFormatter(lambda x, pos: f"{x:g}"))
+
+    pad = max(0.03, maximum * 0.012)
+    for bar, value in zip(bars, part["Rate"]):
+        ax.text(
+            value + pad,
+            bar.get_y() + bar.get_height() / 2,
+            f"{value:.2f}",
+            ha="left",
+            va="center",
+            fontsize=points * 0.78,
+            color="black",
+            zorder=5,
+            clip_on=False,
         )
-    else:
-        ranks = {word: index for index, word in enumerate(words)}
 
-        def tone(word, **kwargs):
-            return PALETTE[ranks[word] % len(PALETTE)]
-
-        cloud = WordCloud(
-            width=680,
-            height=500,
-            background_color=BACKGROUND,
-            prefer_horizontal=0.90,
-            relative_scaling=0.52,
-            min_font_size=6,
-            max_words=top,
-            color_func=tone,
-            random_state=7,
-            collocations=False,
-            margin=4,
-        ).generate_from_frequencies(words)
-        axis.imshow(cloud, interpolation='bilinear')
-
-    axis.set_xticks([])
-    axis.set_yticks([])
-    for spine in axis.spines.values():
-        spine.set_edgecolor(OUTLINE)
-        spine.set_linewidth(1.6)
+    return save(fig, "resources_support_top10.pdf")
 
 
 
-def draw_grid(assigned, top, filename, display):
-    """Draw the 3x3 age-condition grid."""
-    width = 10.0
-    height = 7.4
-    figure, axes = plt.subplots(3, 3, figsize=(width, height), facecolor=BACKGROUND)
+def main(display: float = 1.0) -> None:
+    """Generate the publication resource figure."""
+    mpl.rcParams.update(analysis.STYLE)
+    frame = load_frame()
 
-    scale = (display * TEXT_WIDTH_CM) / (width * 2.54)
-    points = LABEL_POINTS / scale
-    title_points = TITLE_POINTS / scale
-
-    for index, (key, label) in enumerate(CONDITIONS):
-        axis = axes[index // 3][index % 3]
-        draw(assigned[key], axis, top)
-        axis.set_title(label, fontsize=points, color=INK, pad=points * 0.28)
-
-    figure.suptitle(
-        'Unique Word Clouds by Age Condition',
-        fontsize=title_points,
-        color=INK,
-        y=0.99,
-    )
-    figure.tight_layout(rect=(0, 0, 1, 0.97), h_pad=points * 0.18, w_pad=0.75)
-
-    written = FIGURES / filename
-    figure.savefig(written, bbox_inches='tight', facecolor=BACKGROUND)
-    plt.close(figure)
-    return written
+    print("Resource figures\n")
+    draw_support_resources(frame, display)
+    print(f"\nWritten to {FIGURES.relative_to(ROOT)}/")
 
 
-
-def report(title, assigned, written, top):
-    """Print a compact report of the exported figure."""
-    print(f'{title}   {written.name}')
-    for key, label in CONDITIONS:
-        words = list(assigned[key])[:top]
-        named = sum(1 for word in words if word in SIGNPOST)
-        print(f'  {label:<8} {len(assigned[key]):>4} words  '
-              f'{named}/{len(words)}  {", ".join(words)}')
-    print()
-
-
-
-def main(arguments):
-    """Generate age-based distinctive-vocabulary word clouds."""
-    replies = load_conditions()
-    stated = int((replies['key'] != 'neutral').sum())
-    control = len(replies) - stated
-    print(f'{len(replies):,} replies across {len(CONDITIONS)} conditions: '
-          f'{stated:,} at a stated age and {control:,} under the control\n')
-    FIGURES.mkdir(exist_ok=True)
-
-    try:
-        assigned = assign_words(replies, arguments.minimum)
-        written = draw_grid(
-            assigned,
-            arguments.top,
-            'readability_words_age.pdf',
-            arguments.display,
-        )
-    except Exception as failure:
-        print(f'Age   FAILED, {type(failure).__name__}: {failure}\n')
-        return
-
-    report('Age', assigned, written, arguments.top)
-    print(f'Written to {FIGURES.relative_to(ROOT)}')
-
-
-
-def parser():
-    """Build the command-line parser."""
-    parser = argparse.ArgumentParser(description=__doc__.split('\n')[0])
-    parser.add_argument(
-        '--top',
-        type=int,
-        default=15,
-        help='words drawn in each panel, after assignment',
-    )
-    parser.add_argument(
-        '--minimum',
-        type=int,
-        default=10,
-        help='times a word must appear in the cut before it can be scored',
-    )
-    parser.add_argument(
-        '--display',
-        type=float,
-        default=0.48,
-        help='fraction of the text width the figure will be included at',
-    )
-    return parser
-
-
-if __name__ == '__main__':
-    main(parser().parse_args())
+if __name__ == "__main__":
+    main()

@@ -443,7 +443,7 @@ def draw_trajectory(
         center = (y_min + y_max) / 2
         y_min = max(0, 5 * np.floor((center - 18) / 5))
         y_max = min(100, 5 * np.ceil((center + 18) / 5))
-    ax.set_title("Refusal Rate By Explicit Age", pad=5)
+    ax.set_title("Refusal Rate by Explicit Age", pad=5)
     ax.set_xlabel("Age")
     ax.set_ylabel("Refusal Rate (%)")
     ax.set_xticks(AGES)
@@ -581,12 +581,90 @@ def draw_controls(
 
 
 
+def draw_social_signpost(
+    returned: pd.DataFrame,
+    focus: pd.DataFrame,
+    register: pd.DataFrame,
+    output: Path,
+    png: bool = False,
+) -> None:
+    """Exploratory social signpost minor-adult effect across all scenarios.
+
+    Each model effect is paired by scenario and averaged equally across the
+    six explicit minor and two explicit adult conditions. The Macro-Average
+    uses the same scenario-resampled bootstrap as the other safety plots.
+    This is descriptive visualization of the pre-existing H8 characteristic,
+    not a new confirmatory hypothesis family.
+    """
+    del focus, register
+    measure = "social_signpost"
+    if measure not in returned.columns:
+        raise ValueError(f"Expected numeric rubric column: {measure}")
+    rows = []
+    differences = {}
+    for model in MODELS:
+        sample = returned.loc[returned["label"].eq(model)]
+        point, low, high, diff = model_effect(
+            sample, measure, MINOR_AGE_CONDITIONS, ADULT_AGE_CONDITIONS
+        )
+        differences[model] = diff
+        rows.append({"model": model, "effect": point, "low": low, "high": high})
+
+    point, low, high = macro_effect(differences)
+    rows.append({"model": MACRO, "effect": point, "low": low, "high": high})
+    table = pd.DataFrame(rows)
+    if not np.isfinite(table[["effect", "low", "high"]].to_numpy()).all():
+        raise ValueError("Non-finite Social Signpost estimates")
+
+    fig, ax = plt.subplots(figsize=(8.35, 4.05))
+    fig.subplots_adjust(left=0.28, right=0.985, bottom=0.18, top=0.87)
+    y = np.arange(len(table))
+    ax.axhspan(len(MODELS) - 0.5, len(MODELS) + 0.5,
+               color="#F6F2FA", zorder=0)
+    ax.axhline(len(MODELS) - 0.5, color=LIGHT_GREY, linewidth=0.9, zorder=1)
+    ax.axvline(0, color=BLACK, linestyle=(0, (4, 3)), linewidth=0.9)
+    for i, row in table.iterrows():
+        model = row["model"]
+        colour = MODEL_COLOUR[model]
+        ax.errorbar(
+            row["effect"], i,
+            xerr=np.array([[row["effect"] - row["low"]],
+                           [row["high"] - row["effect"]]]),
+            fmt=MODEL_MARKER[model], color=colour, ecolor=colour,
+            markerfacecolor=colour if model == MACRO else "white",
+            markeredgecolor=colour, markeredgewidth=1.1,
+            markersize=6.1 if model == MACRO else 4.9,
+            elinewidth=1.6 if model == MACRO else 1.2,
+            capsize=2.3, zorder=3,
+        )
+    ax.set_yticks(y, [MODEL_AXIS[model] for model in table["model"]])
+    ax.get_yticklabels()[-1].set_color(MACRO_COLOUR)
+    ax.get_yticklabels()[-1].set_fontweight("bold")
+    ax.set_ylim(len(table) - 0.45, -0.55)
+    minimum = min(0.0, float(table["low"].min()) - 3)
+    maximum = max(5.0, float(table["high"].max()) + 6)
+    ax.set_xlim(minimum, maximum)
+    ax.xaxis.set_major_locator(MultipleLocator(10))
+    ax.set_title("Social Signposting by Explicit Age", pad=6)
+    ax.set_xlabel("Explicit Minor − Explicit Adult (pp)")
+    style_axis(ax)
+    ax.text(
+        table.iloc[-1]["high"] + 1.3, len(MODELS),
+        f"{table.iloc[-1]['effect']:+.1f}",
+        ha="left", va="center", color=MACRO_COLOUR, fontweight="bold",
+        fontsize=8.1, clip_on=False,
+        bbox={"facecolor": "white", "edgecolor": "none", "pad": 0.1},
+    )
+    save_figure(fig, output, "safety_social_signpost", png)
+
+
 # Figure Selection
 
 FIGURES = {
     "primary": ("main", draw_primary),
     "trajectory": ("main", draw_trajectory),
     "controls": ("supplement", draw_controls),
+    "social": ("supplement", draw_social_signpost),
 }
 
 
